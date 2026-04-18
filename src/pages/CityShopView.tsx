@@ -400,100 +400,13 @@ export default function CityShopView() {
         </div>
       </main>
 
-      <Dialog open={lightboxIndex !== null} onOpenChange={(open) => !open && setLightboxIndex(null)}>
-        <DialogContent
-          className="max-w-6xl gap-0 border-0 bg-transparent p-0 shadow-none [&>button]:hidden sm:rounded-none"
-        >
-          <DialogTitle className="sr-only">معرض صور {shop.name}</DialogTitle>
-          {lightboxIndex !== null && uniqueGallery[lightboxIndex] && (
-            <div className="relative flex flex-col">
-              {/* Top bar */}
-              <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent px-4 py-3">
-                <div className="flex items-center gap-2.5 text-white">
-                  <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-md">
-                    <Camera className="h-4 w-4" />
-                  </div>
-                  <div className="flex flex-col leading-tight">
-                    <span className="text-sm font-semibold truncate max-w-[60vw]">{shop.name}</span>
-                    <span className="text-[11px] text-white/70 font-numeric tabular-nums">
-                      {lightboxIndex + 1} / {uniqueGallery.length}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setLightboxIndex(null)}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-105 active:scale-95"
-                  aria-label="إغلاق"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-
-              {/* Image stage */}
-              <div className="relative flex items-center justify-center bg-black/95 sm:rounded-2xl overflow-hidden">
-                <img
-                  key={lightboxIndex}
-                  src={optimizeImageUrl(uniqueGallery[lightboxIndex], { width: 1600, height: 1200 }) ?? uniqueGallery[lightboxIndex]}
-                  alt={`${shop.name} - صورة ${lightboxIndex + 1}`}
-                  className="max-h-[80vh] w-full object-contain animate-in fade-in zoom-in-95 duration-300"
-                  referrerPolicy="no-referrer"
-                />
-
-                {uniqueGallery.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => setLightboxIndex((i) => (i! - 1 + uniqueGallery.length) % uniqueGallery.length)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-white/20 transition-all duration-200 hover:bg-white/25 hover:scale-110 active:scale-95"
-                      aria-label="السابق"
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setLightboxIndex((i) => (i! + 1) % uniqueGallery.length)}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-white/20 transition-all duration-200 hover:bg-white/25 hover:scale-110 active:scale-95"
-                      aria-label="التالي"
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </button>
-                  </>
-                )}
-              </div>
-
-              {/* Thumbnail strip */}
-              {uniqueGallery.length > 1 && (
-                <div className="mt-3 flex justify-center">
-                  <div className="flex max-w-full gap-1.5 overflow-x-auto rounded-xl bg-black/60 p-1.5 backdrop-blur-md ring-1 ring-white/10">
-                    {uniqueGallery.map((image, index) => (
-                      <button
-                        key={`${image}-thumb-${index}`}
-                        type="button"
-                        onClick={() => setLightboxIndex(index)}
-                        className={cn(
-                          "relative h-12 w-16 shrink-0 overflow-hidden rounded-md transition-all duration-200",
-                          index === lightboxIndex
-                            ? "ring-2 ring-primary opacity-100 scale-105"
-                            : "opacity-50 hover:opacity-90 ring-1 ring-white/15",
-                        )}
-                        aria-label={`الصورة ${index + 1}`}
-                      >
-                        <img
-                          src={optimizeImageUrl(image, { width: 160, height: 120 }) ?? image}
-                          alt=""
-                          className="h-full w-full object-cover"
-                          referrerPolicy="no-referrer"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <LightboxViewer
+        images={uniqueGallery}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onIndexChange={setLightboxIndex}
+        title={shop.name}
+      />
 
       <SiteFooter />
     </div>
