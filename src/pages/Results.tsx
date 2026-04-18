@@ -295,14 +295,33 @@ const Results = () => {
                           )}
                         </Button>
                       </SheetTrigger>
-                      <SheetContent side="right" className="w-full max-w-sm overflow-y-auto">
-                        <SheetHeader>
-                          <SheetTitle className="text-right inline-flex items-center gap-1.5">
-                            <SlidersHorizontal className="h-4 w-4 text-primary" />
-                            تصفية النتائج
-                          </SheetTitle>
+                      <SheetContent
+                        side="right"
+                        className="flex w-[92vw] max-w-md flex-col overflow-hidden p-0 sm:w-full"
+                      >
+                        <SheetHeader className="sticky top-0 z-10 border-b border-border/60 bg-background/95 px-5 py-4 backdrop-blur">
+                          <div className="flex items-center justify-between gap-3">
+                            <SheetTitle className="inline-flex items-center gap-2 text-right text-base">
+                              <SlidersHorizontal className="h-4 w-4 text-primary" />
+                              تصفية النتائج
+                              {activeFilterLabels.length > 0 && (
+                                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
+                                  {activeFilterLabels.length}
+                                </span>
+                              )}
+                            </SheetTitle>
+                            {hasActiveFilters && (
+                              <button
+                                onClick={clearAll}
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-accent transition-colors hover:text-foreground"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                                مسح الكل
+                              </button>
+                            )}
+                          </div>
                         </SheetHeader>
-                        <div className="mt-4">
+                        <div className="flex-1 overflow-y-auto px-5 py-4">
                           <FiltersPanel
                             area={area}
                             category={category}
@@ -321,8 +340,19 @@ const Results = () => {
                             hasActiveFilters={hasActiveFilters}
                             clearAll={clearAll}
                             embedded
+                            compact
                           />
                         </div>
+                        <SheetClose asChild>
+                          <div className="sticky bottom-0 border-t border-border/60 bg-background/95 px-5 py-3 backdrop-blur">
+                            <Button
+                              size="lg"
+                              className="h-11 w-full rounded-full bg-primary text-primary-foreground shadow-soft-md hover:bg-primary/90"
+                            >
+                              عرض {results.length.toLocaleString("ar")} نتيجة
+                            </Button>
+                          </div>
+                        </SheetClose>
                       </SheetContent>
                     </Sheet>
 
