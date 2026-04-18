@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Clock,
   ExternalLink,
+  Expand,
   Globe,
   Home,
   Image as ImageIcon,
@@ -17,6 +18,7 @@ import {
   ShieldCheck,
   Star,
   Store,
+  X,
   XCircle,
 } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
