@@ -218,16 +218,18 @@
     border-radius: 1rem;
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
     transition:
-      border-color 0.3s var(--ease-premium),
-      box-shadow 0.4s var(--ease-premium),
-      transform 0.4s var(--ease-premium);
+      border-color 0.25s var(--ease-premium),
+      box-shadow 0.25s var(--ease-premium),
+      transform 0.25s var(--ease-premium);
   }
 
   .atlas-card:hover {
     border-color: hsl(var(--primary) / 0.3);
     box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
+    transform: translate3d(0, -2px, 0);
   }
 
   .atlas-chip {
