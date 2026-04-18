@@ -1,12 +1,14 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  Activity,
   ArrowRight,
   Camera,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Clock,
+  DoorOpen,
   ExternalLink,
   Expand,
   Globe,
@@ -14,8 +16,11 @@ import {
   Image as ImageIcon,
   MapPin,
   MessageCircle,
+  MessageSquare,
+  Minus,
   Phone,
   ShieldCheck,
+  Sparkles,
   Star,
   Store,
   X,
@@ -261,16 +266,25 @@ export default function CityShopView() {
         </header>
 
         {!!shop.quickSignals && (
-          <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
-            <h2 className="mb-3 text-sm font-bold text-muted-foreground">إشارات سريعة</h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-              <QuickFlag label="موقع" ok={shop.quickSignals.has_website} />
-              <QuickFlag label="خرائط" ok={shop.quickSignals.has_google_maps} />
-              <QuickFlag label="تقييم" ok={shop.quickSignals.has_rating} />
-              <QuickFlag label="مراجعات" ok={shop.quickSignals.has_reviews} />
-              <QuickFlag label="صور" ok={shop.quickSignals.has_photos} />
-              <QuickFlag label="نشط" ok={shop.quickSignals.business_status === "OPERATIONAL"} />
-              <QuickFlag label="مفتوح الآن" ok={shop.quickSignals.open_now === true} neutral={shop.quickSignals.open_now === null} />
+          <section className="relative overflow-hidden rounded-[1.75rem] border border-border/70 bg-card/82 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" aria-hidden />
+            <div className="relative mb-4 flex items-center justify-between gap-3">
+              <div className="inline-flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Sparkles className="h-3.5 w-3.5" />
+                </span>
+                <h2 className="text-sm font-bold tracking-tight text-foreground">إشارات سريعة</h2>
+              </div>
+              <span className="text-[11px] font-medium text-muted-foreground">حالة المتجر في لمحة</span>
+            </div>
+            <div className="relative grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+              <QuickFlag label="موقع" icon={Globe} ok={shop.quickSignals.has_website} />
+              <QuickFlag label="خرائط" icon={MapPin} ok={shop.quickSignals.has_google_maps} />
+              <QuickFlag label="تقييم" icon={Star} ok={shop.quickSignals.has_rating} />
+              <QuickFlag label="مراجعات" icon={MessageSquare} ok={shop.quickSignals.has_reviews} />
+              <QuickFlag label="صور" icon={Camera} ok={shop.quickSignals.has_photos} />
+              <QuickFlag label="نشط" icon={Activity} ok={shop.quickSignals.business_status === "OPERATIONAL"} />
+              <QuickFlag label="مفتوح الآن" icon={DoorOpen} ok={shop.quickSignals.open_now === true} neutral={shop.quickSignals.open_now === null} />
             </div>
           </section>
         )}
@@ -521,22 +535,47 @@ function SummaryTile({
 function QuickFlag({
   label,
   ok,
+  icon: Icon,
   neutral = false,
 }: {
   label: string;
   ok?: boolean | null;
+  icon?: ComponentType<{ className?: string }>;
   neutral?: boolean;
 }) {
+  const isOk = ok === true;
+  const isOff = ok === false && !neutral;
+  const StatusIcon = neutral ? Minus : isOk ? CheckCircle2 : XCircle;
   return (
     <div
       className={cn(
-        "rounded-2xl border px-3 py-3 text-center text-xs font-bold",
-        ok === true && "border-success/30 bg-success/10 text-success",
-        ok === false && !neutral && "border-destructive/20 bg-destructive/10 text-destructive",
-        neutral && "border-border/70 bg-background/80 text-muted-foreground",
+        "group relative flex items-center gap-2 overflow-hidden rounded-2xl border px-3 py-2.5 text-xs font-bold transition-all duration-200",
+        isOk && "border-success/30 bg-success/8 text-success hover:border-success/50 hover:bg-success/12 hover:shadow-soft-md",
+        isOff && "border-destructive/20 bg-destructive/8 text-destructive/85 hover:border-destructive/40 hover:bg-destructive/12",
+        neutral && "border-border/70 bg-background/80 text-muted-foreground hover:border-border",
       )}
     >
-      {label}
+      {Icon && (
+        <span
+          className={cn(
+            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-transform group-hover:scale-110",
+            isOk && "bg-success/15 text-success",
+            isOff && "bg-destructive/12 text-destructive/80",
+            neutral && "bg-muted text-muted-foreground",
+          )}
+        >
+          <Icon className="h-3.5 w-3.5" />
+        </span>
+      )}
+      <span className="flex-1 truncate text-start">{label}</span>
+      <StatusIcon
+        className={cn(
+          "h-3.5 w-3.5 shrink-0 opacity-70",
+          isOk && "text-success",
+          isOff && "text-destructive/70",
+          neutral && "text-muted-foreground",
+        )}
+      />
     </div>
   );
 }
