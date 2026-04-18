@@ -116,7 +116,7 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
           <div
             key={shop.id}
             data-carousel-item
-            className="snap-start shrink-0 basis-[88%] xs:basis-[82%] sm:basis-[62%] md:basis-[46%]"
+            className="snap-start shrink-0 basis-[88%] sm:basis-[62%] md:basis-[46%]"
             aria-roledescription="slide"
             aria-label={`${idx + 1} من ${shops.length}`}
           >
@@ -159,7 +159,7 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
 
         {/* Counter + prev/next */}
         <div className="flex items-center gap-2">
-          <span className="hidden xs:inline-block rounded-full border border-border bg-background px-2.5 py-1 text-[10px] font-bold tabular-nums text-foreground/82">
+          <span className="hidden sm:inline-block rounded-full border border-border bg-background px-2.5 py-1 text-[10px] font-bold tabular-nums text-foreground/82">
             <span className="text-primary">{(activeIndex + 1).toLocaleString("ar")}</span>
             <span className="mx-1 text-muted-foreground">/</span>
             {shops.length.toLocaleString("ar")}
