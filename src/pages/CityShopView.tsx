@@ -53,6 +53,7 @@ export default function CityShopView() {
   const meta = getCityIndexEntry(slug);
   const [data, setData] = useState<CityFile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
     let alive = true;
