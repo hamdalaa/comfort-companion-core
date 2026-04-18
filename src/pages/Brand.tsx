@@ -92,20 +92,6 @@ const Brand = () => {
                   aria-hidden
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" aria-hidden />
-                <div className="absolute top-4 right-4 z-10">
-                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-soft-lg ring-2 ring-white/30 backdrop-blur-md ${isApple ? "bg-black/70" : "bg-background/85"}`}>
-                    {logo ? (
-                      <img
-                        src={logo}
-                        alt={`${brand.brandName} logo`}
-                        loading="lazy"
-                        className={`h-full w-full object-contain p-2 ${isApple ? "brightness-0 invert" : ""}`}
-                      />
-                    ) : (
-                      <span className="font-display text-xl font-bold text-foreground">{initial}</span>
-                    )}
-                  </div>
-                </div>
                 <div className="absolute bottom-4 left-4 z-10 inline-flex items-center gap-2 rounded-full bg-black/55 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-md ring-1 ring-white/20">
                   <Store className="h-3.5 w-3.5" />
                   معرض رسمي
