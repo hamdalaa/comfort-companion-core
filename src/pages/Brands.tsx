@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { useDataStore } from "@/lib/dataStore";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import { getBrandLogo } from "@/lib/brandLogos";
+import { getBrandBackground } from "@/lib/brandBackgrounds";
 import type { BrandDealer } from "@/lib/types";
 
 const arabicNumber = new Intl.NumberFormat("ar");
@@ -57,6 +58,7 @@ export default function Brands() {
           cityCount: brand.cities.length,
           domainLabel: getDomainLabel(brand.website),
           previewImage:
+            getBrandBackground(brand.slug) ??
             OFFICIAL_DEALER_BRANCHES.find(
               (entry) => entry.brandSlug === brand.slug && entry.mainImage && entry.mainImage !== "Not found",
             )?.mainImage ?? null,
