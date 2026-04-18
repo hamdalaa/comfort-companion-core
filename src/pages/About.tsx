@@ -73,7 +73,7 @@ export default function About() {
                 </div>
               </div>
               <div className="text-right">
-                <h2 className="font-display text-2xl font-bold tracking-tight">المطوّر</h2>
+                <h2 className="font-display text-2xl font-bold tracking-tight">محمد علاء</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   خبير ذكاء اصطناعي — مبرمج مواقع — صانع محتوى تقني
                 </p>
