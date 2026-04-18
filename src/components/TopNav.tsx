@@ -235,7 +235,7 @@ export function TopNav() {
                 <div className="border-t border-border/60 bg-muted/30 p-2">
                   <DropdownMenuItem
                     onClick={() => nav("/iraq")}
-                    className="group/all cursor-pointer rounded-xl bg-gradient-to-r from-primary to-primary/85 px-3 py-2.5 text-center text-sm font-bold text-primary-foreground transition-all hover:shadow-soft-md focus:bg-primary"
+                    className="group/all cursor-pointer rounded-xl bg-gradient-to-r from-primary to-primary/85 px-3 py-2.5 text-center text-sm font-bold !text-primary-foreground transition-all hover:from-primary hover:to-primary hover:shadow-soft-md focus:bg-primary focus:!text-primary-foreground data-[highlighted]:from-primary data-[highlighted]:to-primary data-[highlighted]:!text-primary-foreground"
                   >
                     <span className="flex w-full items-center justify-center gap-1.5">
                       كل محلات العراق
