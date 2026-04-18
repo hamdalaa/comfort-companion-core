@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
+  Building2,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -10,6 +11,7 @@ import {
   MapPin,
   Menu,
   Search,
+  Store,
   Trash2,
   X,
   XCircle,
@@ -52,10 +54,10 @@ function loadSelectedCity(): { slug: string; cityAr: string } {
 }
 
 const primaryLinks = [
-  { to: "/sinaa", label: "الشوارع" },
-  { to: "/iraq", label: "المحافظات" },
-  { to: "/brands", label: "الوكلاء" },
-  { to: "/results", label: "البحث" },
+  { to: "/sinaa", label: "الشوارع", icon: Store },
+  { to: "/iraq", label: "المحافظات", icon: Building2 },
+  { to: "/brands", label: "الوكلاء", icon: Heart },
+  { to: "/results", label: "البحث", icon: Search },
 ];
 
 export function TopNav() {
