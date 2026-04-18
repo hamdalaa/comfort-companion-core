@@ -86,7 +86,7 @@ export default function About() {
               المطوّر
             </div>
 
-            <div className="mt-6 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+            <div className="mt-6 flex flex-col items-center gap-5 text-center sm:flex-row sm:items-center sm:text-right">
               <div className="relative shrink-0">
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-primary via-cyan to-violet opacity-90" />
                 <img
@@ -95,7 +95,7 @@ export default function About() {
                   className="relative h-24 w-24 rounded-full object-cover ring-4 ring-background"
                 />
               </div>
-              <div className="text-right">
+              <div className="text-center sm:text-right">
                 <h2 className="font-display text-2xl font-bold tracking-tight">محمد علاء</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   خبير ذكاء اصطناعي — مبرمج مواقع — صانع محتوى تقني
