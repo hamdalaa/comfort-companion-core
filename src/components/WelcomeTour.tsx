@@ -91,9 +91,20 @@ export function WelcomeTour() {
         </DialogHeader>
 
         <div className="my-4 rounded-xl border border-border bg-muted/40 p-5 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <Icon className="h-6 w-6" />
-          </div>
+          {current.icon === Code2 ? (
+            <div className="mx-auto mb-3 h-20 w-20 overflow-hidden rounded-full ring-2 ring-primary/30 shadow-glow">
+              <img
+                src={developerAvatar}
+                alt="صورة المطور"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          ) : (
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Icon className="h-6 w-6" />
+            </div>
+          )}
           <h3 className="text-lg font-bold">{current.title}</h3>
           <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground leading-relaxed">{current.body}</p>
 
