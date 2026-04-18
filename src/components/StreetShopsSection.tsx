@@ -115,18 +115,18 @@ export function StreetShopsSection({
   };
 
   return (
-    <section className="atlas-panel p-5 md:p-7">
+    <section className="atlas-panel overflow-hidden p-4 sm:p-5 md:p-7">
       <div className="pointer-events-none absolute -left-10 top-8 h-24 w-24 rounded-full bg-primary/12 blur-3xl" />
 
-      <div className="atlas-separator flex flex-wrap items-end justify-between gap-4 pb-5">
-        <div className="max-w-3xl text-right">
+      <div className="atlas-separator flex flex-wrap items-end justify-between gap-3 pb-4 sm:gap-4 sm:pb-5">
+        <div className="min-w-0 max-w-3xl text-right">
           <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{area}</div>
-          <h2 className="font-display mt-3 text-3xl font-bold leading-none text-foreground sm:text-4xl md:text-5xl">{title}</h2>
-          {subtitle && <p className="mt-3 text-sm leading-7 text-muted-foreground">{subtitle}</p>}
+          <h2 className="font-display mt-2 text-2xl font-bold leading-tight text-foreground sm:mt-3 sm:text-4xl md:text-5xl">{title}</h2>
+          {subtitle && <p className="mt-2 text-sm leading-7 text-muted-foreground sm:mt-3">{subtitle}</p>}
         </div>
 
         {!hideHeaderCta && (
-          <Link to={areaToPath(area)} className="link-underline text-sm font-semibold text-accent">
+          <Link to={areaToPath(area)} className="link-underline shrink-0 text-sm font-semibold text-accent">
             كل محلات الشارع
           </Link>
         )}
@@ -139,7 +139,7 @@ export function StreetShopsSection({
           ))}
         </div>
       ) : (
-        <div className="mt-5 -mx-5 overflow-x-auto px-5 md:-mx-7 md:px-7 md:overflow-visible">
+        <div className="mt-4 -mx-4 overflow-x-auto px-4 sm:mt-5 sm:-mx-5 sm:px-5 md:-mx-7 md:px-7 md:overflow-visible scrollbar-hide">
           <div className="flex gap-2 whitespace-nowrap pb-1 md:flex-wrap md:whitespace-normal md:pb-0">
             <FilterChip active={activeCat === "all"} onClick={() => setActiveCat("all")} label="كل المحلات" count={streetShops.length} />
             {availableCats.map(([category, count]) => (
