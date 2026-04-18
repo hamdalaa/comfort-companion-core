@@ -265,14 +265,6 @@ export function TopNav() {
               <span className="lg:hidden">المطوّر</span>
             </Link>
 
-            <Link
-              to="/dashboard"
-              className="hidden h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground md:flex"
-              aria-label="لوحة الإدارة"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-            </Link>
-
             <button
               onClick={() => setMobileOpen((v) => !v)}
               className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-surface lg:hidden"
