@@ -232,7 +232,7 @@ export default function CityShopView() {
             {shop.phone && (
               <Button asChild variant="outline" className="gap-1.5 rounded-full">
                 <a href={`tel:${shop.phone.replace(/\D+/g, "")}`}>
-                  <Phone className="h-4 w-4" /> {shop.phone}
+                  <Phone className="h-4 w-4" /> <bdi dir="ltr">{shop.phone}</bdi>
                 </a>
               </Button>
             )}
