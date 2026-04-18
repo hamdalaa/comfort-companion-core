@@ -8,9 +8,10 @@ export default {
     container: {
       center: true,
       padding: {
-        DEFAULT: "0.75rem",
-        sm: "1rem",
+        DEFAULT: "1rem",
+        sm: "1.25rem",
         md: "1.5rem",
+        lg: "2rem",
       },
       screens: { "2xl": "1400px" },
     },
@@ -87,6 +88,7 @@ export default {
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-hero": "var(--gradient-hero)",
+        "gradient-mesh": "var(--gradient-mesh)",
       },
       boxShadow: {
         glow: "var(--shadow-glow)",
