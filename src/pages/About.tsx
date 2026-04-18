@@ -47,10 +47,10 @@ export default function About() {
             <h1 className="font-display mt-4 text-3xl font-bold tracking-tight md:text-5xl">
               ليش <span className="text-gradient">تايه</span>؟
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
+            <p className="mt-3 mx-auto max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
               لأن أي واحد يدوّر على جهاز إلكتروني بالعراق يصير <span className="font-semibold text-foreground">تايه</span> — هذا يكول "أنا الأرخص"، وهذاك يكول "عندي الأصلي"، والثالث "أنا الأقرب لبيتك". تتنطّر بين عشرة محلات بدون ما تعرف منو الصدق ومنو يبالغ.
             </p>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
+            <p className="mt-3 mx-auto max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
               <span className="font-semibold text-foreground">تايه</span> منصّة عراقية تجمع محلّات التقنية من كل المحافظات بمكان واحد — تقارن الأسعار، تشوف تقييمات Google الحقيقية للمحلّ، وتوصل لأقرب نقطة بيع موثوقة بنقرة وحدة. بدون إعلانات مدفوعة، بدون تحيّز، بس معلومة صريحة.
             </p>
 
