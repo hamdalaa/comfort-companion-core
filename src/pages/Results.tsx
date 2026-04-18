@@ -60,11 +60,20 @@ const Results = () => {
   const [withDeals, setWithDeals] = useState(false);
   const [priceRange, setPriceRange] = useState<string>("all");
   const [brandFilters, setBrandFilters] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
 
   const q = params.get("q") ?? "";
   const area = (params.get("area") as Area | null) ?? "all";
   const category = (params.get("category") as Category | null) ?? "all";
   const sort = (params.get("sort") as Sort | null) ?? "relevance";
+
+  // Brief sync "fetch" simulation — shows skeletons until results are computed.
+  // Reruns when query/area/category change so users get visual feedback.
+  useEffect(() => {
+    setLoading(true);
+    const id = window.setTimeout(() => setLoading(false), 350);
+    return () => window.clearTimeout(id);
+  }, [q, area, category]);
 
   const shopsById = useMemo(() => Object.fromEntries(shops.map((shop) => [shop.id, shop])), [shops]);
   const verifiedShopIds = useMemo(() => new Set(shops.filter((shop) => shop.verified).map((shop) => shop.id)), [shops]);
