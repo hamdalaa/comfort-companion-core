@@ -258,7 +258,7 @@ export function TopNav() {
 
             <button
               onClick={openTour}
-              className="hidden h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground md:flex"
+              className="hidden h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-surface hover:text-foreground md:flex"
               aria-label="دليل الاستخدام"
             >
               <HelpCircle className="h-4 w-4" />
@@ -267,17 +267,16 @@ export function TopNav() {
 
             <Link
               to="/about"
-              className="hidden h-9 items-center gap-1.5 rounded-full border border-violet/30 bg-gradient-to-r from-violet/15 to-rose/15 px-3 text-xs font-bold text-violet shadow-soft transition-all hover:-translate-y-0.5 hover:border-violet hover:shadow-soft-md md:inline-flex"
+              className="group/dev hidden h-8 items-center gap-1.5 rounded-full border border-violet/25 bg-gradient-to-r from-violet/10 via-violet/5 to-rose/10 px-3 text-[11px] font-bold text-violet transition-all hover:-translate-y-0.5 hover:border-violet/50 hover:shadow-[0_4px_12px_-4px_hsl(var(--violet)/0.4)] md:inline-flex"
               aria-label="المطوّر"
             >
-              <Heart className="h-3.5 w-3.5 fill-current" />
-              <span className="hidden lg:inline">المطوّر</span>
-              <span className="lg:hidden">المطوّر</span>
+              <Heart className="h-3 w-3 fill-current transition-transform group-hover/dev:scale-110" />
+              <span>المطوّر</span>
             </Link>
 
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-surface lg:hidden"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-foreground transition-all hover:bg-surface lg:hidden"
               aria-label="القائمة"
             >
               {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
