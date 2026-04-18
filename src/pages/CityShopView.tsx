@@ -29,7 +29,7 @@ import {
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { LightboxViewer } from "@/components/LightboxViewer";
 import { EmptyState } from "@/components/EmptyState";
 import { StarRating } from "@/components/StarRating";
 import { getCityIndexEntry, loadCity, type CityFile } from "@/lib/cityData";
