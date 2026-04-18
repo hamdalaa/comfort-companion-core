@@ -6,7 +6,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { ProductCard } from "@/components/ProductCard";
 import { useDataStore } from "@/lib/dataStore";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
-import { getBrandLogo } from "@/lib/brandLogos";
+import { getBrandLogo, getTheSvgUrl } from "@/lib/brandLogos";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import {
   ChevronLeft,
