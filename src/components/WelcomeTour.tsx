@@ -79,7 +79,7 @@ export function WelcomeTour() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) close(); }}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="w-[calc(100%-2rem)] max-w-md rounded-2xl">
         <DialogHeader>
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow">
             <Sparkles className="h-7 w-7" />
