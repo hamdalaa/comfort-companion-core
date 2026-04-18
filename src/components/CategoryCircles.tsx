@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ALL_CATEGORIES, type Category } from "@/lib/types";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_REAL_IMAGES } from "@/lib/categoryImages";
 
 const LABELS: Record<Category, string> = {
   Computing: "حاسبات",
@@ -32,7 +32,7 @@ export function CategoryCircles() {
             >
               <div className="relative h-[68px] w-[68px] overflow-hidden rounded-full ring-1 ring-border group-hover:ring-2 group-hover:ring-primary transition-all duration-500 ease-out shadow-soft group-hover:shadow-soft-lg">
                 <img
-                  src={CATEGORY_IMAGES[c]}
+                  src={CATEGORY_REAL_IMAGES[c]}
                   alt={LABELS[c]}
                   loading="lazy"
                   className="smooth-img h-full w-full object-cover"
@@ -56,7 +56,7 @@ export function CategoryCircles() {
           >
             <div className="relative h-16 w-16 lg:h-[88px] lg:w-[88px] overflow-hidden rounded-full ring-1 ring-border group-hover:ring-2 group-hover:ring-primary transition-all duration-500 ease-out shadow-soft group-hover:shadow-soft-lg">
               <img
-                src={CATEGORY_IMAGES[c]}
+                src={CATEGORY_REAL_IMAGES[c]}
                 alt={LABELS[c]}
                 loading="lazy"
                 className="smooth-img h-full w-full object-cover"
