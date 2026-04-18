@@ -625,6 +625,7 @@ type FiltersPanelProps = {
   hasActiveFilters: boolean;
   clearAll: () => void;
   embedded?: boolean;
+  compact?: boolean;
 };
 
 function FiltersPanel(props: FiltersPanelProps) {
@@ -646,6 +647,7 @@ function FiltersPanel(props: FiltersPanelProps) {
     hasActiveFilters,
     clearAll,
     embedded,
+    compact,
   } = props;
 
   const Wrapper = ({ children }: { children: React.ReactNode }) =>
