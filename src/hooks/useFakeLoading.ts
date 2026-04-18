@@ -1,15 +1,10 @@
-import { useEffect, useState } from "react";
-
 /**
- * Returns true while a simulated initial load is in progress.
- * Useful to show skeleton loaders the first time a section mounts,
- * giving the UI a smoother perceived load even when data is local.
+ * Previously simulated an artificial loading delay to show skeletons.
+ * Disabled — data is local and instantly available, so the fake delay
+ * was just slowing perceived performance. Always returns false now.
+ *
+ * Kept as a no-op so existing call sites compile without changes.
  */
-export function useFakeLoading(durationMs = 600) {
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), durationMs);
-    return () => clearTimeout(t);
-  }, [durationMs]);
-  return loading;
+export function useFakeLoading(_durationMs = 0) {
+  return false;
 }
