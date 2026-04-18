@@ -198,10 +198,10 @@ export function TopNav() {
                           key={city.slug}
                           onClick={() => pickCity(city.slug, city.cityAr, `/city/${city.slug}`)}
                           className={cn(
-                            "group/item flex cursor-pointer items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-sm transition-all",
+                            "group/item flex cursor-pointer items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-sm transition-all focus:bg-primary/10 focus:text-primary data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary",
                             active
                               ? "bg-primary/10 text-primary"
-                              : "text-foreground hover:bg-muted/70",
+                              : "text-foreground hover:bg-primary/10 hover:text-primary",
                           )}
                         >
                           <span className="flex items-center gap-2.5">
