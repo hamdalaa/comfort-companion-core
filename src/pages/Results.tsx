@@ -545,11 +545,23 @@ function NoResultsFallback({
   );
 }
 
-function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
+function FilterSection({
+  title,
+  children,
+  compact,
+}: {
+  title: string;
+  children: React.ReactNode;
+  compact?: boolean;
+}) {
   return (
     <section className="border-t border-border/60 py-4 first:border-t-0 first:pt-0">
-      <h3 className="mb-3 text-sm font-semibold text-foreground">{title}</h3>
-      <div className="space-y-1.5">{children}</div>
+      <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+        {title}
+      </h3>
+      <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1.5")}>
+        {children}
+      </div>
     </section>
   );
 }
@@ -558,11 +570,28 @@ function FilterRow({
   active,
   onClick,
   children,
+  compact,
 }: {
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  compact?: boolean;
 }) {
+  if (compact) {
+    return (
+      <button
+        onClick={onClick}
+        className={cn(
+          "rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95",
+          active
+            ? "bg-primary text-primary-foreground shadow-soft"
+            : "border border-border/70 bg-background text-foreground/75 hover:border-primary/40 hover:text-foreground",
+        )}
+      >
+        {children}
+      </button>
+    );
+  }
   return (
     <button
       onClick={onClick}
