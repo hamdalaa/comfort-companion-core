@@ -198,34 +198,26 @@ export default function Brands() {
                       </div>
                     )}
 
-                    {/* Centered logo plate — large & prominent */}
-                    <div className="absolute inset-x-0 top-1/2 flex -translate-y-[58%] justify-center px-5 pointer-events-none">
-                      <div className="flex h-32 w-32 sm:h-40 sm:w-40 items-center justify-center rounded-[1.75rem] bg-white/98 p-5 sm:p-6 shadow-[0_20px_50px_-12px_hsl(0_0%_0%/0.55)] ring-1 ring-white/50 backdrop-blur-sm transition-transform duration-500 group-hover:scale-[1.06]">
-                        {logo ? (
-                          <img
-                            src={logo}
-                            alt={`${brand.brandName} logo`}
-                            loading={idx < 4 ? "eager" : "lazy"}
-                            decoding="async"
-                            className="max-h-full max-w-full object-contain"
-                          />
-                        ) : (
-                          <span className="font-display text-5xl sm:text-6xl font-extrabold text-foreground">
-                            {brand.brandName.slice(0, 1)}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Bottom block — same as /iraq */}
+                    {/* Bottom block — logo replaces the text */}
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
                       <div className="flex items-end justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-white/70">
-                            <ShieldCheck className="h-3 w-3" />
-                            وكيل رسمي
+                          <div className="flex h-16 sm:h-20 w-full max-w-[12rem] items-center justify-start rounded-2xl bg-white/98 px-3 py-2 shadow-[0_12px_30px_-10px_hsl(0_0%_0%/0.5)] ring-1 ring-white/40 backdrop-blur-sm transition-transform duration-500 group-hover:scale-[1.04]">
+                            {logo ? (
+                              <img
+                                src={logo}
+                                alt={`${brand.brandName} logo`}
+                                loading={idx < 4 ? "eager" : "lazy"}
+                                decoding="async"
+                                className="max-h-full max-w-full object-contain"
+                              />
+                            ) : (
+                              <span className="font-display text-3xl sm:text-4xl font-extrabold text-foreground">
+                                {brand.brandName}
+                              </span>
+                            )}
                           </div>
-                          <p className="mt-1.5 line-clamp-1 text-xs sm:text-sm font-semibold text-white/90 leading-relaxed">
+                          <p className="mt-2 line-clamp-1 text-xs sm:text-sm font-semibold text-white/90 leading-relaxed">
                             {tagline}
                           </p>
                         </div>
