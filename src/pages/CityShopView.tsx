@@ -256,17 +256,31 @@ export default function CityShopView() {
                   <span className="text-xs font-normal text-muted-foreground">({uniqueGallery.length})</span>
                 </h2>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-                  {uniqueGallery.slice(0, 8).map((image, index) => (
-                    <div key={`${image}-${index}`} className="relative aspect-square overflow-hidden rounded-lg bg-muted ring-1 ring-border">
-                      <img
-                        src={optimizeImageUrl(image, { width: 500, height: 500 }) ?? image}
-                        alt=""
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                  ))}
+                  {uniqueGallery.slice(0, 8).map((image, index) => {
+                    const isLastVisible = index === 7 && uniqueGallery.length > 8;
+                    return (
+                      <button
+                        key={`${image}-${index}`}
+                        type="button"
+                        onClick={() => setLightboxIndex(index)}
+                        className="group relative aspect-square overflow-hidden rounded-lg bg-muted ring-1 ring-border transition-all hover:ring-2 hover:ring-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                        aria-label={`فتح الصورة ${index + 1}`}
+                      >
+                        <img
+                          src={optimizeImageUrl(image, { width: 500, height: 500 }) ?? image}
+                          alt=""
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        {isLastVisible && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/55 text-base font-bold text-white">
+                            +{uniqueGallery.length - 8}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </section>
             )}
