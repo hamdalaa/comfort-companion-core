@@ -317,7 +317,7 @@ export function TopNav() {
               {favItems.map((p) => (
                 <li key={p.id} className="flex items-start gap-3 border border-border bg-card p-3 text-right">
                   <div className="flex-1">
-                    <div className="text-sm font-semibold text-foreground">{p.title}</div>
+                    <div className="text-sm font-semibold text-foreground">{p.name}</div>
                     <div className="mt-1 text-xs text-muted-foreground">{p.shopName}</div>
                   </div>
                   <button
