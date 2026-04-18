@@ -112,9 +112,20 @@ const Brand = () => {
               </div>
             )}
 
-            {/* RIGHT: Glass content card */}
-            <div className="relative order-1 flex flex-col justify-center rounded-[2rem] border border-border/60 bg-card/85 p-6 shadow-soft-xl backdrop-blur-md md:p-7 lg:order-2">
-              <div className="flex flex-wrap items-center gap-3">
+            {/* RIGHT: Glass content card — refined */}
+            <div className="relative order-1 flex flex-col justify-center gap-5 rounded-[2rem] border border-border/60 bg-card/85 p-6 shadow-soft-xl backdrop-blur-md md:p-8 lg:order-2">
+              {/* Top eyebrow: verified pill */}
+              {isVerified && (
+                <div>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-success/20 to-success/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-success ring-1 ring-success/40">
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    بائع معتمد
+                  </span>
+                </div>
+              )}
+
+              {/* Brand name / logo */}
+              <div>
                 {isApple ? (
                   <h1 className="leading-none">
                     <span className="sr-only">Apple</span>
@@ -122,37 +133,38 @@ const Brand = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 814 1000"
                       aria-hidden
-                      className="h-12 w-auto md:h-14 lg:h-16 fill-foreground"
+                      className="h-14 w-auto md:h-16 lg:h-20 fill-foreground"
                     >
                       <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105.6-57-155.5-127C46.7 790.7 0 663 0 541.8c0-194.4 126.4-297.5 250.8-297.5 66.1 0 121.2 43.4 162.7 43.4 39.5 0 101.1-46 176.3-46 28.5 0 130.9 2.6 198.3 99.2zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z" />
                     </svg>
                   </h1>
                 ) : (
-                  <h1 className="font-display text-3xl font-bold leading-tight md:text-4xl lg:text-5xl">
+                  <h1 className="font-display text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl">
                     {brand.brandName}
                   </h1>
                 )}
-                {isVerified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-success/15 text-success px-2.5 py-0.5 text-xs font-bold ring-1 ring-success/30">
-                    <ShieldCheck className="h-3 w-3" />
-                    بائع معتمد
-                  </span>
-                )}
+                {/* Dealer meta — small caps style */}
+                <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  <Store className="h-3 w-3 text-primary" />
+                  الموزع المعتمد
+                </div>
+                <div className="mt-1 text-sm font-medium text-foreground/90 leading-snug">
+                  {brand.dealerName}
+                </div>
               </div>
 
-              <div className="mt-2 text-sm text-muted-foreground">
-                الموزع المعتمد: <span className="font-semibold text-foreground">{brand.dealerName}</span>
-              </div>
-
-              <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+              {/* Coverage description */}
+              <p className="text-sm leading-relaxed text-foreground/75 border-r-2 border-primary/40 pr-3">
                 {brand.coverage}
               </p>
 
-              <div className="mt-5 flex flex-wrap gap-2">
+              {/* Actions */}
+              <div className="flex flex-wrap gap-2">
                 {brand.website && (
                   <Button
                     asChild
-                    className="gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90 shadow"
+                    size="lg"
+                    className="gap-2 bg-foreground text-background hover:bg-foreground/90 shadow-soft-lg rounded-xl"
                   >
                     <a href={brand.website} target="_blank" rel="noreferrer noopener">
                       <Globe className="h-4 w-4" />
@@ -162,7 +174,7 @@ const Brand = () => {
                   </Button>
                 )}
                 {brand.contactPhones.map((ph) => (
-                  <Button key={ph} asChild variant="outline" className="gap-1.5">
+                  <Button key={ph} asChild variant="outline" size="lg" className="gap-2 rounded-xl">
                     <a href={`tel:${ph}`} dir="ltr">
                       <Phone className="h-4 w-4" />
                       {ph}
@@ -171,17 +183,23 @@ const Brand = () => {
                 ))}
               </div>
 
+              {/* Cities */}
               {brand.cities.length > 0 && (
-                <div className="mt-5 flex flex-wrap gap-1.5 border-t border-border/70 pt-4">
-                  {brand.cities.map((c) => (
-                    <span
-                      key={c}
-                      className="inline-flex items-center gap-1 rounded-full border border-border bg-background/70 px-2.5 py-0.5 text-xs"
-                    >
-                      <MapPin className="h-3 w-3 text-primary" />
-                      {c}
-                    </span>
-                  ))}
+                <div className="border-t border-border/60 pt-4">
+                  <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    متوفر في
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {brand.cities.map((c) => (
+                      <span
+                        key={c}
+                        className="inline-flex items-center gap-1 rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary ring-1 ring-primary/20 transition-colors hover:bg-primary/15"
+                      >
+                        <MapPin className="h-3 w-3" />
+                        {c}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
