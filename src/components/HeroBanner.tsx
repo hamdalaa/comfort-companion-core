@@ -49,8 +49,10 @@ export function HeroBanner() {
             </h1>
 
             <p className="mt-5 max-w-[58ch] text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-lg sm:leading-8">
-              مرجع واحد لمحلات وشوارع ومحافظات العراق. تعرف على المحل الصحيح،
-              ثقته، وأقرب طريق له — قبل ما تتحرك من البيت.
+              منصّة وحدة تجمع <span className="font-semibold text-primary">محلّات الإلكترونيات</span> بكل محافظات العراق.
+              <span className="font-semibold text-cyan"> قارن الأسعار</span>،
+              شوف <span className="font-semibold text-violet">تقييمات Google</span> الحقيقية،
+              ووصّل لـ <span className="font-semibold text-rose">أقرب محل ثقة</span> قبل ما تطلع من البيت.
             </p>
 
             {/* Search */}
