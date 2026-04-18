@@ -94,7 +94,7 @@ export function WelcomeTour() {
             <Icon className="h-6 w-6" />
           </div>
           <h3 className="text-lg font-bold">{current.title}</h3>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{current.body}</p>
+          <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground leading-relaxed">{current.body}</p>
 
           {current.highlights && (
             <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5">
