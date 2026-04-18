@@ -6,6 +6,9 @@ import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { SUGGESTED_QUERIES } from "@/lib/search";
 import { CITIES } from "@/lib/cityData";
+import sinaaImg from "@/assets/street-sinaa.jpg";
+import rubaieImg from "@/assets/street-rubaie.jpg";
+import iraqImg from "@/assets/iraq-cities.jpg";
 
 export function HeroBanner() {
   const { brands } = useDataStore();
@@ -115,22 +118,40 @@ export function HeroBanner() {
           </aside>
         </div>
 
-        {/* Mobile entries */}
-        <div className="mt-8 grid grid-cols-1 gap-2 sm:grid-cols-3 lg:hidden">
+        {/* Mobile entries — premium image cards */}
+        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:hidden">
           {[
-            { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · شبكات", color: "chip-cyan" },
-            { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن", color: "chip-rose" },
-            { to: "/iraq", title: "كل المحافظات", note: "10 محافظات", color: "chip-violet" },
+            { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · شبكات", img: sinaaImg, accent: "from-cyan/30" },
+            { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن", img: rubaieImg, accent: "from-rose/30" },
+            { to: "/iraq", title: "كل المحافظات", note: "10 محافظات", img: iraqImg, accent: "from-violet/30" },
           ].map((entry) => (
             <Link
               key={entry.to}
               to={entry.to}
-              className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card/90 backdrop-blur px-4 py-3 text-right shadow-soft transition-all hover:border-primary/40 hover:shadow-soft-md"
+              className="group relative isolate flex h-28 items-end overflow-hidden rounded-2xl border border-border/60 shadow-soft-lg transition-all hover:shadow-soft-xl hover:-translate-y-0.5"
             >
-              <ArrowLeft className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
-              <div>
-                <div className="font-display text-base font-semibold leading-none text-foreground group-hover:text-primary transition-colors">{entry.title}</div>
-                <div className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] ${entry.color}`}>{entry.note}</div>
+              <img
+                src={entry.img}
+                alt={entry.title}
+                loading="lazy"
+                width={800}
+                height={512}
+                className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              {/* Premium gradient overlay (bottom-up + accent tint) */}
+              <div className={`absolute inset-0 -z-10 bg-gradient-to-t ${entry.accent} via-foreground/30 to-foreground/85`} />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-foreground/70 via-transparent to-transparent" />
+
+              <div className="relative flex w-full items-end justify-between gap-3 p-3.5 text-right text-white">
+                <ArrowLeft className="h-4 w-4 shrink-0 opacity-80 transition-transform group-hover:-translate-x-1" />
+                <div className="min-w-0">
+                  <div className="font-display text-base font-semibold leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]">
+                    {entry.title}
+                  </div>
+                  <div className="mt-1.5 inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium backdrop-blur-md ring-1 ring-white/25">
+                    {entry.note}
+                  </div>
+                </div>
               </div>
             </Link>
           ))}
