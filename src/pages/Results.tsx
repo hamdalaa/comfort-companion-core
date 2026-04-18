@@ -220,11 +220,17 @@ const Results = () => {
                     <Skeleton className="h-9 w-28 rounded-full" />
                     <Skeleton className="h-9 w-28 rounded-full" />
                   </>
-                ) : (
+                ) : results.length > 0 ? (
                   <>
                     <SummaryPill label="نتائج مرئية" value={results.length.toLocaleString("ar")} />
                     <SummaryPill label="مقارنات" value={groups.length.toLocaleString("ar")} />
                     <SummaryPill label="براندات" value={allBrands.length.toLocaleString("ar")} />
+                  </>
+                ) : (
+                  <>
+                    <SummaryPill label="محلات متاحة" value={fallbackShopsCount.toLocaleString("ar")} />
+                    <SummaryPill label="مناطق" value={areasCount.toLocaleString("ar")} />
+                    <SummaryPill label="فئات" value={categoriesCount.toLocaleString("ar")} />
                   </>
                 )}
               </div>
