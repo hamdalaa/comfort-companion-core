@@ -115,7 +115,7 @@ export function StreetShopsSection({
   };
 
   return (
-    <section className="atlas-panel p-5 md:p-7">
+    <section className="atlas-panel overflow-hidden p-4 sm:p-5 md:p-7">
       <div className="pointer-events-none absolute -left-10 top-8 h-24 w-24 rounded-full bg-primary/12 blur-3xl" />
 
       <div className="atlas-separator flex flex-wrap items-end justify-between gap-4 pb-5">
