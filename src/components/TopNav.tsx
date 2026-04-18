@@ -254,18 +254,6 @@ export function TopNav() {
               <HelpCircle className="h-4 w-4" />
             </button>
 
-            <button
-              onClick={() => setFavOpen(true)}
-              className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
-              aria-label="المفضلة"
-            >
-              <Heart className={cn("h-4 w-4", favItems.length > 0 && "fill-primary text-primary")} />
-              {favItems.length > 0 && (
-                <span className="absolute -end-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-accent px-1 font-numeric text-[9px] font-bold text-accent-foreground">
-                  {favItems.length}
-                </span>
-              )}
-            </button>
 
             <Link
               to="/about"
