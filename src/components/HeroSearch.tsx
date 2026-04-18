@@ -37,19 +37,21 @@ export function HeroSearch({
       onSubmit={submit}
       className="rounded-2xl border border-border bg-card shadow-soft-xl overflow-hidden"
     >
-      <div className="grid grid-cols-1 gap-px bg-border md:grid-cols-[minmax(0,1fr)_160px_160px_auto]">
-        <div className="relative bg-card">
-          <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={q}
-            onChange={(event) => setQ(event.target.value)}
-            placeholder="ابحث عن موديل، براند، أو اسم محل…"
-            className="h-14 rounded-none border-0 bg-transparent pe-12 text-base text-foreground shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/70"
-          />
-        </div>
+      {/* Search input — full width */}
+      <div className="relative bg-card border-b border-border">
+        <Search className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={q}
+          onChange={(event) => setQ(event.target.value)}
+          placeholder="ابحث عن موديل، براند، أو محل…"
+          className="h-12 sm:h-14 rounded-none border-0 bg-transparent pe-12 text-sm sm:text-base text-foreground shadow-none focus-visible:ring-0 placeholder:text-muted-foreground/70"
+        />
+      </div>
 
+      {/* Filters + CTA row */}
+      <div className="grid grid-cols-2 gap-px bg-border md:grid-cols-[160px_160px_1fr]">
         <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
-          <SelectTrigger className="h-14 rounded-none border-0 bg-card text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
             <SelectValue placeholder="المنطقة" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
@@ -61,7 +63,7 @@ export function HeroSearch({
         </Select>
 
         <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-          <SelectTrigger className="h-14 rounded-none border-0 bg-card text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
+          <SelectTrigger className="h-12 sm:h-14 rounded-none border-0 bg-card text-sm text-foreground shadow-none focus:ring-0 hover:bg-surface transition-colors">
             <SelectValue placeholder="الفئة" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
@@ -74,7 +76,7 @@ export function HeroSearch({
 
         <Button
           type="submit"
-          className="h-14 rounded-none bg-gradient-primary px-6 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
+          className="col-span-2 h-12 sm:h-14 md:col-span-1 rounded-none bg-gradient-primary px-6 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
         >
           ابحث
           <ArrowLeft className="ms-2 h-4 w-4" />
