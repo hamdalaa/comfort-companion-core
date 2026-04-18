@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { useDataStore } from "@/lib/dataStore";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import { getBrandLogo } from "@/lib/brandLogos";
+import { getBrandBackground } from "@/lib/brandBackgrounds";
 import {
   ChevronLeft,
   ExternalLink,
@@ -50,7 +51,9 @@ const Brand = () => {
   const branches = OFFICIAL_DEALER_BRANCHES.filter((b) => b.brandSlug === brand.slug);
   const isVerified = brand.verificationStatus === "verified";
   const logo = getBrandLogo(brand.slug);
+  const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
+  const isApple = brand.slug === "apple";
 
   return (
     <div className="min-h-screen flex flex-col bg-[linear-gradient(180deg,hsl(var(--surface))_0%,hsl(var(--background))_14%,hsl(var(--surface))_100%)]">
@@ -74,19 +77,36 @@ const Brand = () => {
 
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-surface to-background">
+        {background && (
+          <>
+            <div
+              className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-40"
+              style={{ backgroundImage: `url(${background})` }}
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/70 via-background/55 to-background/90"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-0 backdrop-blur-[2px]"
+              aria-hidden
+            />
+          </>
+        )}
         <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
         <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />
         <div className="container relative py-8 md:py-10">
           <div className="flex flex-col items-start gap-5 md:flex-row md:items-center">
             {/* Logo tile */}
             <div className="relative shrink-0">
-              <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-background shadow-lg ring-4 ring-background overflow-hidden md:h-28 md:w-28">
+              <div className={`flex h-24 w-24 items-center justify-center rounded-3xl shadow-lg ring-4 ring-background overflow-hidden md:h-28 md:w-28 ${isApple ? "bg-foreground" : "bg-background"}`}>
                 {logo ? (
                   <img
                     src={logo}
                     alt={`${brand.brandName} logo`}
                     loading="lazy"
-                    className="h-full w-full object-contain p-3"
+                    className={`h-full w-full object-contain p-3 ${isApple ? "brightness-0 invert" : ""}`}
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-primary font-display text-4xl font-bold text-primary-foreground md:text-5xl">
