@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -6,6 +6,9 @@ import { ProductCard } from "@/components/ProductCard";
 import { ShopCard } from "@/components/ShopCard";
 import { ComparisonGroup } from "@/components/ComparisonGroup";
 import { EmptyState } from "@/components/EmptyState";
+import { ProductSkeletonGrid } from "@/components/ProductSkeleton";
+import { ShopCardSkeletonGrid } from "@/components/ShopCardSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -57,11 +60,20 @@ const Results = () => {
   const [withDeals, setWithDeals] = useState(false);
   const [priceRange, setPriceRange] = useState<string>("all");
   const [brandFilters, setBrandFilters] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
 
   const q = params.get("q") ?? "";
   const area = (params.get("area") as Area | null) ?? "all";
   const category = (params.get("category") as Category | null) ?? "all";
   const sort = (params.get("sort") as Sort | null) ?? "relevance";
+
+  // Brief sync "fetch" simulation — shows skeletons until results are computed.
+  // Reruns when query/area/category change so users get visual feedback.
+  useEffect(() => {
+    setLoading(true);
+    const id = window.setTimeout(() => setLoading(false), 350);
+    return () => window.clearTimeout(id);
+  }, [q, area, category]);
 
   const shopsById = useMemo(() => Object.fromEntries(shops.map((shop) => [shop.id, shop])), [shops]);
   const verifiedShopIds = useMemo(() => new Set(shops.filter((shop) => shop.verified).map((shop) => shop.id)), [shops]);
@@ -202,9 +214,19 @@ const Results = () => {
               </p>
 
               <div className="mt-5 flex flex-wrap gap-2">
-                <SummaryPill label="نتائج مرئية" value={results.length.toLocaleString("ar")} />
-                <SummaryPill label="مقارنات" value={groups.length.toLocaleString("ar")} />
-                <SummaryPill label="براندات" value={allBrands.length.toLocaleString("ar")} />
+                {loading ? (
+                  <>
+                    <Skeleton className="h-9 w-28 rounded-full" />
+                    <Skeleton className="h-9 w-28 rounded-full" />
+                    <Skeleton className="h-9 w-28 rounded-full" />
+                  </>
+                ) : (
+                  <>
+                    <SummaryPill label="نتائج مرئية" value={results.length.toLocaleString("ar")} />
+                    <SummaryPill label="مقارنات" value={groups.length.toLocaleString("ar")} />
+                    <SummaryPill label="براندات" value={allBrands.length.toLocaleString("ar")} />
+                  </>
+                )}
               </div>
             </div>
 
@@ -431,7 +453,9 @@ const Results = () => {
               )}
             </div>
 
-            {results.length === 0 ? (
+            {loading ? (
+              <ResultsLoadingSkeleton />
+            ) : results.length === 0 ? (
               <NoResultsFallback shops={shops} area={area} category={category} clearAll={clearAll} />
             ) : (
               <>
@@ -502,6 +526,23 @@ const Results = () => {
     </div>
   );
 };
+
+function ResultsLoadingSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="atlas-panel space-y-4 p-5">
+        <Skeleton className="h-6 w-40 rounded-full" />
+        <Skeleton className="h-4 w-2/3" />
+        <ProductSkeletonGrid count={3} />
+      </div>
+      <div className="space-y-3">
+        <Skeleton className="h-7 w-48" />
+        <Skeleton className="h-4 w-1/2" />
+        <ShopCardSkeletonGrid count={6} />
+      </div>
+    </div>
+  );
+}
 
 function SummaryPill({ label, value }: { label: string; value: string }) {
   return (
