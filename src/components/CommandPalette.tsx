@@ -138,9 +138,9 @@ export function CommandPalette() {
 
         <CommandGroup heading="محافظات">
           {CITIES.slice(0, 8).map((c) => (
-            <CommandItem key={c.slug} value={`city-${c.name}`} onSelect={() => go(`/city/${c.slug}`)}>
+            <CommandItem key={c.slug} value={`city-${c.cityAr}`} onSelect={() => go(`/city/${c.slug}`)}>
               <Building2 className="me-2 h-4 w-4 text-muted-foreground" />
-              {c.name}
+              {c.cityAr}
               <span className="ms-auto text-[10px] text-muted-foreground">{c.count?.toLocaleString("ar") ?? 0} محل</span>
             </CommandItem>
           ))}
