@@ -87,11 +87,9 @@ export default function About() {
               هدفي أوصّل المستخدم لأقرب محل ثقة بأقل وقت — بدون إعلانات مزعجة، بدون كلام زائد، بس معلومة مفيدة وروابط مباشرة.
             </p>
 
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <ContactPill icon={<Mail className="h-4 w-4" />} label="إيميل" href="mailto:hello@example.com" tone="primary" />
-              <ContactPill icon={<Github className="h-4 w-4" />} label="GitHub" href="https://github.com" tone="foreground" />
-              <ContactPill icon={<Globe className="h-4 w-4" />} label="الموقع" href="https://example.com" tone="cyan" />
-              <ContactPill icon={<Send className="h-4 w-4" />} label="تيليغرام" href="https://t.me/" tone="primary" />
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <ContactPill icon={<Mail className="h-4 w-4" />} label="إيميل" href="mailto:hamadalaat@gmail.com" tone="primary" />
+              <ContactPill icon={<Instagram className="h-4 w-4" />} label="إنستغرام" href="https://instagram.com/hamadalaat" tone="cyan" />
             </div>
           </div>
         </section>
