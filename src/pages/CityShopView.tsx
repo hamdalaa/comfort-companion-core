@@ -266,16 +266,25 @@ export default function CityShopView() {
         </header>
 
         {!!shop.quickSignals && (
-          <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
-            <h2 className="mb-3 text-sm font-bold text-muted-foreground">إشارات سريعة</h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-              <QuickFlag label="موقع" ok={shop.quickSignals.has_website} />
-              <QuickFlag label="خرائط" ok={shop.quickSignals.has_google_maps} />
-              <QuickFlag label="تقييم" ok={shop.quickSignals.has_rating} />
-              <QuickFlag label="مراجعات" ok={shop.quickSignals.has_reviews} />
-              <QuickFlag label="صور" ok={shop.quickSignals.has_photos} />
-              <QuickFlag label="نشط" ok={shop.quickSignals.business_status === "OPERATIONAL"} />
-              <QuickFlag label="مفتوح الآن" ok={shop.quickSignals.open_now === true} neutral={shop.quickSignals.open_now === null} />
+          <section className="relative overflow-hidden rounded-[1.75rem] border border-border/70 bg-card/82 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" aria-hidden />
+            <div className="relative mb-4 flex items-center justify-between gap-3">
+              <div className="inline-flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Sparkles className="h-3.5 w-3.5" />
+                </span>
+                <h2 className="text-sm font-bold tracking-tight text-foreground">إشارات سريعة</h2>
+              </div>
+              <span className="text-[11px] font-medium text-muted-foreground">حالة المتجر في لمحة</span>
+            </div>
+            <div className="relative grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+              <QuickFlag label="موقع" icon={Globe} ok={shop.quickSignals.has_website} />
+              <QuickFlag label="خرائط" icon={MapPin} ok={shop.quickSignals.has_google_maps} />
+              <QuickFlag label="تقييم" icon={Star} ok={shop.quickSignals.has_rating} />
+              <QuickFlag label="مراجعات" icon={MessageSquare} ok={shop.quickSignals.has_reviews} />
+              <QuickFlag label="صور" icon={Camera} ok={shop.quickSignals.has_photos} />
+              <QuickFlag label="نشط" icon={Activity} ok={shop.quickSignals.business_status === "OPERATIONAL"} />
+              <QuickFlag label="مفتوح الآن" icon={DoorOpen} ok={shop.quickSignals.open_now === true} neutral={shop.quickSignals.open_now === null} />
             </div>
           </section>
         )}
