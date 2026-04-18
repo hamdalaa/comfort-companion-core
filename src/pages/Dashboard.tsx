@@ -79,7 +79,7 @@ function PasscodeGate({ onUnlock }: { onUnlock: () => void }) {
           دخول
         </Button>
         <p className="mt-3 text-[11px] text-muted-foreground">
-          ملاحظة: الرمز التجريبي <code className="rounded bg-muted px-1">teeh-2025</code> — غيّره بكود الإنتاج لاحقاً.
+          بوابة تجريبية فقط — للإنتاج فعّل مصادقة حقيقية من Lovable Cloud.
         </p>
       </form>
     </div>
