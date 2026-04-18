@@ -123,18 +123,35 @@ export default function CityPage() {
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm">
-              <div className="grid grid-cols-2 gap-3">
-                <Metric label="كل المحلات" value={(data?.stores.length ?? meta.count).toLocaleString("ar")} />
-                <Metric label="بعد التصفية" value={filtered.length.toLocaleString("ar")} />
+            <div className="group/panel relative overflow-hidden rounded-[1.75rem] border border-border/60 bg-gradient-to-br from-card/95 via-card/85 to-card/70 p-5 shadow-soft-lg backdrop-blur-md transition-all hover:border-primary/30 hover:shadow-soft-xl">
+              <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-primary/10 blur-3xl transition-opacity group-hover/panel:opacity-80" />
+              <div className="pointer-events-none absolute -bottom-20 -left-10 h-36 w-36 rounded-full bg-accent/10 blur-3xl" />
+
+              <div className="relative grid grid-cols-2 gap-3">
+                <Metric
+                  label="كل المحلات"
+                  value={(data?.stores.length ?? meta.count).toLocaleString("ar")}
+                  tone="primary"
+                />
+                <Metric
+                  label="بعد التصفية"
+                  value={filtered.length.toLocaleString("ar")}
+                  tone="accent"
+                />
               </div>
-              <button
-                onClick={() => nav("/iraq")}
-                className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-accent transition-colors hover:text-foreground"
-              >
-                <ChevronLeft className="h-3.5 w-3.5" />
-                رجوع إلى كل المحافظات
-              </button>
+
+              <div className="relative mt-4 flex items-center justify-between gap-2 border-t border-border/50 pt-4">
+                <span className="text-[11px] font-medium text-muted-foreground">
+                  {meta.cityAr} • العراق
+                </span>
+                <button
+                  onClick={() => nav("/iraq")}
+                  className="group/btn inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1.5 text-[11px] font-bold text-foreground transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary active:scale-95"
+                >
+                  <ChevronLeft className="h-3 w-3 transition-transform group-hover/btn:-translate-x-0.5" />
+                  كل المحافظات
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -250,11 +267,33 @@ export default function CityPage() {
   );
 }
 
-function Metric({ label, value }: { label: string; value: string }) {
+function Metric({
+  label,
+  value,
+  tone = "primary",
+}: {
+  label: string;
+  value: string;
+  tone?: "primary" | "accent";
+}) {
+  const accentClass =
+    tone === "primary"
+      ? "from-primary/15 to-primary/0 text-primary"
+      : "from-accent/15 to-accent/0 text-accent";
   return (
-    <div className="rounded-2xl border border-border/70 bg-background/85 p-4 text-center">
-      <div className="font-display text-2xl font-bold text-foreground">{value}</div>
-      <div className="mt-1 text-xs text-muted-foreground">{label}</div>
+    <div className="group/metric relative overflow-hidden rounded-2xl border border-border/60 bg-background/90 p-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft">
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b opacity-70 transition-opacity group-hover/metric:opacity-100",
+          accentClass,
+        )}
+      />
+      <div className="relative font-display text-2xl font-bold tracking-tight text-foreground">
+        {value}
+      </div>
+      <div className="relative mt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </div>
     </div>
   );
 }
