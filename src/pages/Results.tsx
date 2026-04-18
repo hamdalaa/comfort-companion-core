@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -6,6 +6,9 @@ import { ProductCard } from "@/components/ProductCard";
 import { ShopCard } from "@/components/ShopCard";
 import { ComparisonGroup } from "@/components/ComparisonGroup";
 import { EmptyState } from "@/components/EmptyState";
+import { ProductSkeletonGrid } from "@/components/ProductSkeleton";
+import { ShopCardSkeletonGrid } from "@/components/ShopCardSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
