@@ -89,7 +89,7 @@ export default function About() {
 
             <div className="mt-6 grid grid-cols-2 gap-3">
               <ContactPill icon={<Mail className="h-4 w-4" />} label="إيميل" href="mailto:hamadalaat@gmail.com" tone="primary" />
-              <ContactPill icon={<Instagram className="h-4 w-4" />} label="إنستغرام" href="https://instagram.com/hamadalaatech" tone="cyan" />
+              <ContactPill icon={<Instagram className="h-4 w-4" />} label="إنستغرام" href="https://instagram.com/hamadalaatech" tone="instagram" />
             </div>
           </div>
         </section>
@@ -165,14 +165,16 @@ function ContactPill({
   icon: React.ReactNode;
   label: string;
   href: string;
-  tone: "primary" | "cyan" | "foreground";
+  tone: "primary" | "cyan" | "foreground" | "instagram";
 }) {
   const toneClass =
     tone === "primary"
       ? "border-primary/30 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
       : tone === "cyan"
         ? "border-cyan/30 bg-cyan/10 text-cyan hover:bg-cyan hover:text-white"
-        : "border-border/70 bg-background text-foreground hover:bg-foreground hover:text-background";
+        : tone === "instagram"
+          ? "border-transparent bg-[linear-gradient(45deg,#F58529,#DD2A7B,#8134AF,#515BD4)] text-white hover:opacity-90 hover:brightness-110"
+          : "border-border/70 bg-background text-foreground hover:bg-foreground hover:text-background";
   return (
     <a
       href={href}
