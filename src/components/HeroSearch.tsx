@@ -76,7 +76,7 @@ export function HeroSearch({
 
         <Button
           type="submit"
-          className="col-span-2 h-12 sm:h-14 md:col-span-1 rounded-none bg-gradient-primary px-6 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
+          className="h-12 sm:h-14 sm:col-span-2 md:col-span-1 rounded-none bg-gradient-primary px-6 md:px-8 text-sm font-semibold text-primary-foreground hover:opacity-95 transition-opacity shadow-glow"
         >
           ابحث
           <ArrowLeft className="ms-2 h-4 w-4" />
