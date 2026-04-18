@@ -490,11 +490,12 @@
 
   /* 3D tilt — uses inline custom-property fallback */
   .tilt-3d {
-    transform-style: preserve-3d;
-    transition: transform 0.5s var(--ease-premium);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    transition: transform 0.35s var(--ease-premium);
   }
   .tilt-3d:hover {
-    transform: perspective(1000px) rotateX(2deg) rotateY(-3deg) translateY(-4px);
+    transform: translate3d(0, -4px, 0);
   }
 
   /* Gradient ribbon (top-right corner badge) */
