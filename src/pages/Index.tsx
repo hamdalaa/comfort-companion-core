@@ -96,7 +96,7 @@ const Index = () => {
             <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
                 <span className="atlas-kicker">تغطية وطنية</span>
-                <h2 className="font-display mt-4 text-4xl font-bold leading-tight text-foreground md:text-5xl">
+                <h2 className="font-display mt-3 text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
                   نفس لغة السوق <br /> في كل المحافظات.
                 </h2>
                 <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
