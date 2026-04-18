@@ -453,7 +453,9 @@ const Results = () => {
               )}
             </div>
 
-            {results.length === 0 ? (
+            {loading ? (
+              <ResultsLoadingSkeleton />
+            ) : results.length === 0 ? (
               <NoResultsFallback shops={shops} area={area} category={category} clearAll={clearAll} />
             ) : (
               <>
@@ -524,6 +526,23 @@ const Results = () => {
     </div>
   );
 };
+
+function ResultsLoadingSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="atlas-panel space-y-4 p-5">
+        <Skeleton className="h-6 w-40 rounded-full" />
+        <Skeleton className="h-4 w-2/3" />
+        <ProductSkeletonGrid count={3} />
+      </div>
+      <div className="space-y-3">
+        <Skeleton className="h-7 w-48" />
+        <Skeleton className="h-4 w-1/2" />
+        <ShopCardSkeletonGrid count={6} />
+      </div>
+    </div>
+  );
+}
 
 function SummaryPill({ label, value }: { label: string; value: string }) {
   return (
