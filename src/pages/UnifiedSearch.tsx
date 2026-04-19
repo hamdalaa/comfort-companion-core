@@ -94,6 +94,27 @@ function pushRecent(q: string) {
   saveRecent([q, ...cur]);
 }
 
+// Adapter: convert internal Shop → CityShop shape so we can render the
+// richer CityShopCard component on the unified search page.
+function shopToCityShop(shop: Shop): CityShop {
+  return {
+    id: shop.id,
+    name: shop.name,
+    city: shop.area,
+    area: shop.area,
+    category: shop.category,
+    address: shop.address,
+    phone: shop.phone,
+    whatsapp: shop.whatsapp,
+    website: shop.website,
+    googleMapsUrl: shop.googleMapsUrl,
+    lat: shop.lat,
+    lng: shop.lng,
+    imageUrl: shop.imageUrl,
+    quickSignals: { has_website: !!shop.website },
+  };
+}
+
 // ---------- Component ----------
 
 export default function UnifiedSearch() {
