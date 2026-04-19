@@ -110,12 +110,12 @@ const Index = () => {
                   <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                   Baghdad · بغداد
                 </div>
-                <h2 className="font-display text-balance text-right text-[2.5rem] font-bold leading-[1.02] tracking-[-0.035em] text-foreground sm:text-[3.75rem] md:text-[5rem] lg:text-[6rem]">
+                <h2 className="font-display mt-3 text-xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
                   مسارات{" "}
                   <span className="bg-gradient-to-br from-primary via-primary to-foreground bg-clip-text text-transparent">
                     بغداد
                   </span>
-                  <span className="mt-3 block text-[1.25rem] font-medium leading-snug tracking-normal text-muted-foreground sm:text-[1.5rem] md:text-[1.75rem] lg:text-[2rem]">
+                  <span className="mt-2 block text-[13px] font-medium leading-6 tracking-normal text-muted-foreground sm:mt-4 sm:text-base sm:leading-8">
                     دليلك المرجعي للأسواق التقنية.
                   </span>
                 </h2>
