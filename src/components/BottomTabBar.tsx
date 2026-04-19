@@ -7,7 +7,7 @@ const TABS = [
   { to: "/", label: "الرئيسية", icon: Home, exact: true },
   { to: "/results", label: "البحث", icon: Search },
   { to: "/iraq", label: "المحافظات", icon: MapPin },
-  { to: "/streets", label: "الشوارع", icon: Store },
+  { to: "/street", label: "الشوارع", icon: Store },
 ];
 
 /**
