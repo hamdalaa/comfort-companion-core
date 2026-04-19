@@ -130,8 +130,9 @@ export class CoverageService {
     store: StoreRecord,
     reason: string,
     observedUrl?: string,
+    hints?: { httpStatus?: number; category?: string },
   ): Promise<void> {
-    const evidence = classifyBlockerEvidence(store, reason, observedUrl ?? store.website);
+    const evidence = classifyBlockerEvidence(store, reason, observedUrl ?? store.website, hints);
     await this.repository.addBlockerEvidence(evidence);
     const [size, connectorProfile, blockerEvidence, sessionWorkflow, partnerFeed] = await Promise.all([
       this.repository.getStoreSizeSummary(store.id),

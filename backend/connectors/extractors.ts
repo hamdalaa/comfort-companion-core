@@ -524,49 +524,99 @@ export function parseGenericProductDetailPage(
   const $ = load(html);
   const title =
     $("h1").first().text().trim() ||
-    $('meta[property="og:title"]').attr("content") ||
+    $('meta[property="og:title"]').attr("content")?.trim() ||
+    $('meta[name="twitter:title"]').attr("content")?.trim() ||
     $("title").first().text().trim();
   if (!title) return null;
 
-  const priceRoot = $(".summary .price, .product .price, p.price, span.price, .jibal-price-box").first();
-  const livePrice = parseNumberish(
-    priceRoot.find("ins .amount, ins, .jibal-Price-amount.amount").first().text().trim() ||
+  // Canonical URL — most accurate identifier; falls back to og:url then sourceUrl.
+  const canonicalUrl =
+    $('link[rel="canonical"]').attr("href")?.trim() ||
+    $('meta[property="og:url"]').attr("content")?.trim() ||
+    sourceUrl;
+  const resolvedCanonical = toAbsoluteUrl(canonicalUrl, sourceUrl) ?? sourceUrl;
+
+  // Price extraction — try microdata first, then schema.org meta, then visible price.
+  const microPrice = parseNumberish(
+    $('[itemprop="price"]').attr("content") ||
+      $('[itemprop="price"]').first().text().trim() ||
+      $('meta[itemprop="price"]').attr("content") ||
+      $('meta[property="product:price:amount"]').attr("content") ||
+      $('meta[property="og:price:amount"]').attr("content"),
+  );
+  const microOriginalPrice = parseNumberish(
+    $('[itemprop="priceSpecification"] [itemprop="price"]').attr("content") ||
+      $('meta[property="product:original_price:amount"]').attr("content"),
+  );
+
+  const priceRoot = $(
+    ".summary .price, .product .price, p.price, span.price, .jibal-price-box, .product-info-price, .price-box, .price-final_price",
+  ).first();
+  const visibleLive = parseNumberish(
+    priceRoot.find("ins .amount, ins, .jibal-Price-amount.amount, .special-price .price, [data-price-type='finalPrice']").first().text().trim() ||
       priceRoot.text().trim(),
   );
-  const originalPrice = parseNumberish(
-    priceRoot.find("del .amount, del").first().text().trim(),
-  ) ?? livePrice;
+  const visibleOriginal = parseNumberish(
+    priceRoot.find("del .amount, del, .old-price .price, [data-price-type='oldPrice']").first().text().trim(),
+  );
+
+  const livePrice = microPrice ?? visibleLive;
+  const originalPrice = microOriginalPrice ?? visibleOriginal ?? (visibleOriginal == null ? livePrice : undefined);
+
+  const currency =
+    $('meta[itemprop="priceCurrency"]').attr("content")?.trim() ||
+    $('meta[property="product:price:currency"]').attr("content")?.trim() ||
+    $('meta[property="og:price:currency"]').attr("content")?.trim() ||
+    $('[itemprop="priceCurrency"]').attr("content")?.trim() ||
+    "IQD";
 
   const availabilityText =
+    $('[itemprop="availability"]').attr("href")?.trim() ||
+    $('[itemprop="availability"]').attr("content")?.trim() ||
+    $('meta[property="product:availability"]').attr("content")?.trim() ||
+    $('meta[property="og:availability"]').attr("content")?.trim() ||
     $(".stock, .availability, .product-stock, .stock-status").first().text().trim() ||
     extractAvailabilityText(html);
   const sku =
-    $(".sku").first().text().trim() ||
+    $('[itemprop="sku"]').attr("content")?.trim() ||
+    $('[itemprop="sku"]').first().text().trim() ||
+    $(".sku .value, .product-sku, .sku").first().text().trim() ||
     cleanHtml((html.match(/SKU[\s\S]{0,150}?<span[^>]*>([\s\S]*?)<\/span>/i) ?? [])[1] ?? "");
-  const breadcrumbs = $("nav.breadcrumb a, .breadcrumb a, .breadcrumbs a")
+  const brand =
+    $('[itemprop="brand"] [itemprop="name"]').attr("content")?.trim() ||
+    $('[itemprop="brand"] [itemprop="name"]').first().text().trim() ||
+    $('[itemprop="brand"]').attr("content")?.trim() ||
+    $('meta[property="product:brand"]').attr("content")?.trim() ||
+    undefined;
+  const breadcrumbs = $("nav.breadcrumb a, .breadcrumb a, .breadcrumbs a, [itemtype*='BreadcrumbList'] [itemprop='name']")
     .map((_, element) => $(element).text().trim())
     .get()
     .filter(Boolean);
   const imageUrl =
-    $('meta[property="og:image"]').attr("content") ||
-    $(".wp-post-image, .product-image img, .woocommerce-product-gallery__image img, img").first().attr("src") ||
+    $('meta[property="og:image"]').attr("content")?.trim() ||
+    $('[itemprop="image"]').attr("content")?.trim() ||
+    $('[itemprop="image"]').attr("src")?.trim() ||
+    $(".wp-post-image, .product-image img, .woocommerce-product-gallery__image img, .product-image-photo, img").first().attr("src") ||
     undefined;
 
-  const availability = inferAvailabilityFromTextOrHtml(availabilityText, html);
+  const availability = availabilityText
+    ? inferAvailabilityFromTextOrHtml(availabilityText, html)
+    : inferAvailabilityFromTextOrHtml("", html);
   const now = nowIso();
+  const inferredBrand = brand ?? breadcrumbs[0];
   return {
     storeId,
-    sourceProductId: compactText(sourceUrl),
+    sourceProductId: compactText(resolvedCanonical),
     normalizedTitle: compactText(title),
     title,
-    brand: breadcrumbs[0],
+    brand: inferredBrand,
     model: undefined,
     sku: sku || undefined,
     categoryPath: breadcrumbs,
-    sourceUrl,
+    sourceUrl: resolvedCanonical,
     imageUrl,
     availability,
-    currency: "IQD",
+    currency,
     livePrice,
     originalPrice,
     onSale:
@@ -579,11 +629,12 @@ export function parseGenericProductDetailPage(
     offerLabel: undefined,
     offerStartsAt: undefined,
     offerEndsAt: undefined,
-    brandTokens: breadcrumbs[0] ? [compactText(breadcrumbs[0])] : [],
+    brandTokens: inferredBrand ? [compactText(inferredBrand)] : [],
     modelTokens: [],
     skuTokens: sku ? [compactText(sku)] : [],
     rawPayload: {
       availabilityText,
+      canonicalUrl: resolvedCanonical,
     },
   };
 }
@@ -610,11 +661,25 @@ function inferAvailabilityFromTextOrHtml(
   html: string,
 ): CatalogProductDraft["availability"] {
   const normalizedText = normalizeText(availabilityText);
-  if (/instock|in stock|available|متوفر/.test(normalizedText) || /\binstock\b/i.test(html)) return "in_stock";
-  if (/outofstock|out of stock|sold out|unavailable|not available|غير متوفر/.test(normalizedText) || /\boutofstock\b/i.test(html)) {
+  // Preorder takes precedence — prevents "in stock" buttons on preorder pages.
+  if (/preorder|pre[-\s]?order|pre[-\s]?sale|coming soon|طلب مسبق|قريبا/i.test(normalizedText)) {
+    return "preorder";
+  }
+  if (/preorder|pre-order|backorder/i.test(html)) return "preorder";
+  if (
+    /outofstock|out of stock|sold out|unavailable|not available|غير متوفر|نفذت الكمية|نفد المخزون/i.test(normalizedText) ||
+    /\boutofstock\b/i.test(html) ||
+    /class="[^"]*out[-_]of[-_]stock/i.test(html)
+  ) {
     return "out_of_stock";
   }
-  if (/preorder|pre-order/.test(normalizedText)) return "preorder";
+  if (
+    /instock|in stock|available|متوفر|متاح/i.test(normalizedText) ||
+    /\binstock\b/i.test(html) ||
+    /add to cart|add[-_]to[-_]cart|اضف الى السلة|اضافة الى السلة/i.test(html)
+  ) {
+    return "in_stock";
+  }
   return "unknown";
 }
 
@@ -680,12 +745,35 @@ async function mapWithConcurrency<T, R>(
 
 function normalizeAvailability(value: string | undefined, candidate: Record<string, unknown>): CatalogProductDraft["availability"] {
   const normalized = normalizeText(value ?? "");
-  if (normalized.includes("instock") || normalized.includes("in stock") || normalized.includes("متوفر")) return "in_stock";
-  if (normalized.includes("preorder")) return "preorder";
-  if (normalized.includes("outofstock") || normalized.includes("out of stock") || normalized.includes("غير متوفر")) {
+  // Schema.org availability URLs / strings.
+  if (/preorder|pre[-\s]?order|backorder/.test(normalized)) return "preorder";
+  if (
+    normalized.includes("instock") ||
+    normalized.includes("in stock") ||
+    normalized.includes("متوفر") ||
+    normalized.includes("متاح")
+  ) {
+    return "in_stock";
+  }
+  if (
+    normalized.includes("outofstock") ||
+    normalized.includes("out of stock") ||
+    normalized.includes("soldout") ||
+    normalized.includes("sold out") ||
+    normalized.includes("غير متوفر") ||
+    normalized.includes("نفذت")
+  ) {
     return "out_of_stock";
   }
   if (typeof candidate.in_stock === "boolean") return candidate.in_stock ? "in_stock" : "out_of_stock";
+  if (typeof candidate.is_in_stock === "boolean") return candidate.is_in_stock ? "in_stock" : "out_of_stock";
+  if (typeof candidate.available === "boolean") return candidate.available ? "in_stock" : "out_of_stock";
+  // Numeric stock counts: > 0 = in stock, 0 = out, negative = unknown.
+  const stockCount = parseNumberish(candidate.stock ?? candidate.quantity ?? candidate.inventory_quantity);
+  if (typeof stockCount === "number") {
+    if (stockCount > 0) return "in_stock";
+    if (stockCount === 0) return "out_of_stock";
+  }
   return "unknown";
 }
 
