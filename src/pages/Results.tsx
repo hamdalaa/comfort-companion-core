@@ -712,13 +712,19 @@ function FilterRow({
     <button
       onClick={onClick}
       className={cn(
-        "block w-full rounded-2xl px-3 py-2 text-right text-sm transition-colors",
+        "group/row flex w-full items-center gap-2 rounded-xl px-3 py-2 text-right text-[13px] transition-all",
         active
-          ? "bg-secondary text-secondary-foreground shadow-soft"
-          : "bg-background text-foreground/80 hover:bg-muted hover:text-foreground",
+          ? "bg-primary/10 text-primary font-semibold ring-1 ring-inset ring-primary/20"
+          : "text-foreground/75 hover:bg-muted/60 hover:text-foreground",
       )}
     >
-      {children}
+      <span
+        className={cn(
+          "h-1.5 w-1.5 rounded-full transition-all",
+          active ? "bg-primary scale-110" : "bg-border group-hover/row:bg-muted-foreground/40",
+        )}
+      />
+      <span className="flex-1">{children}</span>
     </button>
   );
 }
