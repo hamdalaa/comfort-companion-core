@@ -13,7 +13,7 @@ export function QuickFilterPills() {
 
   function go(params: Record<string, string>) {
     const sp = new URLSearchParams(params);
-    nav(`/results?${sp.toString()}`);
+    nav(`/search?${sp.toString()}`);
   }
 
   return (

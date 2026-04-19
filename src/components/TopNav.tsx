@@ -57,7 +57,7 @@ const primaryLinks = [
   { to: "/sinaa", label: "الشوارع", icon: Store },
   { to: "/iraq", label: "المحافظات", icon: Building2 },
   { to: "/brands", label: "البراندات", icon: Heart },
-  { to: "/results", label: "البحث", icon: Search },
+  { to: "/search", label: "البحث", icon: Search },
 ];
 
 export function TopNav() {
@@ -115,7 +115,7 @@ export function TopNav() {
     event.preventDefault();
     const params = new URLSearchParams();
     if (q.trim()) params.set("q", q.trim());
-    nav(`/results?${params.toString()}`);
+    nav(`/search?${params.toString()}`);
     setMobileOpen(false);
   }
 
