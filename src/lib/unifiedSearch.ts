@@ -234,15 +234,53 @@ function delay<T>(value: T, ms = 350): Promise<T> {
   return new Promise((resolve) => setTimeout(() => resolve(value), ms));
 }
 
+// Arabic ↔ English synonyms — expanded into the haystack so users searching
+// in either language find the same products. Keep this small & focused on
+// the most common Iraqi/Arabic spellings of brands & categories.
+const SYNONYMS: Record<string, string[]> = {
+  "ايفون": ["iphone", "apple"],
+  "أيفون": ["iphone", "apple"],
+  "آيفون": ["iphone", "apple"],
+  "سامسونغ": ["samsung", "galaxy"],
+  "سامسونج": ["samsung", "galaxy"],
+  "ماك": ["mac", "macbook", "apple"],
+  "ماكبوك": ["macbook", "apple"],
+  "بلايستيشن": ["playstation", "ps5", "sony"],
+  "بليستيشن": ["playstation", "ps5", "sony"],
+  "بلاي": ["playstation", "sony"],
+  "سوني": ["sony"],
+  "انكر": ["anker"],
+  "أنكر": ["anker"],
+  "شاحن": ["charger", "chargers", "anker"],
+  "هاتف": ["phone", "phones"],
+  "موبايل": ["phone", "phones"],
+  "لابتوب": ["laptop", "computing", "macbook"],
+  "حاسبة": ["computing", "laptop"],
+  "سماعة": ["headphones", "accessories", "sony"],
+  "سماعات": ["headphones", "accessories"],
+};
+
+function expandQuery(q: string): string[] {
+  const tokens = q.split(/\s+/).filter(Boolean);
+  const out = new Set<string>([q]);
+  for (const t of tokens) {
+    out.add(t);
+    if (SYNONYMS[t]) for (const s of SYNONYMS[t]) out.add(s);
+  }
+  return [...out];
+}
+
 export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedSearchResponse> {
   const start = performance.now();
   const q = (req.q ?? "").trim().toLowerCase();
   let products = [...ALL_PRODUCTS_CACHE];
 
   if (q) {
-    products = products.filter((p) =>
-      [p.title, p.brand, p.category, p.description].filter(Boolean).join(" ").toLowerCase().includes(q),
-    );
+    const terms = expandQuery(q);
+    products = products.filter((p) => {
+      const hay = [p.title, p.brand, p.category, p.description].filter(Boolean).join(" ").toLowerCase();
+      return terms.some((t) => hay.includes(t));
+    });
   }
   if (req.brands?.length) products = products.filter((p) => p.brand && req.brands!.includes(p.brand));
   if (req.categories?.length) products = products.filter((p) => p.category && req.categories!.includes(p.category));
