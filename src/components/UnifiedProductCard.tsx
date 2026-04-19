@@ -77,37 +77,37 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
       </div>
 
       {/* ===== Body ===== */}
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <div className="flex flex-1 flex-col gap-2 p-2.5 sm:gap-3 sm:p-4">
         {/* Brand on the start, category on the end (rating removed). */}
         <div className="flex items-center justify-between gap-2">
           {product.brand ? (
             <Badge
               variant="outline"
-              className="rounded-full border-border bg-surface px-2 py-0 text-[10px] font-bold uppercase tracking-wide text-foreground"
+              className="rounded-full border-border bg-surface px-1.5 py-0 text-[9px] font-bold uppercase tracking-wide text-foreground sm:px-2 sm:text-[10px]"
             >
               {product.brand}
             </Badge>
           ) : <span />}
           {product.category && (
-            <span className="text-[11px] font-medium text-muted-foreground">
+            <span className="hidden text-[11px] font-medium text-muted-foreground sm:inline">
               {product.category}
             </span>
           )}
         </div>
 
         {/* Title */}
-        <h3 className="line-clamp-2 min-h-[2.6em] text-[15px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
+        <h3 className="line-clamp-2 min-h-[2.6em] text-[13px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:text-[15px]">
           {product.title}
         </h3>
 
         {/* ===== Price block ===== */}
-        <div className="flex items-end justify-between gap-3 rounded-xl bg-surface/60 px-3 py-2.5">
+        <div className="flex items-end justify-between gap-3 rounded-lg bg-surface/60 px-2 py-2 sm:rounded-xl sm:px-3 sm:py-2.5">
           <div className="flex flex-col">
-            <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground sm:text-[10px]">
               يبدأ من
             </span>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-xl font-extrabold leading-none text-foreground">
+              <span className="text-base font-extrabold leading-none text-foreground sm:text-xl">
                 {formatIQD(product.lowestPrice ?? 0)}
               </span>
             </div>
