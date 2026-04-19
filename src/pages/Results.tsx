@@ -21,16 +21,20 @@ import { ALL_AREAS, ALL_CATEGORIES, type Area, type Category } from "@/lib/types
 import { cn } from "@/lib/utils";
 import {
   ChevronLeft,
+  CircleDollarSign,
   Filter,
   Grid3x3,
   Home,
   Layers,
   List,
+  MapPin,
   Search,
+  ShieldCheck,
   SlidersHorizontal,
   Sparkles,
   Star,
   Tag,
+  Tags,
   X,
 } from "lucide-react";
 
@@ -298,7 +302,7 @@ const Results = () => {
 
       <main className="flex-1">
         <div className="container grid grid-cols-1 gap-6 py-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:h-fit">
+          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:max-h-[calc(100vh-138px)] lg:overflow-y-auto lg:overscroll-contain lg:pe-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb:hover]:bg-muted-foreground/40 [&::-webkit-scrollbar-track]:bg-transparent">
             <FiltersPanel
               area={area}
               category={category}
@@ -651,16 +655,19 @@ function NoResultsFallback({
 
 function FilterSection({
   title,
+  icon: Icon,
   children,
   compact,
 }: {
   title: string;
+  icon?: React.ComponentType<{ className?: string }>;
   children: React.ReactNode;
   compact?: boolean;
 }) {
   return (
     <section className="border-t border-border/60 py-4 first:border-t-0 first:pt-0">
-      <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+      <h3 className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+        {Icon && <Icon className="h-3.5 w-3.5 text-primary" />}
         {title}
       </h3>
       <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1.5")}>
@@ -781,7 +788,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         </div>
       )}
 
-      <FilterSection title="المنطقة" compact={compact}>
+      <FilterSection title="المنطقة" icon={MapPin} compact={compact}>
         <FilterRow compact={compact} active={area === "all"} onClick={() => setFilter("area", "all")}>كل المناطق</FilterRow>
         {ALL_AREAS.map((entry) => (
           <FilterRow compact={compact} key={entry} active={area === entry} onClick={() => setFilter("area", entry)}>
@@ -790,7 +797,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         ))}
       </FilterSection>
 
-      <FilterSection title="الفئة" compact={compact}>
+      <FilterSection title="الفئة" icon={Layers} compact={compact}>
         <FilterRow compact={compact} active={category === "all"} onClick={() => setFilter("category", "all")}>كل الفئات</FilterRow>
         {ALL_CATEGORIES.map((entry) => (
           <FilterRow compact={compact} key={entry} active={category === entry} onClick={() => setFilter("category", entry)}>
@@ -799,7 +806,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         ))}
       </FilterSection>
 
-      <FilterSection title="السعر" compact={compact}>
+      <FilterSection title="السعر" icon={CircleDollarSign} compact={compact}>
         {PRICE_RANGES.map((entry) => (
           <FilterRow compact={compact} key={entry.id} active={priceRange === entry.id} onClick={() => setPriceRange(entry.id)}>
             {entry.label}
@@ -808,7 +815,7 @@ function FiltersPanel(props: FiltersPanelProps) {
       </FilterSection>
 
       {allBrands.length > 0 && (
-        <FilterSection title="البراند" compact={compact}>
+        <FilterSection title="البراند" icon={Tags} compact={compact}>
           {compact ? (
             allBrands.map((brand) => {
               const active = brandFilters.has(brand);
@@ -843,7 +850,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         </FilterSection>
       )}
 
-      <FilterSection title="التقييم" compact={compact}>
+      <FilterSection title="التقييم" icon={Star} compact={compact}>
         {compact ? (
           [4.5, 4, 3.5, 0].map((rating) => {
             const active = minRating === rating;
