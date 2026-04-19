@@ -84,7 +84,7 @@ const Index = () => {
             </div>
             <h2 className="font-display mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-foreground sm:mt-6 sm:text-5xl md:text-6xl lg:text-7xl">
               مسارات بغداد
-              <span className="block text-primary">
+              <span className="block bg-gradient-to-l from-primary via-primary to-primary/60 bg-clip-text text-transparent">
                 المرجعية.
               </span>
             </h2>
