@@ -64,7 +64,7 @@ export function HeroSearch({
           </Select>
 
           <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-            <SelectTrigger className="h-11 w-0 min-w-0 flex-1 gap-1.5 rounded-xl border-border/70 bg-background/60 px-2.5 text-[13px] text-foreground shadow-none transition-colors hover:bg-surface focus:ring-2 focus:ring-primary/30 sm:h-12 sm:rounded-2xl sm:px-3 sm:text-sm [&>span]:flex [&>span]:min-w-0 [&>span]:flex-1 [&>span]:items-center [&>span]:gap-1.5">
+            <SelectTrigger className="h-11 w-0 min-w-0 flex-1 gap-1.5 rounded-xl border-border/70 bg-background/60 px-2.5 text-[13px] text-foreground shadow-none transition-colors hover:bg-surface focus:ring-2 focus:ring-primary/30 sm:h-12 sm:rounded-2xl sm:px-3 sm:text-sm [&>span]:min-w-0 [&>span]:flex-1 [&>span]:truncate [&>span]:text-right">
               <Tag className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
               <SelectValue placeholder="الفئة" />
             </SelectTrigger>
