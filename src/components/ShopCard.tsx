@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, ExternalLink, MapPin, Phone, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VerifiedBadge } from "./Badges";
 import { StarRating } from "./StarRating";
