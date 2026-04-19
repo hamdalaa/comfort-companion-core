@@ -788,7 +788,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         </div>
       )}
 
-      <FilterSection title="المنطقة" compact={compact}>
+      <FilterSection title="المنطقة" icon={MapPin} compact={compact}>
         <FilterRow compact={compact} active={area === "all"} onClick={() => setFilter("area", "all")}>كل المناطق</FilterRow>
         {ALL_AREAS.map((entry) => (
           <FilterRow compact={compact} key={entry} active={area === entry} onClick={() => setFilter("area", entry)}>
@@ -797,7 +797,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         ))}
       </FilterSection>
 
-      <FilterSection title="الفئة" compact={compact}>
+      <FilterSection title="الفئة" icon={Layers} compact={compact}>
         <FilterRow compact={compact} active={category === "all"} onClick={() => setFilter("category", "all")}>كل الفئات</FilterRow>
         {ALL_CATEGORIES.map((entry) => (
           <FilterRow compact={compact} key={entry} active={category === entry} onClick={() => setFilter("category", entry)}>
@@ -806,7 +806,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         ))}
       </FilterSection>
 
-      <FilterSection title="السعر" compact={compact}>
+      <FilterSection title="السعر" icon={CircleDollarSign} compact={compact}>
         {PRICE_RANGES.map((entry) => (
           <FilterRow compact={compact} key={entry.id} active={priceRange === entry.id} onClick={() => setPriceRange(entry.id)}>
             {entry.label}
@@ -815,7 +815,7 @@ function FiltersPanel(props: FiltersPanelProps) {
       </FilterSection>
 
       {allBrands.length > 0 && (
-        <FilterSection title="البراند" compact={compact}>
+        <FilterSection title="البراند" icon={Tags} compact={compact}>
           {compact ? (
             allBrands.map((brand) => {
               const active = brandFilters.has(brand);
