@@ -34,10 +34,10 @@ export function SearchAutocomplete({
   if (!query.trim()) return null;
 
   return (
-    <div className="absolute inset-x-0 top-full z-[60] mt-2 overflow-hidden rounded-2xl border border-border bg-background shadow-soft-xl">
-      {/* Suggestions list — first */}
+    <div className="absolute inset-x-0 top-full z-[60] mt-2 flex max-h-[60vh] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-soft-xl">
+      {/* Suggestions list — first (scrolls within the dropdown) */}
       {suggestions.length > 0 ? (
-        <ul className="max-h-[320px] overflow-y-auto py-1">
+        <ul className="min-h-0 flex-1 overflow-y-auto py-1">
           {suggestions.map((s, idx) => {
             const Icon = ICONS[s.type];
             const active = idx === highlightedIndex;
