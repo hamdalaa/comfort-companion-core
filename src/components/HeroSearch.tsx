@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, Search, Sparkles, Tag } from "lucide-react";
+import { ArrowLeft, MapPin, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ALL_AREAS, ALL_CATEGORIES, type Area, type Category } from "@/lib/types";
