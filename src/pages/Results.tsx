@@ -850,7 +850,7 @@ function FiltersPanel(props: FiltersPanelProps) {
         </FilterSection>
       )}
 
-      <FilterSection title="التقييم" compact={compact}>
+      <FilterSection title="التقييم" icon={Star} compact={compact}>
         {compact ? (
           [4.5, 4, 3.5, 0].map((rating) => {
             const active = minRating === rating;
