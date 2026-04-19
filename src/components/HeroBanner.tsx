@@ -107,28 +107,7 @@ export function HeroBanner() {
           </div>
         </div>
 
-        {/* Value propositions — premium light cards */}
-        <div className="mx-auto mt-12 grid max-w-5xl gap-3 sm:mt-16 sm:grid-cols-3 sm:gap-4">
-          {valueProps.map((vp, i) => (
-            <div
-              key={vp.title}
-              className="group relative flex items-start gap-3 rounded-2xl border border-border bg-card/80 p-4 text-right backdrop-blur-md shadow-soft transition-all hover:shadow-soft-lg hover:-translate-y-0.5 hover:border-primary/30 sm:p-5"
-              style={{ animationDelay: `${i * 80}ms` }}
-            >
-              <div className={`flex size-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${vp.tint} ring-1 ring-border ${vp.icon_color}`}>
-                <vp.icon className="h-5 w-5" />
-              </div>
-              <div className="min-w-0">
-                <div className="font-display text-sm font-semibold text-foreground sm:text-base">
-                  {vp.title}
-                </div>
-                <p className="mt-1 text-[12px] leading-6 text-muted-foreground sm:text-[13px]">
-                  {vp.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Value propositions hidden per request */}
 
         {/* Quick entry cards — keep premium image cards */}
         <div className="mx-auto mt-6 grid max-w-5xl grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3">
