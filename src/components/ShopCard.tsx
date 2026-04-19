@@ -94,6 +94,22 @@ export function ShopCard({ shop }: { shop: Shop }) {
           <StarRating rating={rating.rating} reviews={rating.userRatingCount} size="xs" />
         )}
 
+        {/* Useful info rows — location + phone (synced with CityShopCard) */}
+        <ul className="space-y-1.5 text-[12px] leading-5 text-muted-foreground">
+          {shop.area && (
+            <li className="flex items-start gap-1.5">
+              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span className="line-clamp-1 text-foreground/85">{shop.area}</span>
+            </li>
+          )}
+          {formatPhone(shop.phone) && (
+            <li className="flex items-start gap-1.5">
+              <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
+              <span dir="ltr" className="font-numeric text-foreground/85">{formatPhone(shop.phone)}</span>
+            </li>
+          )}
+        </ul>
+
         <div className="flex flex-wrap gap-1.5">
           {categories.slice(0, 3).map((category) => (
             <span
