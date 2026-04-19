@@ -4,7 +4,7 @@ import apple from "@/assets/brands/apple.png";
 import samsung from "@/assets/brands/samsung.png";
 import asus from "@/assets/brands/asus.png";
 import honor from "@/assets/brands/honor.png";
-import anker from "@/assets/brands/anker.png";
+import anker from "@/assets/brands/anker.svg";
 
 export const BRAND_LOGOS: Record<string, string> = {
   apple,
