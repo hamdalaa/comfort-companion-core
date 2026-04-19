@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, Search, Sparkles, Tag } from "lucide-react";
+import { ArrowLeft, MapPin, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ALL_AREAS, ALL_CATEGORIES, type Area, type Category } from "@/lib/types";
@@ -15,8 +15,6 @@ interface Props {
   variant?: "hero" | "compact";
 }
 
-type Mode = "unified" | "shops";
-
 export function HeroSearch({
   initialQ = "",
   initialArea = "all",
@@ -24,7 +22,6 @@ export function HeroSearch({
 }: Props) {
   const nav = useNavigate();
   const { shops } = useDataStore();
-  const [mode, setMode] = useState<Mode>("unified");
   const [q, setQ] = useState(initialQ);
   const [area, setArea] = useState<Area | "all">(initialArea);
   const [category, setCategory] = useState<Category | "all">(initialCategory);
@@ -68,32 +65,6 @@ export function HeroSearch({
 
   return (
     <div className="w-full">
-      {/* Mode toggle */}
-      <div className="mx-auto mb-3 inline-flex rounded-full border border-border bg-card/80 p-1 shadow-soft-sm backdrop-blur-xl">
-        <button
-          type="button"
-          onClick={() => setMode("unified")}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-all sm:text-sm ${
-            mode === "unified"
-              ? "bg-gradient-primary text-primary-foreground shadow-soft-md"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Sparkles className="h-3.5 w-3.5" />
-          بحث موحّد بكل المواقع
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("shops")}
-          className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all sm:text-sm ${
-            mode === "shops"
-              ? "bg-foreground text-background shadow-soft-md"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          محلات وعناوين
-        </button>
-      </div>
 
       <form
         onSubmit={submit}
@@ -109,7 +80,7 @@ export function HeroSearch({
             onFocus={() => setAcOpen(true)}
             onBlur={() => setTimeout(() => setAcOpen(false), 150)}
             onKeyDown={onInputKeyDown}
-            placeholder={mode === "unified" ? "iPhone 15، PlayStation 5، MacBook…" : "ابحث عن موديل، براند، أو محل…"}
+            placeholder="iPhone 15، PlayStation 5، اسم محل…"
             className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/70 sm:text-base"
             autoComplete="off"
           />
