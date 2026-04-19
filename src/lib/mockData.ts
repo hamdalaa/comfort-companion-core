@@ -351,6 +351,19 @@ export const initialBrands: BrandDealer[] = [
     createdAt: daysAgo(25),
     updatedAt: daysAgo(2),
   },
+  {
+    slug: "ugreen",
+    brandName: "UGREEN",
+    dealerName: "Jibal — الموزع المعتمد لـ UGREEN في العراق",
+    website: "https://www.ugreen.com/",
+    contactPhones: [],
+    cities: ["بغداد"],
+    coverage: "الموزع الرسمي لمنتجات UGREEN في العراق — شواحن، كيبلات، هابات USB، إكسسوارات.",
+    verificationStatus: "verified",
+    notes: "مصدر القائمة: Jibal — الموزع المعتمد.",
+    createdAt: daysAgo(20),
+    updatedAt: daysAgo(2),
+  },
 ];
 
 export const initialCrawlRuns: CrawlRun[] = [
