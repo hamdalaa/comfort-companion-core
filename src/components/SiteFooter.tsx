@@ -81,18 +81,18 @@ export function SiteFooter() {
           </div>
 
           {/* Columns */}
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          <div className="grid grid-cols-3 gap-4 sm:gap-8">
             {columns.map((column) => (
-              <div key={column.title} className="text-right">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary-foreground/50">
+              <div key={column.title} className="min-w-0 text-right">
+                <div className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-secondary-foreground/50 sm:tracking-[0.22em]">
                   {column.title}
                 </div>
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-3 space-y-2.5 sm:mt-4 sm:space-y-3">
                   {column.links.map((link) => (
-                    <li key={link.to}>
+                    <li key={link.to} className="min-w-0">
                       <Link
                         to={link.to}
-                        className="text-sm text-secondary-foreground/75 transition-colors hover:text-primary-glow"
+                        className="block truncate text-xs text-secondary-foreground/75 transition-colors hover:text-primary-glow sm:text-sm"
                       >
                         {link.label}
                       </Link>
