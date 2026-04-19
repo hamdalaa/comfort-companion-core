@@ -294,15 +294,6 @@ const Results = () => {
                   </Link>
                 ))}
               </div>
-              {hasActiveFilters && (
-                <button
-                  onClick={clearAll}
-                  className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-accent transition-colors hover:text-foreground"
-                >
-                  <X className="h-3.5 w-3.5" />
-                  مسح جميع الفلاتر
-                </button>
-              )}
             </div>
           </div>
         </div>
