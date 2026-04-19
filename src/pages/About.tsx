@@ -187,7 +187,7 @@ export default function About() {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <h3 className="font-display text-lg font-bold tracking-tight md:text-xl">
-                    رعاتنا الحاليون
+                    رعاتنا الحاليين
                   </h3>
                   <p className="mt-1 text-xs text-muted-foreground md:text-sm">
                     شركاء يساندون استمرار المنصّة — مكانك ممكن يكون التالي.
