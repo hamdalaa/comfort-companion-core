@@ -11,6 +11,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { UnifiedProductCard } from "@/components/UnifiedProductCard";
 import { UnifiedSearchFilters } from "@/components/UnifiedSearchFilters";
 import { EmptyState } from "@/components/EmptyState";
+import { DummyDataBanner } from "@/components/DummyDataBanner";
 import {
   searchUnified,
   type SortKey,
