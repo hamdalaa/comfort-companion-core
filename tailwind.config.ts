@@ -113,9 +113,14 @@ export default {
         panel: "var(--shadow-panel)",
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        /* Unified radius scale — clean, consistent UX
+           Base = 0.875rem (14px). Scale follows a perceptual ramp. */
+        sm: "calc(var(--radius) - 8px)",   /* ~6px  — badges, pills */
+        md: "calc(var(--radius) - 4px)",   /* ~10px — inputs, chips */
+        lg: "var(--radius)",               /* ~14px — buttons, default */
+        xl: "calc(var(--radius) + 2px)",   /* ~16px — small cards */
+        "2xl": "calc(var(--radius) + 6px)", /* ~20px — cards */
+        "3xl": "calc(var(--radius) + 14px)", /* ~28px — hero/large surfaces */
       },
       keyframes: {
         "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },
