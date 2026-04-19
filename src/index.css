@@ -130,6 +130,15 @@
     --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    /* Apple iOS spring — matches UIKit default spring timing */
+    --ease-ios-spring: cubic-bezier(0.32, 0.72, 0, 1);
+
+    /* ---- Concentric radius scale (Apple HIG) ----------------- */
+    --radius-xs: 0.5rem;     /* 8px  — chips, small buttons */
+    --radius-sm: 0.75rem;    /* 12px — inputs, secondary cards */
+    --radius-md: 1rem;       /* 16px — primary cards */
+    --radius-lg: 1.25rem;    /* 20px — sheets, large cards */
+    --radius-xl: 1.5rem;     /* 24px — hero panels, modals */
   }
 
   * {
@@ -651,3 +660,67 @@
   60% { transform: translateY(-2px); opacity: 1; }
   100% { transform: translateY(0); opacity: 1; }
 }
+
+/* ============================================================
+   Apple HIG additions — spring transitions, tap feedback,
+   concentric corners, and unified depth.
+   ============================================================ */
+@layer utilities {
+  /* iOS spring timing — apply to any transition for native feel */
+  .ios-spring {
+    transition-timing-function: var(--ease-ios-spring) !important;
+  }
+
+  /* Universal tap feedback — subtle press scale, like iOS */
+  .ios-tap {
+    transition:
+      transform 0.18s var(--ease-ios-spring),
+      background-color 0.18s var(--ease-ios-spring),
+      opacity 0.18s var(--ease-ios-spring);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ios-tap:active {
+    transform: scale(0.97);
+  }
+  .ios-tap-strong:active {
+    transform: scale(0.94);
+  }
+
+  /* Apply gentle press to all buttons + interactive surfaces by default */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Concentric corner utilities — use parent + child pairs */
+  .rounded-ios-xs { border-radius: var(--radius-xs); }
+  .rounded-ios-sm { border-radius: var(--radius-sm); }
+  .rounded-ios-md { border-radius: var(--radius-md); }
+  .rounded-ios-lg { border-radius: var(--radius-lg); }
+  .rounded-ios-xl { border-radius: var(--radius-xl); }
+
+  /* Unified 4-layer depth system */
+  .depth-1 { box-shadow: var(--shadow-xs); }
+  .depth-2 { box-shadow: var(--shadow-sm); }
+  .depth-3 { box-shadow: var(--shadow-md); }
+  .depth-4 { box-shadow: var(--shadow-lg); }
+
+  /* iOS tab bar — frosted, layered */
+  .ios-tabbar {
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+}
+
+/* Reduce motion — respect user accessibility preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
