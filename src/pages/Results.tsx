@@ -323,18 +323,18 @@ const Results = () => {
           </aside>
 
           <section className="space-y-5">
-            <div className="atlas-panel p-4 md:p-5">
+            <div className="atlas-panel overflow-hidden p-4 md:p-5">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="min-w-0">
-                  <div className="text-sm font-semibold text-foreground">
-                    <span className="font-display text-3xl">
+                  <div className="flex items-baseline gap-2.5">
+                    <span className="font-display text-4xl font-bold leading-none tracking-tight text-foreground">
                       {(results.length > 0 ? results.length : fallbackShopsCount).toLocaleString("ar")}
                     </span>
-                    <span className="ms-2 text-muted-foreground">
+                    <span className="text-sm font-semibold text-muted-foreground">
                       {results.length > 0 ? "نتيجة بعد التصفية" : "محل متاح للتصفّح"}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                  <p className="mt-2 max-w-xl text-xs leading-6 text-muted-foreground">
                     {results.length === 0
                       ? "ما حصّلنا منتجاً مفهرساً مطابقاً، بس هذي المحلات قريبة من طلبك وتكدر تتواصل معها مباشرة."
                       : groups.length > 0
