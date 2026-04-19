@@ -145,6 +145,7 @@ const Index = () => {
               subtitle="هواتف، شواحن وإكسسوارات — مدخل سريع للقراءة قبل الشراء."
             />
           </div>
+          </div>
         </section>
 
         {/* Iraq coverage CTA */}
