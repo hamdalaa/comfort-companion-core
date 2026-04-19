@@ -40,21 +40,20 @@ export function HeroBanner() {
           <div className="text-right">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft/80 backdrop-blur px-3 py-1.5 text-[11px] font-semibold text-primary shadow-soft">
               <Sparkles className="h-3 w-3 animate-pulse" />
-              دليل الإلكترونيات · العراق
+              أكبر دليل إلكترونيات بالعراق · مُحدَّث يومياً
             </div>
 
-            <h1 className="font-display mt-5 text-[clamp(2rem,7vw,5.5rem)] font-semibold leading-[1.05] text-foreground tracking-tight sm:mt-6 sm:leading-[0.95]">
-              أطلس
-              <span className="text-rainbow"> سوق </span>
-              الإلكترونيات{" "}
-              <span className="text-foreground/45">العراقي.</span>
+            <h1 className="font-display mt-5 text-[clamp(2rem,7vw,5.5rem)] font-semibold leading-[1.02] text-foreground tracking-tight sm:mt-6 sm:leading-[0.94]">
+              لا تشتري
+              <span className="text-rainbow"> غلط </span>
+              مرّة ثانية<span className="text-foreground/45">.</span>
             </h1>
 
-            <p className="mt-5 max-w-[58ch] text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-lg sm:leading-8">
-              منصّة وحدة تجمع <span className="font-semibold text-primary">محلّات الإلكترونيات</span> بكل محافظات العراق.
-              <span className="font-semibold text-cyan"> قارن الأسعار</span>،
-              شوف <span className="font-semibold text-violet">تقييمات Google</span> الحقيقية،
-              ووصّل لـ <span className="font-semibold text-rose">أقرب محل ثقة</span> قبل ما تطلع من البيت.
+            <p className="mt-5 max-w-[60ch] text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-lg sm:leading-8">
+              قبل ما تطلع من البيت، اعرف <span className="font-semibold text-primary">وين أرخص سعر</span>،
+              <span className="font-semibold text-cyan"> منو المحل الأوثق</span>،
+              و<span className="font-semibold text-violet">شنو يكولون الناس</span> عنه —
+              <span className="font-semibold text-rose"> بنقرة وحدة</span>.
             </p>
 
             {/* Search */}
