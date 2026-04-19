@@ -69,6 +69,7 @@ const App = () => (
                   <Route path="/results" element={<ResultsRedirect />} />
                   <Route path="/search" element={<UnifiedSearch />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/street" element={<StreetsIndex />} />
                   <Route path="/streets" element={<StreetsIndex />} />
                   <Route path="/sinaa" element={<StreetPages />} />
                   <Route path="/rubaie" element={<RubaiePage />} />
