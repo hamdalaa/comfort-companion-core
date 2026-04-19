@@ -123,7 +123,7 @@ export default function CityPage() {
               </p>
             </div>
 
-            <div className="group/panel relative overflow-hidden rounded-[1.75rem] border border-border/60 bg-gradient-to-br from-card/95 via-card/85 to-card/70 p-5 shadow-soft-lg backdrop-blur-md transition-all hover:border-primary/30 hover:shadow-soft-xl">
+            <div className="group/panel relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-card/95 via-card/85 to-card/70 p-5 shadow-soft-lg backdrop-blur-md transition-all hover:border-primary/30 hover:shadow-soft-xl">
               <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-primary/10 blur-3xl transition-opacity group-hover/panel:opacity-80" />
               <div className="pointer-events-none absolute -bottom-20 -left-10 h-36 w-36 rounded-full bg-accent/10 blur-3xl" />
 
@@ -153,7 +153,7 @@ export default function CityPage() {
       </section>
 
       <main className="flex-1 container py-6 md:py-8">
-        <section className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+        <section className="rounded-3xl border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-end">
             <div className="text-right">
               <h2 className="font-display text-2xl font-bold tracking-tight">استكشف السوق داخل المدينة</h2>
@@ -210,7 +210,7 @@ export default function CityPage() {
                 ))}
               </div>
             ) : filtered.length === 0 ? (
-              <div className="flex flex-col items-center justify-center gap-3 rounded-[1.5rem] border border-dashed border-border bg-background/70 py-14 text-center">
+              <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border bg-background/70 py-14 text-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
                   <MapPin className="h-6 w-6 text-muted-foreground" />
                 </div>

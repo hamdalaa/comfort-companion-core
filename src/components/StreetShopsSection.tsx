@@ -159,7 +159,7 @@ export function StreetShopsSection({
         {loading ? (
           <ShopCardSkeletonGrid count={6} />
         ) : visibleShops.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-3 rounded-[1.5rem] border border-dashed border-border bg-background/74 py-14 text-center">
+          <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border bg-background/74 py-14 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
               <MapPin className="h-6 w-6 text-muted-foreground" />
             </div>

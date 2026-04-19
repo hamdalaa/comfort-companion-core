@@ -33,7 +33,7 @@ export function BottomTabBar() {
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="mx-auto max-w-md px-3 pb-2 pt-1">
-          <div className="ios-tabbar grid grid-cols-5 items-stretch gap-1 rounded-[22px] border border-border/50 bg-background/80 px-2 py-1.5 shadow-[0_8px_32px_-8px_hsl(var(--foreground)/0.18),0_2px_8px_-2px_hsl(var(--foreground)/0.08)] backdrop-blur-xl">
+          <div className="ios-tabbar grid grid-cols-5 items-stretch gap-1 rounded-3xl border border-border/50 bg-background/80 px-2 py-1.5 shadow-[0_8px_32px_-8px_hsl(var(--foreground)/0.18),0_2px_8px_-2px_hsl(var(--foreground)/0.08)] backdrop-blur-xl">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (

@@ -25,7 +25,7 @@ export function ComparisonGroup({
   return (
     <section className="atlas-panel">
       <header className="atlas-separator flex flex-wrap items-center gap-4 p-5">
-        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[1.1rem] bg-surface-2">
+        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-surface-2">
           <img src={heroImg} alt="" loading="lazy" width={96} height={96} className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0 flex-1">
@@ -39,7 +39,7 @@ export function ComparisonGroup({
           <p className="mt-2 text-xs text-muted-foreground">{items.length.toLocaleString("ar")} محلات ضمن نفس المقارنة</p>
         </div>
         {min !== undefined && (
-          <div className="rounded-[1.2rem] border border-border/75 bg-background px-4 py-3 text-right">
+          <div className="rounded-2xl border border-border/75 bg-background px-4 py-3 text-right">
             <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">المدى السعري</div>
             <div className="mt-2 font-display text-lg font-bold">
               <span className="text-muted-foreground">من </span>

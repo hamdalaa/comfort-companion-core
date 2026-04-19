@@ -135,7 +135,7 @@ const ShopView = () => {
 
       <main className="flex-1 container py-6 space-y-6 md:py-8">
         {/* ============ 1. HERO ============ */}
-        <header className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm">
+        <header className="overflow-hidden rounded-3xl border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm">
           <div className="relative h-52 sm:h-64 md:h-80 bg-muted">
             <img
               src={optimizeImageUrl(heroImg, { width: 1600, height: 600 }) ?? heroImg}
@@ -249,7 +249,7 @@ const ShopView = () => {
 
         {/* ============ 3. QUICK DECISION STRIP ============ */}
         {pageData && (
-          <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
+          <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
             <h2 className="mb-3 text-sm font-bold text-muted-foreground">قرار سريع</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
               <QuickFlag label="موقع رسمي" ok={pageData.quickDecision.has_website} />
@@ -268,7 +268,7 @@ const ShopView = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* ============ 4. GALLERY ============ */}
             {gallery.length > 0 && (
-              <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
                 <h2 className="mb-3 inline-flex items-center gap-2 text-lg font-bold">
                   <Camera className="h-5 w-5 text-primary" /> الصور
                   <span className="text-xs font-normal text-muted-foreground">({pageData?.photosCount ?? gallery.length})</span>
@@ -295,7 +295,7 @@ const ShopView = () => {
 
             {/* ============ 4.5 GOOGLE REVIEWS ============ */}
             {googleRating && (
-              <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                   <h2 className="inline-flex items-center gap-2 text-lg font-bold">
                     <Star className="h-5 w-5 text-warning" /> تقييمات Google
@@ -368,7 +368,7 @@ const ShopView = () => {
             )}
 
             {/* ============ 5. INDEXED PRODUCTS ============ */}
-            <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
               <div className="mb-4 flex items-end justify-between gap-3">
                 <div>
                   <h2 className="inline-flex items-center gap-2 text-lg font-bold">
@@ -404,7 +404,7 @@ const ShopView = () => {
 
             {/* ============ 6. SOURCES (collapsed for users without products) ============ */}
             {sources.length > 0 && (
-              <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
                 <h2 className="mb-3 text-lg font-bold">سجلات الفهرسة</h2>
                 <div className="overflow-x-auto rounded-2xl border border-border">
                   <Table>
@@ -445,7 +445,7 @@ const ShopView = () => {
           {/* ============ SIDE COLUMN ============ */}
           <aside className="space-y-6">
             {/* ============ 7. DETAILS & TRUST ============ */}
-            <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
+            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
               <h2 className="mb-3 inline-flex items-center gap-2 text-base font-bold">
                 <ShieldCheck className="h-4 w-4 text-primary" /> التفاصيل والثقة
               </h2>
@@ -479,7 +479,7 @@ const ShopView = () => {
 
             {/* ============ 9. FRESHNESS ============ */}
             {pageData?.freshnessSummary && (
-              <section className="rounded-[1.5rem] border border-border/70 bg-card/70 p-3 shadow-soft md:p-4">
+              <section className="rounded-2xl border border-border/70 bg-card/70 p-3 shadow-soft md:p-4">
                 <div className="text-[11px] text-muted-foreground leading-relaxed">
                   <span className="font-bold text-foreground">آخر تحديث:</span> {pageData.freshnessSummary}
                 </div>
@@ -490,7 +490,7 @@ const ShopView = () => {
 
         {/* ============ 10. SIMILAR STORES ============ */}
         {pageData?.similarStores && pageData.similarStores.length > 0 && (
-          <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+          <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
             <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-bold">
               <Store className="h-5 w-5 text-primary" /> محلات مشابهة
             </h2>

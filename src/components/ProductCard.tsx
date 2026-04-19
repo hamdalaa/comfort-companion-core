@@ -53,11 +53,11 @@ export function ProductCard({
     return (
       <article
         className={cn(
-          "group grid gap-4 rounded-[1.7rem] border border-border/75 bg-card/94 p-3 shadow-soft-lg transition-all duration-300 md:grid-cols-[170px_minmax(0,1fr)]",
+          "group grid gap-4 rounded-3xl border border-border/75 bg-card/94 p-3 shadow-soft-lg transition-all duration-300 md:grid-cols-[170px_minmax(0,1fr)]",
           inCompare && "ring-1 ring-primary/60",
         )}
       >
-        <Link to={`/shop-view/${product.shopId}`} className="relative block overflow-hidden rounded-[1.4rem] bg-surface-2">
+        <Link to={`/shop-view/${product.shopId}`} className="relative block overflow-hidden rounded-2xl bg-surface-2">
           <img src={img} alt={product.name} loading="lazy" decoding="async" width={640} height={640} className="smooth-img h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
           {bestPrice && (
@@ -139,7 +139,7 @@ export function ProductCard({
   return (
     <article
       className={cn(
-        "group tilt-3d relative overflow-hidden rounded-[1.55rem] border border-border/75 bg-card/94 shadow-soft-lg transition-all duration-300 sm:rounded-[1.7rem]",
+        "group tilt-3d relative overflow-hidden rounded-2xl border border-border/75 bg-card/94 shadow-soft-lg transition-all duration-300 sm:rounded-3xl",
         inCompare && "ring-1 ring-primary/60",
       )}
     >

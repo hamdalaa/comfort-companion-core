@@ -113,7 +113,7 @@ export function CityShopCard({ shop, citySlug }: Props) {
   if (shop.website) contacts.push({ icon: Globe, label: "موقع", href: shop.website });
 
   return (
-    <article className="group card-elevate relative overflow-hidden rounded-[1.65rem] border border-border/75 bg-card/94 shadow-soft-lg sm:rounded-[1.8rem]">
+    <article className="group card-elevate relative overflow-hidden rounded-2xl border border-border/75 bg-card/94 shadow-soft-lg sm:rounded-3xl">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/75 to-transparent" />
 
       <Link

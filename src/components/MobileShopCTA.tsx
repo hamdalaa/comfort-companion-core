@@ -33,7 +33,7 @@ export function MobileShopCTA({
       aria-label="إجراءات سريعة للمحل"
     >
       <div className="mx-auto max-w-md px-3 pb-2">
-        <div className="flex items-stretch gap-1.5 rounded-[20px] border border-border/50 bg-background/85 p-1.5 shadow-[0_8px_32px_-8px_hsl(var(--foreground)/0.18)] backdrop-blur-xl">
+        <div className="flex items-stretch gap-1.5 rounded-2xl border border-border/50 bg-background/85 p-1.5 shadow-[0_8px_32px_-8px_hsl(var(--foreground)/0.18)] backdrop-blur-xl">
           {phone && (
             <a
               href={callUrl ?? `tel:${phone.replace(/\s/g, "")}`}

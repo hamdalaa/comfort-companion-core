@@ -85,7 +85,7 @@ const Brand = () => {
           <div className="grid items-stretch gap-6 lg:grid-cols-[1.1fr_1fr]">
             {/* LEFT: Premium image showcase */}
             {background ? (
-              <div className="group relative order-2 overflow-hidden rounded-[2rem] border border-border/60 shadow-soft-xl lg:order-1 min-h-[280px] md:min-h-[360px]">
+              <div className="group relative order-2 overflow-hidden rounded-3xl border border-border/60 shadow-soft-xl lg:order-1 min-h-[280px] md:min-h-[360px]">
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{ backgroundImage: `url(${background})` }}
@@ -98,7 +98,7 @@ const Brand = () => {
                 </div>
               </div>
             ) : (
-              <div className="relative order-2 overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-br from-primary/15 via-accent/10 to-background shadow-soft-xl lg:order-1 min-h-[280px] md:min-h-[360px]">
+              <div className="relative order-2 overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-primary/15 via-accent/10 to-background shadow-soft-xl lg:order-1 min-h-[280px] md:min-h-[360px]">
                 <div className="absolute inset-0 bg-grid opacity-30" />
                 <div className="flex h-full w-full items-center justify-center">
                   <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-3xl bg-background shadow-soft-lg">
@@ -115,7 +115,7 @@ const Brand = () => {
             )}
 
             {/* RIGHT: Glass content card */}
-            <div className="relative order-1 flex flex-col rounded-[2rem] border border-border/60 bg-card/90 p-6 shadow-soft-xl backdrop-blur-md md:p-8 lg:order-2">
+            <div className="relative order-1 flex flex-col rounded-3xl border border-border/60 bg-card/90 p-6 shadow-soft-xl backdrop-blur-md md:p-8 lg:order-2">
               {/* Header row: logo lockup + verified pill */}
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-4">
@@ -230,7 +230,7 @@ const Brand = () => {
       <main className="flex-1 container py-6 space-y-6 md:py-8">
         {/* OFFICIAL BRANCHES */}
         {branches.length > 0 && (
-          <section className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+          <section className="rounded-3xl border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
             <header className="mb-4 flex items-start justify-between gap-3 border-b border-border pb-3">
               <div>
                 <h2 className="text-xl font-bold flex items-center gap-2">
@@ -250,7 +250,7 @@ const Brand = () => {
               {branches.map((b) => (
                 <article
                   key={b.id}
-                  className="group flex flex-col overflow-hidden rounded-[1.5rem] border border-border/70 bg-background/85 transition-all duration-500 hover:-translate-y-1 hover:border-primary/35 hover:shadow-soft-xl"
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-border/70 bg-background/85 transition-all duration-500 hover:-translate-y-1 hover:border-primary/35 hover:shadow-soft-xl"
                 >
                   <div className="relative aspect-video w-full overflow-hidden bg-muted">
                     {b.mainImage ? (
@@ -317,7 +317,7 @@ const Brand = () => {
         )}
 
         {/* PRODUCTS */}
-        <section className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+        <section className="rounded-3xl border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
           <h2 className="mb-4 flex items-center gap-2 text-xl font-bold border-b border-border pb-3">
             <Package className="h-5 w-5 text-primary" />
             منتجات {brand.brandName} على حاير
@@ -342,7 +342,7 @@ const Brand = () => {
         </section>
 
         {/* OTHER BRANDS */}
-        <section className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+        <section className="rounded-3xl border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
           <header className="mb-5 flex items-end justify-between gap-3 border-b border-border pb-3">
             <div>
               <h2 className="flex items-center gap-2 text-xl font-bold">

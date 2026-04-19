@@ -86,7 +86,7 @@ export default function CityShopView() {
       <div className="min-h-screen flex flex-col bg-muted/30">
         <TopNav />
         <main className="flex-1 container py-12">
-          <div className="rounded-[2rem] border border-border/70 bg-card/88 p-8 text-center shadow-soft-lg">
+          <div className="rounded-3xl border border-border/70 bg-card/88 p-8 text-center shadow-soft-lg">
             <p className="text-sm text-muted-foreground">جاري تحميل تفاصيل المحل…</p>
           </div>
         </main>
@@ -153,7 +153,7 @@ export default function CityShopView() {
       </div>
 
       <main className="flex-1 container py-6 space-y-6 md:py-8">
-        <header className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm">
+        <header className="overflow-hidden rounded-3xl border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm">
           <div className="relative h-44 sm:h-52 md:h-60 bg-muted">
             {heroImage ? (
               <button
@@ -299,7 +299,7 @@ export default function CityShopView() {
           const dash = circumference * ratio;
 
           return (
-            <section className="relative overflow-hidden rounded-[1.75rem] border border-border/70 bg-card/82 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
+            <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/82 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" aria-hidden />
               <div className="relative flex flex-col gap-5 md:flex-row md:items-center">
                 {/* Score badge */}
@@ -382,7 +382,7 @@ export default function CityShopView() {
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             {uniqueGallery.length > 0 && (
-              <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
                 <h2 className="mb-3 inline-flex items-center gap-2 text-lg font-bold">
                   <Camera className="h-5 w-5 text-primary" /> الصور
                   <span className="text-xs font-normal text-muted-foreground">({uniqueGallery.length})</span>
@@ -418,7 +418,7 @@ export default function CityShopView() {
             )}
 
             {(shop.editorialSummary || shop.reviewSummary) && (
-              <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
                 <h2 className="mb-3 inline-flex items-center gap-2 text-lg font-bold">
                   <ImageIcon className="h-5 w-5 text-primary" /> ملخص سريع
                 </h2>
@@ -430,7 +430,7 @@ export default function CityShopView() {
             )}
 
             {(shop.reviewsSample?.length ?? 0) > 0 && (
-              <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                   <h2 className="inline-flex items-center gap-2 text-lg font-bold">
                     <Star className="h-5 w-5 text-warning" /> مراجعات Google
@@ -471,7 +471,7 @@ export default function CityShopView() {
           </div>
 
           <aside className="space-y-6">
-            <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
+            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
               <h2 className="mb-3 text-lg font-bold">معلومات المحل</h2>
               <div className="space-y-3 text-sm">
                 {shop.address && <InfoRow label="العنوان" value={shop.address} icon={MapPin} />}
@@ -483,7 +483,7 @@ export default function CityShopView() {
               </div>
             </section>
 
-            <section className="rounded-[1.75rem] border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
+            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
               <h2 className="mb-3 text-lg font-bold">ساعات العمل</h2>
               {shop.workingHours && shop.workingHours.length > 0 ? (
                 <ul className="space-y-2 text-sm text-muted-foreground">

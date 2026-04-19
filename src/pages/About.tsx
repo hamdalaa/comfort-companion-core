@@ -76,7 +76,7 @@ export default function About() {
 
       <main className="flex-1 container py-8 md:py-12 grid gap-6 lg:grid-cols-2">
         {/* Developer card */}
-        <section className="group relative overflow-hidden rounded-[2rem] border border-border/70 bg-card/90 p-6 shadow-soft-lg backdrop-blur-md md:p-8">
+        <section className="group relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-6 shadow-soft-lg backdrop-blur-md md:p-8">
           <div className="pointer-events-none absolute -top-16 -left-12 h-44 w-44 rounded-full bg-primary/15 blur-3xl transition-opacity group-hover:opacity-80" />
           <div className="pointer-events-none absolute -bottom-20 -right-10 h-44 w-44 rounded-full bg-cyan/15 blur-3xl" />
 
@@ -115,7 +115,7 @@ export default function About() {
         </section>
 
         {/* Sponsorship card */}
-        <section className="group relative overflow-hidden rounded-[2rem] border border-violet/25 bg-gradient-to-br from-violet/12 via-card/90 to-rose/10 p-6 shadow-soft-lg backdrop-blur-md md:p-8">
+        <section className="group relative overflow-hidden rounded-3xl border border-violet/25 bg-gradient-to-br from-violet/12 via-card/90 to-rose/10 p-6 shadow-soft-lg backdrop-blur-md md:p-8">
           <div className="pointer-events-none absolute -top-16 -right-12 h-44 w-44 rounded-full bg-violet/25 blur-3xl transition-opacity group-hover:opacity-80" />
           <div className="pointer-events-none absolute -bottom-20 -left-10 h-44 w-44 rounded-full bg-rose/20 blur-3xl" />
 

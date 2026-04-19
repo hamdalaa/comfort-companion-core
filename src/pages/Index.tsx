@@ -78,7 +78,7 @@ const Index = () => {
         {/* Street features — two large editorial blocks */}
         <section className="container mt-10 sm:mt-20 md:mt-28">
           {/* Editorial archival headline — magazine spread inspired */}
-          <div className="relative isolate overflow-hidden rounded-[28px] border border-border/60 bg-card/30 px-6 py-12 shadow-soft backdrop-blur-sm sm:px-12 sm:py-20 md:px-20 md:py-24">
+          <div className="relative isolate overflow-hidden rounded-3xl border border-border/60 bg-card/30 px-6 py-12 shadow-soft backdrop-blur-sm sm:px-12 sm:py-20 md:px-20 md:py-24">
             {/* Map background */}
             <div
               aria-hidden
@@ -149,7 +149,7 @@ const Index = () => {
         <section className="container mt-10 sm:mt-20 md:mt-24">
           <Link
             to="/iraq"
-            className="group relative isolate block overflow-hidden rounded-[28px] border border-white/10 p-5 text-right shadow-soft transition-all hover:shadow-elegant sm:p-8 md:p-12"
+            className="group relative isolate block overflow-hidden rounded-3xl border border-white/10 p-5 text-right shadow-soft transition-all hover:shadow-elegant sm:p-8 md:p-12"
           >
             {/* Background image */}
             <div
