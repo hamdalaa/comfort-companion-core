@@ -10,6 +10,7 @@ import { CompareBar } from "@/components/CompareBar";
 import { CommandPalette } from "@/components/CommandPalette";
 import { WelcomeTour } from "@/components/WelcomeTour";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { BottomTabBar } from "@/components/BottomTabBar";
 import Index from "./pages/Index.tsx";
 
 // Lazy-load secondary routes to keep the initial bundle small.
@@ -68,6 +69,7 @@ const App = () => (
             </Suspense>
             <CompareBar />
             <CommandPalette />
+            <BottomTabBar />
           </BrowserRouter>
         </UserPrefsProvider>
       </DataStoreProvider>
