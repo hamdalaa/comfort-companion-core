@@ -34,22 +34,22 @@ export function HeroBanner() {
       {/* Subtle grid */}
       <div className="absolute inset-0 -z-10 bg-grid opacity-40" />
 
-      <div className="container relative pt-10 pb-12 sm:pt-16 sm:pb-20 md:pt-24 md:pb-28">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
+      <div className="container relative pt-6 pb-10 sm:pt-14 sm:pb-20 md:pt-24 md:pb-28">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
           {/* Headline */}
           <div className="text-right">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft/80 backdrop-blur px-3 py-1.5 text-[11px] font-semibold text-primary shadow-soft">
-              <Sparkles className="h-3 w-3 animate-pulse" />
-              أكبر دليل إلكترونيات بالعراق · مُحدَّث يومياً
+            <div className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-primary/20 bg-primary-soft/80 backdrop-blur px-2.5 py-1 text-[10px] font-semibold text-primary shadow-soft sm:gap-2 sm:px-3 sm:py-1.5 sm:text-[11px]">
+              <Sparkles className="h-3 w-3 shrink-0 animate-pulse" />
+              <span className="truncate">أكبر دليل إلكترونيات بالعراق · مُحدَّث يومياً</span>
             </div>
 
-            <h1 className="font-display mt-5 text-[clamp(2rem,7vw,5.5rem)] font-semibold leading-[1.02] text-foreground tracking-tight sm:mt-6 sm:leading-[0.94]">
+            <h1 className="font-display mt-4 text-[clamp(1.75rem,5.6vw,5.5rem)] font-semibold leading-[1.1] text-foreground tracking-tight sm:mt-6 sm:leading-[0.94]">
               لا تشتري
               <span className="text-rainbow"> غلط </span>
               مرّة ثانية<span className="text-foreground/45">.</span>
             </h1>
 
-            <p className="mt-5 max-w-[60ch] text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-lg sm:leading-8">
+            <p className="mt-4 max-w-[60ch] text-[13px] leading-6 text-muted-foreground sm:mt-6 sm:text-lg sm:leading-8">
               قبل ما تطلع من البيت، اعرف <span className="font-semibold text-primary">وين أرخص سعر</span>،
               <span className="font-semibold text-cyan"> منو المحل الأوثق</span>،
               و<span className="font-semibold text-violet">شنو يكولون الناس</span> عنه —
@@ -57,12 +57,12 @@ export function HeroBanner() {
             </p>
 
             {/* Search */}
-            <div className="mt-6 sm:mt-10">
+            <div className="mt-5 sm:mt-10">
               <HeroSearch />
             </div>
 
             {/* Quick Filter pills */}
-            <div className="mt-4">
+            <div className="mt-3 sm:mt-4">
               <QuickFilterPills />
             </div>
 
@@ -174,14 +174,14 @@ export function HeroBanner() {
         </div>
 
         {/* Stats — premium numerals + count-up */}
-        <div className="mt-10 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
+        <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-4 md:mt-16">
           {stats.map((stat) => (
-            <div key={stat.label} className="atlas-card hover-lift flex flex-col items-center justify-center px-3 py-4 text-center sm:px-6 sm:py-6 md:px-8 md:py-8">
+            <div key={stat.label} className="atlas-card hover-lift flex min-w-0 flex-col items-center justify-center px-2 py-3.5 text-center sm:px-6 sm:py-6 md:px-8 md:py-8">
               <CountUp
                 value={stat.value}
-                className="font-numeric text-2xl font-semibold leading-none text-rainbow sm:text-4xl md:text-5xl lg:text-6xl"
+                className="font-numeric text-xl font-semibold leading-none text-rainbow sm:text-4xl md:text-5xl lg:text-6xl"
               />
-              <div className="mt-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[11px] sm:tracking-[0.18em]">
+              <div className="mt-1.5 line-clamp-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground sm:mt-2 sm:text-[11px] sm:tracking-[0.18em]">
                 {stat.label}
               </div>
             </div>
