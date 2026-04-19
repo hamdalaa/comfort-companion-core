@@ -32,12 +32,13 @@ export type TheSvgVariant =
   | "wordmarkDark";
 
 // Map our internal slugs → theSVG slugs (most are identical).
+// Brands omitted here will fall back to the local logo.
 const THESVG_SLUG_MAP: Record<string, string> = {
   apple: "apple",
   samsung: "samsung",
   asus: "asus",
   honor: "honor",
-  anker: "anker",
+  // anker: intentionally omitted — using local SVG (official brand-blue wordmark)
 };
 
 export function getTheSvgUrl(slug: string, variant: TheSvgVariant = "default"): string | undefined {
