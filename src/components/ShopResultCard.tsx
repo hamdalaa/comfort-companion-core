@@ -57,7 +57,7 @@ export function ShopResultCard({ shop }: { shop: Shop }) {
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {shop.verified && (
-          <div className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-emerald-500 text-white shadow-sm">
+          <div className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-emerald text-emerald-foreground shadow-sm">
             <ShieldCheck className="h-3.5 w-3.5" />
           </div>
         )}
@@ -80,11 +80,11 @@ export function ShopResultCard({ shop }: { shop: Shop }) {
           </div>
 
           {rating && (
-            <div className="flex shrink-0 items-center gap-1 rounded-lg bg-amber-500/10 px-2 py-1 text-xs font-bold text-amber-600">
+            <div className="flex shrink-0 items-center gap-1 rounded-lg bg-amber/10 px-2 py-1 text-xs font-bold text-amber">
               <Star className="h-3 w-3 fill-current" />
               {rating.rating.toFixed(1)}
               <span className="text-[10px] font-normal text-muted-foreground">
-                ({rating.totalRatings})
+                ({rating.userRatingCount})
               </span>
             </div>
           )}
@@ -128,7 +128,7 @@ export function ShopResultCard({ shop }: { shop: Shop }) {
                 rel="noreferrer noopener"
                 onClick={(e) => e.stopPropagation()}
                 aria-label="واتساب"
-                className="grid h-7 w-7 place-items-center rounded-full bg-surface transition-colors hover:bg-emerald-500/10 hover:text-emerald-500"
+                className="grid h-7 w-7 place-items-center rounded-full bg-surface transition-colors hover:bg-emerald/10 hover:text-emerald"
               >
                 <MessageCircle className="h-3.5 w-3.5" />
               </a>
