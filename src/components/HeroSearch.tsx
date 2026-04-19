@@ -80,7 +80,7 @@ export function HeroSearch({
             onFocus={() => setAcOpen(true)}
             onBlur={() => setTimeout(() => setAcOpen(false), 150)}
             onKeyDown={onInputKeyDown}
-            placeholder={mode === "unified" ? "iPhone 15، PlayStation 5، MacBook…" : "ابحث عن موديل، براند، أو محل…"}
+            placeholder="iPhone 15، PlayStation 5، اسم محل…"
             className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/70 sm:text-base"
             autoComplete="off"
           />
