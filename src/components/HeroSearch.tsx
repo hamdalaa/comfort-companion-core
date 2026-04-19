@@ -1,9 +1,12 @@
-import { useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, Search, Sparkles, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ALL_AREAS, ALL_CATEGORIES, type Area, type Category } from "@/lib/types";
+import { SearchAutocomplete } from "@/components/SearchAutocomplete";
+import { buildAutocomplete, type AutocompleteSuggestion } from "@/lib/unifiedSearch";
+import { useDataStore } from "@/lib/dataStore";
 
 interface Props {
   initialQ?: string;
@@ -20,10 +23,36 @@ export function HeroSearch({
   initialCategory = "all",
 }: Props) {
   const nav = useNavigate();
+  const { shops } = useDataStore();
   const [mode, setMode] = useState<Mode>("unified");
   const [q, setQ] = useState(initialQ);
   const [area, setArea] = useState<Area | "all">(initialArea);
   const [category, setCategory] = useState<Category | "all">(initialCategory);
+
+  // Live autocomplete — fires on every keystroke. Cheap (in-memory).
+  const [acOpen, setAcOpen] = useState(false);
+  const [acIndex, setAcIndex] = useState(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const suggestions: AutocompleteSuggestion[] = useMemo(
+    () => buildAutocomplete(q, shops, 8),
+    [q, shops],
+  );
+
+  function handleAcSelect(s: AutocompleteSuggestion) {
+    setAcOpen(false);
+    nav(s.href);
+  }
+
+  function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Escape") { setAcOpen(false); return; }
+    if (!acOpen || !suggestions.length) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); setAcIndex((i) => Math.min(i + 1, suggestions.length - 1)); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); setAcIndex((i) => Math.max(i - 1, -1)); }
+    else if (e.key === "Enter" && acIndex >= 0) {
+      e.preventDefault();
+      handleAcSelect(suggestions[acIndex]);
+    }
+  }
 
   function submit(event: FormEvent) {
     event.preventDefault();
