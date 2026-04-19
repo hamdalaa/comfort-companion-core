@@ -655,16 +655,19 @@ function NoResultsFallback({
 
 function FilterSection({
   title,
+  icon: Icon,
   children,
   compact,
 }: {
   title: string;
+  icon?: React.ComponentType<{ className?: string }>;
   children: React.ReactNode;
   compact?: boolean;
 }) {
   return (
     <section className="border-t border-border/60 py-4 first:border-t-0 first:pt-0">
-      <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+      <h3 className="mb-3 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+        {Icon && <Icon className="h-3.5 w-3.5 text-primary" />}
         {title}
       </h3>
       <div className={cn(compact ? "flex flex-wrap gap-1.5" : "space-y-1.5")}>
