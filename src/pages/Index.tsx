@@ -80,7 +80,7 @@ const Index = () => {
           <div aria-hidden className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-cyan/22 blur-3xl" />
           <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-emerald/20 blur-3xl" />
           <div className="container py-10 sm:py-16 md:py-20">
-          <div className="relative isolate overflow-hidden rounded-3xl border border-border/60 bg-card/30 px-6 py-12 shadow-soft backdrop-blur-sm sm:px-12 sm:py-20 md:px-20 md:py-24">
+          <div className="relative isolate overflow-hidden rounded-3xl border border-border/60 bg-foreground/[0.04] px-6 py-12 shadow-soft backdrop-blur-sm sm:px-12 sm:py-20 md:px-20 md:py-24">
             {/* Map background */}
             <div
               aria-hidden
