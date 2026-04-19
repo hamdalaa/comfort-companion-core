@@ -75,9 +75,11 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Street features — two large editorial blocks */}
-        <section className="container mt-10 sm:mt-20 md:mt-28">
-          {/* Editorial archival headline — magazine spread inspired */}
+        {/* Street features — soft cyan/emerald band */}
+        <section className="relative mt-10 overflow-hidden border-y border-cyan/15 bg-gradient-to-bl from-cyan/6 via-background to-emerald/5 sm:mt-20 md:mt-28">
+          <div aria-hidden className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-cyan/12 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-emerald/10 blur-3xl" />
+          <div className="container py-10 sm:py-16 md:py-20">
           <div className="relative isolate overflow-hidden rounded-3xl border border-border/60 bg-card/30 px-6 py-12 shadow-soft backdrop-blur-sm sm:px-12 sm:py-20 md:px-20 md:py-24">
             {/* Map background */}
             <div
