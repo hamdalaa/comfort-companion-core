@@ -46,9 +46,9 @@
     --muted: 215 18% 95%;
     --muted-foreground: 215 14% 42%;
 
-    --accent: 38 92% 50%;               /* warm amber for CTAs */
-    --accent-foreground: 215 28% 12%;
-    --accent-soft: 38 95% 95%;
+    --accent: 14 88% 58%;               /* refined coral CTA */
+    --accent-foreground: 0 0% 100%;
+    --accent-soft: 14 95% 95%;
 
     /* Multi-accent palette — semantic, used sparingly */
     --accent-violet: 262 83% 58%;       /* premium / brands */
@@ -59,8 +59,8 @@
     --accent-emerald-soft: 158 70% 94%;
     --accent-cyan: 190 90% 45%;         /* tech / categories */
     --accent-cyan-soft: 190 90% 95%;
-    --accent-amber: 38 92% 50%;
-    --accent-amber-soft: 38 95% 95%;
+    --accent-amber: 14 88% 58%;
+    --accent-amber-soft: 14 95% 95%;
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
