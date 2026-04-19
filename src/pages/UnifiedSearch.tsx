@@ -36,7 +36,9 @@ import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { UnifiedProductCard } from "@/components/UnifiedProductCard";
 import { UnifiedSearchFilters } from "@/components/UnifiedSearchFilters";
-import { ShopResultCard } from "@/components/ShopResultCard";
+import { CityShopCard } from "@/components/CityShopCard";
+import type { CityShop } from "@/lib/cityData";
+import type { Shop } from "@/lib/types";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { EmptyState } from "@/components/EmptyState";
 import { DummyDataBanner } from "@/components/DummyDataBanner";
@@ -90,6 +92,27 @@ function pushRecent(q: string) {
   if (!q.trim()) return;
   const cur = getRecent().filter((x) => x !== q);
   saveRecent([q, ...cur]);
+}
+
+// Adapter: convert internal Shop → CityShop shape so we can render the
+// richer CityShopCard component on the unified search page.
+function shopToCityShop(shop: Shop): CityShop {
+  return {
+    id: shop.id,
+    name: shop.name,
+    city: shop.area,
+    area: shop.area,
+    category: shop.category,
+    address: shop.address,
+    phone: shop.phone,
+    whatsapp: shop.whatsapp,
+    website: shop.website,
+    googleMapsUrl: shop.googleMapsUrl,
+    lat: shop.lat,
+    lng: shop.lng,
+    imageUrl: shop.imageUrl,
+    quickSignals: { has_website: !!shop.website },
+  };
 }
 
 // ---------- Component ----------
@@ -620,8 +643,10 @@ function ShopsView({
           }
         />
       ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          {shopResult.shops.map((s) => <ShopResultCard key={s.id} shop={s} />)}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {shopResult.shops.map((s) => (
+            <CityShopCard key={s.id} shop={shopToCityShop(s)} citySlug="baghdad" />
+          ))}
         </div>
       )}
     </div>
