@@ -24,6 +24,16 @@ const CAT_LABELS: Partial<Record<Category, string>> = {
   "Smart Devices": "أجهزة ذكية",
 };
 
+// Format an Iraqi phone number for readability: "+964 770 123 4567".
+function formatPhone(raw?: string): string | null {
+  if (!raw) return null;
+  const digits = raw.replace(/[^\d+]/g, "");
+  if (!digits) return null;
+  const m = digits.match(/^(\+?\d{1,4})(\d{3})(\d{3})(\d{2,4})$/);
+  if (m) return `${m[1]} ${m[2]} ${m[3]} ${m[4]}`;
+  return digits;
+}
+
 export function ShopCard({ shop }: { shop: Shop }) {
   const categories = shop.categories && shop.categories.length > 0 ? shop.categories : [shop.category];
   const fallback = CATEGORY_IMAGES[categories[0]];
