@@ -57,12 +57,12 @@ export function HeroBanner() {
             </p>
 
             {/* Search */}
-            <div className="mt-5 sm:mt-10">
+            <div className="relative z-30 mt-5 sm:mt-10">
               <HeroSearch />
             </div>
 
             {/* Quick Filter pills */}
-            <div className="mt-3 sm:mt-4">
+            <div className="relative z-10 mt-3 sm:mt-4">
               <QuickFilterPills />
             </div>
 
