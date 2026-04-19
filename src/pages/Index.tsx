@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, MapPin } from "lucide-react";
 import baghdadPinsMap from "@/assets/baghdad-pins-map.png";
+import iraqCitiesPano from "@/assets/iraq-cities-pano.jpg";
 import { TopNav } from "@/components/TopNav";
 import { HeroBanner } from "@/components/HeroBanner";
 import { CategoryCircles } from "@/components/CategoryCircles";
@@ -142,8 +143,20 @@ const Index = () => {
         <section className="container mt-10 sm:mt-20 md:mt-24">
           <Link
             to="/iraq"
-            className="atlas-card group block p-5 text-right sm:p-8 md:p-12"
+            className="group relative isolate block overflow-hidden rounded-[28px] border border-border/60 p-5 text-right shadow-soft transition-all hover:shadow-elegant sm:p-8 md:p-12"
           >
+            {/* Background image */}
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-20 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+              style={{ backgroundImage: `url(${iraqCitiesPano})` }}
+            />
+            {/* Readability overlay — RTL: darker on right where text sits */}
+            <div
+              aria-hidden
+              className="absolute inset-0 -z-10 bg-gradient-to-l from-background/95 via-background/75 to-background/30"
+            />
+
             <div className="grid gap-4 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
                 <span className="atlas-kicker">تغطية وطنية</span>
@@ -156,7 +169,7 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 border-t border-border pt-4 sm:gap-4 md:border-0 md:pt-0">
+              <div className="flex items-center gap-3 border-t border-border/60 pt-4 sm:gap-4 md:border-0 md:pt-0">
                 <span className="font-display text-sm font-bold text-foreground group-hover:text-primary sm:text-xl">
                   افتح الأطلس
                 </span>
