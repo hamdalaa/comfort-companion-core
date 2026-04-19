@@ -113,17 +113,17 @@ export function HeroBanner() {
 
         {/* Value propositions hidden per request */}
 
-        {/* Quick entry cards — keep premium image cards */}
-        <div className="mx-auto mt-6 grid max-w-5xl grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3">
+        {/* Quick entry cards — editorial destination tiles */}
+        <div className="mx-auto mt-8 grid max-w-5xl grid-cols-1 gap-3 sm:mt-12 sm:grid-cols-3 sm:gap-4">
           {[
-            { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · شبكات", img: sinaaImg, accent: "from-cyan/40" },
-            { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن", img: rubaieImg, accent: "from-rose/40" },
-            { to: "/iraq", title: "كل المحافظات", note: "10 محافظات", img: iraqImg, accent: "from-violet/40" },
+            { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · شبكات", kicker: "بغداد", img: sinaaImg },
+            { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن", kicker: "بغداد", img: rubaieImg },
+            { to: "/iraq", title: "كل المحافظات", note: "10 محافظات", kicker: "العراق", img: iraqImg },
           ].map((entry) => (
             <Link
               key={entry.to}
               to={entry.to}
-              className="group relative isolate flex h-28 items-end overflow-hidden rounded-2xl border border-border shadow-soft-lg transition-all hover:-translate-y-0.5 hover:shadow-soft-xl"
+              className="group relative isolate flex h-36 items-end overflow-hidden rounded-2xl border border-border/60 bg-card shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-soft-xl sm:h-40"
             >
               <img
                 src={entry.img}
@@ -131,21 +131,28 @@ export function HeroBanner() {
                 loading="lazy"
                 width={800}
                 height={512}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
               />
-              <div className={`pointer-events-none absolute inset-0 bg-gradient-to-t ${entry.accent} via-foreground/40 to-foreground/85`} />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-foreground/70 via-transparent to-transparent" />
+              {/* Refined overlay — single elegant gradient */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent" />
 
-              <div className="relative z-10 flex w-full items-end justify-between gap-3 p-3.5 text-right text-white">
+              {/* Top kicker chip */}
+              <div className="absolute right-3 top-3 z-10 rounded-full bg-background/85 px-2 py-0.5 text-[10px] font-semibold text-foreground/80 backdrop-blur-md ring-1 ring-border/60">
+                {entry.kicker}
+              </div>
+
+              <div className="relative z-10 flex w-full items-end justify-between gap-3 p-4 text-right text-white">
                 <div className="min-w-0">
-                  <div className="font-display text-base font-semibold leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+                  <div className="font-display text-lg font-semibold leading-tight tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                     {entry.title}
                   </div>
-                  <div className="mt-1.5 inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium backdrop-blur-md ring-1 ring-white/25">
+                  <div className="mt-1 text-[11px] font-medium text-white/80">
                     {entry.note}
                   </div>
                 </div>
-                <ArrowLeft className="h-4 w-4 shrink-0 opacity-80 transition-transform group-hover:-translate-x-1" />
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-background/95 text-foreground shadow-soft transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                  <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+                </div>
               </div>
             </Link>
           ))}
