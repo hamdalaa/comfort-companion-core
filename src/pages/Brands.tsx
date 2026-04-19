@@ -5,7 +5,7 @@ import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useDataStore } from "@/lib/dataStore";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
-import { getBrandLogo } from "@/lib/brandLogos";
+import { getBrandLogo, getTheSvgUrl } from "@/lib/brandLogos";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import type { BrandDealer } from "@/lib/types";
 
@@ -139,7 +139,7 @@ export default function Brands() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {enrichedBrands.map((brand, idx) => {
               const img = brand.previewImage;
-              const logo = getBrandLogo(brand.slug);
+              const logo = getTheSvgUrl(brand.slug, "default") ?? getBrandLogo(brand.slug);
               const tagline = getTagline(brand);
               const isVerified = brand.verificationStatus === "verified";
 
