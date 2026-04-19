@@ -34,7 +34,7 @@ export function SearchAutocomplete({
   if (!query.trim()) return null;
 
   return (
-    <div className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-border bg-popover shadow-soft-xl">
+    <div className="absolute inset-x-0 top-full z-[60] mt-2 overflow-hidden rounded-2xl border border-border bg-background shadow-soft-xl">
       {/* Quick-search row — always first */}
       <button
         type="button"
