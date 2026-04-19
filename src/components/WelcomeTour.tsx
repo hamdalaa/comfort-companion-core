@@ -79,59 +79,61 @@ export function WelcomeTour() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) close(); }}>
-      <DialogContent className="w-[calc(100%-2rem)] max-w-md rounded-2xl">
-        <DialogHeader>
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow">
-            <Sparkles className="h-7 w-7" />
+      <DialogContent className="flex max-h-[90dvh] w-[calc(100%-1.5rem)] max-w-md flex-col gap-3 overflow-hidden rounded-2xl p-4 sm:p-6">
+        <DialogHeader className="space-y-2">
+          <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow sm:h-14 sm:w-14">
+            <Sparkles className="h-5 w-5 sm:h-7 sm:w-7" />
           </div>
-          <DialogTitle className="text-center text-xl">أهلاً بك في حاير</DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogTitle className="text-center text-base sm:text-xl">أهلاً بك في حاير</DialogTitle>
+          <DialogDescription className="text-center text-xs sm:text-sm">
             دليل إلكترونيات العراق — جولة سريعة بأربع خطوات
           </DialogDescription>
         </DialogHeader>
 
-        <div className="my-4 rounded-xl border border-border bg-muted/40 p-5 text-center">
-          {current.icon === Code2 ? (
-            <div className="mx-auto mb-3 h-20 w-20 overflow-hidden rounded-full ring-2 ring-primary/30 shadow-glow">
-              <img
-                src={developerAvatar}
-                alt="صورة المطور"
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          ) : (
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Icon className="h-6 w-6" />
-            </div>
-          )}
-          <h3 className="text-lg font-bold">{current.title}</h3>
-          <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground leading-relaxed">{current.body}</p>
+        <div className="-mx-1 flex-1 overflow-y-auto px-1">
+          <div className="rounded-xl border border-border bg-muted/40 p-3 text-center sm:p-5">
+            {current.icon === Code2 ? (
+              <div className="mx-auto mb-3 h-14 w-14 overflow-hidden rounded-full ring-2 ring-primary/30 shadow-glow sm:h-20 sm:w-20">
+                <img
+                  src={developerAvatar}
+                  alt="صورة المطور"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary sm:h-12 sm:w-12">
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+              </div>
+            )}
+            <h3 className="text-base font-bold sm:text-lg">{current.title}</h3>
+            <p className="mt-2 whitespace-pre-line text-xs leading-relaxed text-muted-foreground sm:text-sm">{current.body}</p>
 
-          {current.highlights && (
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5">
-              {current.highlights.map((h) => (
-                <span
-                  key={h}
-                  className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/80"
-                >
-                  {h}
-                </span>
-              ))}
-            </div>
-          )}
+            {current.highlights && (
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
+                {current.highlights.map((h) => (
+                  <span
+                    key={h}
+                    className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground/80"
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+            )}
 
-          {isLast && (current as any).instagram && (
-            <a
-              href={(current as any).instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-4 py-2 text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"
-            >
-              <Instagram className="h-4 w-4" />
-              تواصل مع المطور
-            </a>
-          )}
+            {isLast && (current as any).instagram && (
+              <a
+                href={(current as any).instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-4 py-2 text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"
+              >
+                <Instagram className="h-4 w-4" />
+                تواصل مع المطور
+              </a>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center justify-center gap-1.5">
