@@ -77,31 +77,20 @@ export function UnifiedProductCard({ product, topOffers }: Props) {
 
       {/* ===== Body ===== */}
       <div className="flex flex-1 flex-col gap-3 p-4">
-        {/* Brand + category + rating */}
+        {/* Brand on the start, category on the end (rating removed). */}
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5">
-            {product.brand && (
-              <Badge
-                variant="outline"
-                className="rounded-full border-border bg-surface px-2 py-0 text-[10px] font-bold uppercase tracking-wide text-foreground"
-              >
-                {product.brand}
-              </Badge>
-            )}
-            {product.category && (
-              <span className="text-[11px] font-medium text-muted-foreground">
-                {product.category}
-              </span>
-            )}
-          </div>
-          {product.rating != null && (
-            <div className="flex items-center gap-1 rounded-full bg-warning/10 px-2 py-0.5 text-[11px] font-semibold text-foreground">
-              <Star className="h-3 w-3 fill-warning text-warning" />
-              {product.rating.toFixed(1)}
-              {product.reviewCount != null && (
-                <span className="text-muted-foreground">({product.reviewCount})</span>
-              )}
-            </div>
+          {product.brand ? (
+            <Badge
+              variant="outline"
+              className="rounded-full border-border bg-surface px-2 py-0 text-[10px] font-bold uppercase tracking-wide text-foreground"
+            >
+              {product.brand}
+            </Badge>
+          ) : <span />}
+          {product.category && (
+            <span className="text-[11px] font-medium text-muted-foreground">
+              {product.category}
+            </span>
           )}
         </div>
 
