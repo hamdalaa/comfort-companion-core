@@ -103,12 +103,6 @@ const Index = () => {
             <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
               {/* Headline — right side in RTL */}
               <div className="lg:col-span-7">
-                <div className="flex items-center justify-end gap-3">
-                  <span className="h-px w-8 bg-primary" />
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
-                    شوارع السوق
-                  </span>
-                </div>
                 <h2 className="font-display mt-6 text-balance text-right text-[2.5rem] font-bold leading-[1.05] tracking-tight text-foreground sm:mt-8 sm:text-[4rem] md:text-[5.5rem] lg:text-[6.5rem]">
                   مسارات
                   <span className="block lg:pe-12">بغداد</span>
@@ -124,9 +118,6 @@ const Index = () => {
                   في قلب العاصمة، يبرز شارعا
                   <span className="font-semibold text-primary"> الصناعة والربيعي </span>
                   كشرايين نابضة لسوق الإلكترونيات في بغداد.
-                </p>
-                <p className="text-[13px] leading-[1.85] text-muted-foreground sm:text-sm">
-                  هنا تتقاطع واجهات المحلات بقصص التطور التقني — من مكوّنات الحاسوب إلى أحدث الهواتف. ابدأ منهما قبل أي قرار شراء.
                 </p>
               </div>
             </div>
