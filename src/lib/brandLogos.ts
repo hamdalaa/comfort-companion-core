@@ -5,6 +5,7 @@ import samsung from "@/assets/brands/samsung.png";
 import asus from "@/assets/brands/asus.png";
 import honor from "@/assets/brands/honor.png";
 import anker from "@/assets/brands/anker.svg";
+import ugreen from "@/assets/brands/ugreen.svg";
 
 export const BRAND_LOGOS: Record<string, string> = {
   apple,
@@ -12,6 +13,7 @@ export const BRAND_LOGOS: Record<string, string> = {
   asus,
   honor,
   anker,
+  ugreen,
 };
 
 export function getBrandLogo(slug: string): string | undefined {
@@ -38,6 +40,7 @@ const THESVG_SLUG_MAP: Record<string, string> = {
   samsung: "samsung",
   asus: "asus",
   honor: "honor",
+  ugreen: "ugreen",
   // anker: intentionally omitted — using local SVG (official brand-blue wordmark)
 };
 
