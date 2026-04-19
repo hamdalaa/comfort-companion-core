@@ -21,16 +21,20 @@ import { ALL_AREAS, ALL_CATEGORIES, type Area, type Category } from "@/lib/types
 import { cn } from "@/lib/utils";
 import {
   ChevronLeft,
+  CircleDollarSign,
   Filter,
   Grid3x3,
   Home,
   Layers,
   List,
+  MapPin,
   Search,
+  ShieldCheck,
   SlidersHorizontal,
   Sparkles,
   Star,
   Tag,
+  Tags,
   X,
 } from "lucide-react";
 
