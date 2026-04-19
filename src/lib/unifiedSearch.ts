@@ -242,7 +242,7 @@ export async function searchUnified(req: UnifiedSearchRequest): Promise<UnifiedS
     totalProducts: products.length,
     totalOffers,
     storesCovered,
-    storesScanned: MOCK_STORES.length,
+    storesScanned: MOCK_STORES_COUNT,
     durationMs: Math.round(performance.now() - start),
     products,
     facets: {
