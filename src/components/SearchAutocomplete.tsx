@@ -85,13 +85,13 @@ export function SearchAutocomplete({
         </div>
       )}
 
-      {/* Quick-search row — always at the END of suggestions */}
+      {/* Quick-search row — always pinned at the END of suggestions */}
       <button
         type="button"
         onMouseEnter={() => onHover(-1)}
         onClick={onSubmitQuery}
         className={cn(
-          "flex w-full items-center justify-between gap-2 border-t border-border px-4 py-3 text-start transition-colors",
+          "flex w-full shrink-0 items-center justify-between gap-2 border-t border-border bg-background px-4 py-3 text-start transition-colors",
           highlightedIndex === -1 ? "bg-primary/10" : "hover:bg-surface",
         )}
       >
