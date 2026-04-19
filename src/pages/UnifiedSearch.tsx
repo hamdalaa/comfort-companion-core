@@ -284,7 +284,7 @@ export default function UnifiedSearch() {
                 <EmptyState
                   title="ما لگينا نتائج"
                   description={`جرّب كلمات مختلفة أو امسح الفلاتر. بحثت عن: "${activeQuery}"`}
-                  cta={<Button onClick={reset} variant="outline">مسح الفلاتر</Button>}
+                  action={<Button onClick={reset} variant="outline">مسح الفلاتر</Button>}
                 />
               ) : (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
