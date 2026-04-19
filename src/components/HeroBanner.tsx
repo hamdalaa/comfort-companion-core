@@ -61,10 +61,6 @@ export function HeroBanner() {
               <HeroSearch />
             </div>
 
-            {/* Quick Filter pills */}
-            <div className="relative z-10 mt-3 sm:mt-4">
-              <QuickFilterPills />
-            </div>
 
             {/* Quick queries */}
 
