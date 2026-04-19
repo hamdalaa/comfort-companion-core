@@ -121,8 +121,8 @@ export default function About() {
             </div>
           </section>
 
-          {/* Sponsorship card — wider, the main CTA */}
-          <section className="lg:col-span-3">
+          {/* Sponsorship column */}
+          <section className="lg:col-span-3 space-y-6">
             <div className="group relative overflow-hidden rounded-3xl border border-violet/25 bg-gradient-to-br from-violet/12 via-card to-rose/8 p-6 shadow-soft-lg md:p-10">
               <div className="pointer-events-none absolute -top-20 -right-16 h-56 w-56 rounded-full bg-violet/20 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-24 -left-12 h-56 w-56 rounded-full bg-rose/15 blur-3xl" />
