@@ -172,10 +172,11 @@ export function HeroSearch({
 
           <Button
             type="submit"
-            className="group/btn h-12 w-full shrink-0 rounded-xl bg-gradient-primary text-sm font-bold text-primary-foreground shadow-glow transition-all hover:-translate-y-0.5 hover:opacity-95 sm:w-auto sm:rounded-2xl sm:px-8"
+            size="lg"
+            className="group/btn h-12 w-full shrink-0 gap-2 rounded-xl px-6 font-semibold sm:w-auto sm:rounded-2xl sm:px-8"
           >
+            <Search className="h-4 w-4" />
             ابحث
-            <ArrowLeft className="ms-2 h-4 w-4 transition-transform group-hover/btn:-translate-x-1" />
           </Button>
         </div>
       </form>
