@@ -57,10 +57,10 @@ export function SiteFooter() {
 
       <div className="container py-14 md:py-20">
         {/* Masthead block */}
-        <div className="grid gap-10 border-b border-border pb-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <div className="grid gap-10 border-b border-border pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
           <div className="text-right">
             <Link to="/" className="inline-flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-foreground text-background shadow-soft-md">
+              <div className="glow-primary flex h-12 w-12 items-center justify-center rounded-2xl bg-foreground text-background shadow-soft-md">
                 <span className="font-display text-2xl font-bold leading-none text-primary-foreground">ت</span>
               </div>
               <div>
@@ -94,26 +94,31 @@ export function SiteFooter() {
           </div>
 
           {/* Columns */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-8">
-            {columns.map((column) => (
-              <div key={column.title} className="min-w-0 text-right">
-                <div className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80 sm:tracking-[0.22em]">
-                  {column.title}
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-8">
+            {columns.map((column) => {
+              const Icon = column.icon;
+              return (
+                <div key={column.title} className="min-w-0 text-right">
+                  <div className="flex items-center justify-end gap-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground/80">
+                    <span className="truncate">{column.title}</span>
+                    <Icon className="h-3 w-3 shrink-0 text-primary/70" />
+                  </div>
+                  <ul className="mt-4 space-y-3">
+                    {column.links.map((link) => (
+                      <li key={link.to} className="min-w-0">
+                        <Link
+                          to={link.to}
+                          className="group/flink inline-flex items-center gap-1.5 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          <span className="block h-px w-0 bg-current transition-all duration-300 group-hover/flink:w-3" />
+                          <span className="truncate">{link.label}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="mt-3 space-y-2.5 sm:mt-4 sm:space-y-3">
-                  {column.links.map((link) => (
-                    <li key={link.to} className="min-w-0">
-                      <Link
-                        to={link.to}
-                        className="block truncate text-xs text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
