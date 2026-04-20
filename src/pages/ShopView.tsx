@@ -48,9 +48,17 @@ const ShopView = () => {
   const { shops, products, shopSources } = useDataStore();
   const { favorites, toggleFavorite } = useUserPrefs();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const legacyShop = shopId ? getLegacySinaaShopById(shopId) : null;
   const officialDealerShop = shopId ? mapOfficialDealerBranchToShop(shopId) : null;
   const storeDetailQuery = useStoreDetailQuery(!legacyShop && !officialDealerShop ? shopId : undefined);
+
+  // Detect scroll past hero so we can elevate the actions bar (sticky context).
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 280);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleBack = () => {
     // If user has history within the app, go back; otherwise go home.
