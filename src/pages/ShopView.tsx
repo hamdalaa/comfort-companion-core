@@ -216,10 +216,10 @@ const ShopView = () => {
         </div>
       </div>
 
-      <main className="flex-1 container py-6 space-y-6 md:py-8">
+      <main className="flex-1 container py-4 space-y-5 pb-24 md:py-8 md:pb-8 md:space-y-6">
         {/* ============ 1. HERO ============ */}
         <header className="overflow-hidden rounded-3xl border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm reveal-init reveal-on">
-          <div className="group relative h-56 sm:h-72 md:h-96 bg-muted overflow-hidden">
+          <div className="group relative h-44 sm:h-72 md:h-96 bg-muted overflow-hidden">
             <img
               src={optimizeImageUrl(heroImg, { width: 1600, height: 600 }) ?? heroImg}
               alt={shop.name}
@@ -230,19 +230,19 @@ const ShopView = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-l from-black/30 via-transparent to-black/50" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-            <div className="absolute bottom-0 right-0 left-0 p-4 md:p-7 text-white">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2.5 py-1 text-[11px] font-semibold">
+            <div className="absolute bottom-0 right-0 left-0 p-3 sm:p-4 md:p-7 text-white">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2 py-0.5 text-[10px] font-semibold sm:px-2.5 sm:py-1 sm:text-[11px]">
                   <MapPin className="h-3 w-3" /> {shop.area}
                 </span>
-                <span className="rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2.5 py-1 text-[11px] font-semibold">{shop.category}</span>
+                <span className="rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2 py-0.5 text-[10px] font-semibold sm:px-2.5 sm:py-1 sm:text-[11px]">{shop.category}</span>
                 {shop.verified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold shadow-[0_4px_18px_-4px_hsl(var(--success)/0.55)]">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2 py-0.5 text-[10px] font-bold shadow-[0_4px_18px_-4px_hsl(var(--success)/0.55)] sm:px-2.5 sm:py-1 sm:text-[11px]">
                     <ShieldCheck className="h-3 w-3" /> محل موثّق
                   </span>
                 )}
                 {pageData?.businessStatus === "OPERATIONAL" && pageData?.openNow === true && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2 py-0.5 text-[10px] font-bold sm:px-2.5 sm:py-1 sm:text-[11px]">
                     <span className="relative flex h-1.5 w-1.5">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
                       <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
@@ -251,16 +251,16 @@ const ShopView = () => {
                   </span>
                 )}
                 {pageData?.openNow === false && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/90 ring-1 ring-white/30 px-2 py-0.5 text-[10px] font-bold sm:px-2.5 sm:py-1 sm:text-[11px]">
                     <XCircle className="h-3 w-3" /> مغلق حالياً
                   </span>
                 )}
               </div>
-              <h1 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+              <h1 className="mt-2 font-display text-xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] line-clamp-2 sm:line-clamp-none">
                 {shop.name}
               </h1>
               {googleRating && (
-                <div className="mt-2.5 inline-flex items-center gap-1 rounded-full bg-black/45 ring-1 ring-white/15 px-3 py-1.5 backdrop-blur-md">
+                <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-black/45 ring-1 ring-white/15 px-2.5 py-1 backdrop-blur-md sm:mt-2.5 sm:px-3 sm:py-1.5">
                   <StarRating rating={googleRating.rating} reviews={googleRating.userRatingCount} size="sm" className="[&_*]:!text-white [&_svg.fill-warning]:!fill-warning [&_svg.fill-warning]:!text-warning" />
                 </div>
               )}
@@ -270,47 +270,47 @@ const ShopView = () => {
           {/* ============ 2. ACTIONS BAR ============ */}
           <div
             className={cn(
-              "sticky top-[60px] z-20 flex flex-wrap items-center gap-1.5 border-t border-border/60 p-3 transition-all duration-300 sm:gap-2 sm:p-4 md:p-5",
+              "sticky top-[56px] z-20 flex items-center gap-1.5 border-t border-border/60 p-2.5 transition-all duration-300 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:whitespace-normal sm:gap-2 sm:p-4 md:top-[60px] md:p-5",
               scrolled
                 ? "bg-card/95 backdrop-blur-md shadow-soft-md"
                 : "bg-transparent",
             )}
           >
             {shop.googleMapsUrl && (
-              <Button asChild size="sm" className="btn-ripple h-9 gap-1.5 rounded-full bg-primary px-3.5 text-xs text-primary-foreground shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.55)] transition-transform hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-5 sm:text-sm">
+              <Button asChild size="sm" className="btn-ripple h-9 shrink-0 gap-1.5 rounded-full bg-primary px-3.5 text-xs text-primary-foreground shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.55)] transition-transform hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-5 sm:text-sm">
                 <a href={shop.googleMapsUrl} target="_blank" rel="noreferrer noopener">
                   <MapPin className="h-4 w-4" /> خرائط Google
                 </a>
               </Button>
             )}
             {shop.website && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 shrink-0 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={shop.website} target="_blank" rel="noreferrer noopener">
                   <Globe className="h-4 w-4" /> الموقع
                 </a>
               </Button>
             )}
             {shop.phone && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 shrink-0 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData?.callUrl ?? `tel:${shop.phone.replace(/\s/g, "")}`}>
                   <Phone className="h-4 w-4" /> <bdi dir="ltr">{shop.phone}</bdi>
                 </a>
               </Button>
             )}
             {pageData?.whatsappUrl && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full border-success/40 px-3 text-xs text-success transition-all hover:bg-success/10 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 shrink-0 gap-1.5 rounded-full border-success/40 px-3 text-xs text-success transition-all hover:bg-success/10 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData.whatsappUrl} target="_blank" rel="noreferrer noopener">
                   <MessageCircle className="h-4 w-4" /> واتساب
                 </a>
               </Button>
             )}
-            <div className="ms-auto flex items-center gap-1">
+            <div className="ms-auto flex shrink-0 items-center gap-0.5 ps-1 sm:gap-1 sm:ps-0">
             {shop.phone && (
-              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleCopyPhone} aria-label="نسخ الرقم">
+              <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleCopyPhone} aria-label="نسخ الرقم">
                 <Copy className="h-4 w-4" />
               </Button>
             )}
-            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleShare} aria-label="مشاركة">
+            <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleShare} aria-label="مشاركة">
               <Share2 className="h-4 w-4" />
             </Button>
             <Button
@@ -318,14 +318,14 @@ const ShopView = () => {
               size="icon"
               onClick={() => toggleFavorite(shop.id)}
               aria-label="حفظ"
-              className={cn("rounded-full transition-transform hover:scale-110 active:scale-95", isFav && "text-primary")}
+              className={cn("h-9 w-9 shrink-0 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10", isFav && "text-primary")}
             >
               <Heart className={cn("h-4 w-4 transition-all", isFav && "fill-current scale-110")} />
             </Button>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 border-t border-border/60 bg-gradient-to-br from-muted/20 to-transparent p-4 md:grid-cols-4 md:p-5">
+          <div className="grid grid-cols-2 gap-2 border-t border-border/60 bg-gradient-to-br from-muted/20 to-transparent p-3 sm:gap-3 sm:p-4 md:grid-cols-4 md:p-5">
             <SummaryTile
               icon={googleRating ? Star : ShieldCheck}
               value={googleRating ? googleRating.rating.toFixed(1) : shop.verified ? "موثّق" : "عام"}
@@ -355,11 +355,11 @@ const ShopView = () => {
 
         {/* ============ 3. QUICK DECISION STRIP ============ */}
         {pageData && (
-          <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
+          <section className="reveal-init reveal-on rounded-2xl border border-border/70 bg-card/82 p-3 shadow-soft-lg backdrop-blur-sm sm:rounded-3xl sm:p-4 md:p-5">
             <h2 className="mb-3 inline-flex items-center gap-2 text-sm font-bold text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5 text-primary" /> قرار سريع
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+            <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2 lg:grid-cols-7">
               <QuickFlag label="موقع رسمي" ok={pageData.quickDecision.has_website} />
               <QuickFlag label="على الخرائط" ok={pageData.quickDecision.has_google_maps} />
               <QuickFlag label="صور متوفرة" ok={pageData.quickDecision.has_photos} />
@@ -433,9 +433,9 @@ const ShopView = () => {
 
                 <div className="space-y-4 p-4 md:p-6">
                   {/* Rating summary */}
-                  <div className="flex items-stretch gap-4 rounded-2xl border border-border/60 bg-gradient-to-br from-background to-muted/30 p-4">
-                    <div className="flex flex-col items-center justify-center border-l border-border/60 pl-4 text-center">
-                      <div className="font-display text-4xl font-bold leading-none text-foreground">
+                  <div className="flex items-stretch gap-3 rounded-2xl border border-border/60 bg-gradient-to-br from-background to-muted/30 p-3 sm:gap-4 sm:p-4">
+                    <div className="flex flex-col items-center justify-center border-l border-border/60 pl-3 text-center sm:pl-4">
+                      <div className="font-display text-3xl font-bold leading-none text-foreground sm:text-4xl">
                         {googleRating.rating.toFixed(1)}
                       </div>
                       <StarRating rating={googleRating.rating} size="xs" className="mt-1.5" />
@@ -444,11 +444,11 @@ const ShopView = () => {
                       </div>
                     </div>
                     {googleRating.reviewSummary ? (
-                      <p className="flex-1 self-center text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                      <p className="flex-1 self-center text-[11px] leading-relaxed text-muted-foreground line-clamp-5 sm:text-sm sm:line-clamp-none">
                         {googleRating.reviewSummary}
                       </p>
                     ) : (
-                      <p className="flex-1 self-center text-xs leading-relaxed text-muted-foreground/70">
+                      <p className="flex-1 self-center text-[11px] leading-relaxed text-muted-foreground/70 sm:text-xs">
                         تقييمات الزبائن من Google Maps
                       </p>
                     )}
@@ -712,14 +712,14 @@ function SummaryTile({
     muted: "bg-muted text-muted-foreground",
   };
   return (
-    <div className="group rounded-2xl border border-border/60 bg-background/75 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <div className={cn("flex h-9 w-9 items-center justify-center rounded-2xl transition-transform group-hover:scale-110", tones[accent])}>
-          <Icon className="h-4 w-4" />
+    <div className="group rounded-2xl border border-border/60 bg-background/75 p-2.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md sm:p-3">
+      <div className="flex items-center gap-2 text-muted-foreground min-w-0">
+        <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110 sm:h-9 sm:w-9 sm:rounded-2xl", tones[accent])}>
+          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </div>
-        <div className="font-display text-xl font-bold text-foreground tracking-tight">{value}</div>
+        <div className="font-display text-base font-bold text-foreground tracking-tight truncate sm:text-xl">{value}</div>
       </div>
-      <div className="mt-2 text-[11px] leading-5 text-muted-foreground">{label}</div>
+      <div className="mt-1.5 text-[10px] leading-4 text-muted-foreground sm:mt-2 sm:text-[11px] sm:leading-5">{label}</div>
     </div>
   );
 }
