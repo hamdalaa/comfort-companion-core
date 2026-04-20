@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { SearchX } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export function EmptyState({
   title,
@@ -15,15 +16,23 @@ export function EmptyState({
   className?: string;
   icon?: ReactNode;
 }) {
+  const { ref, revealed } = useScrollReveal<HTMLDivElement>();
   return (
-    <div className={cn("relative overflow-hidden rounded-2xl border border-border bg-card p-10 text-center shadow-soft-md", className)}>
+    <div
+      ref={ref}
+      className={cn(
+        "relative overflow-hidden rounded-2xl border border-border bg-card p-10 text-center shadow-soft-md reveal-init",
+        revealed && "reveal-on",
+        className,
+      )}
+    >
       {/* Decorative aurora glow */}
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-60">
-        <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl animate-pulse-glow" />
         <div className="absolute -bottom-16 right-1/3 h-32 w-32 rounded-full bg-accent-violet/15 blur-3xl" style={{ background: "hsl(var(--accent-violet) / 0.18)" }} />
       </div>
 
-      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-soft via-card to-violet-soft shadow-soft-md">
+      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-soft via-card to-violet-soft shadow-soft-md glow-primary">
         {icon ?? <SearchX className="h-7 w-7 text-primary" />}
       </div>
 
