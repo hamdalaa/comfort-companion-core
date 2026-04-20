@@ -10,8 +10,10 @@ import {
   LayoutDashboard,
   MapPin,
   Menu,
+  Moon,
   Search,
   Store,
+  Sun,
   Trash2,
   X,
   XCircle,
@@ -34,6 +36,7 @@ import {
 import { ALL_CATEGORIES, type Category } from "@/lib/types";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { useDataStore } from "@/lib/dataStore";
+import { useTheme } from "@/lib/theme";
 import { CITIES } from "@/lib/cityData";
 import { cn } from "@/lib/utils";
 
@@ -71,6 +74,7 @@ export function TopNav() {
   const [selectedCity, setSelectedCity] = useState(() => loadSelectedCity());
   const { favorites, openTour } = useUserPrefs();
   const { products } = useDataStore();
+  const { theme, toggleTheme } = useTheme();
 
   const favItems = products.filter((product) => favorites.has(product.id));
 
@@ -264,6 +268,19 @@ export function TopNav() {
               <HelpCircle className="h-4 w-4" />
             </button>
 
+            {/* Theme toggle — light/dark Sky Tech palette */}
+            <button
+              onClick={toggleTheme}
+              className="ios-tap relative hidden h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-[background-color,color] hover:bg-surface hover:text-foreground md:flex"
+              aria-label={theme === "dark" ? "تبديل للوضع الفاتح" : "تبديل للوضع الداكن"}
+              title={theme === "dark" ? "الوضع الفاتح" : "الوضع الداكن"}
+            >
+              <span className="icon-swap relative h-4 w-4" data-active={theme === "dark" ? "true" : "false"}>
+                <span className="icon-primary"><Sun className="h-4 w-4" /></span>
+                <span className="icon-secondary"><Moon className="h-4 w-4" /></span>
+              </span>
+            </button>
+
 
             <Link
               to="/about"
@@ -283,6 +300,15 @@ export function TopNav() {
                 <span className="icon-primary"><Menu className="h-4 w-4" /></span>
                 <span className="icon-secondary"><X className="h-4 w-4" /></span>
               </span>
+            </button>
+
+            {/* Mobile theme toggle (visible <md, where the desktop toggle is hidden) */}
+            <button
+              onClick={toggleTheme}
+              className="ios-tap flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-[background-color,color] hover:bg-surface md:hidden"
+              aria-label={theme === "dark" ? "تبديل للوضع الفاتح" : "تبديل للوضع الداكن"}
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
           </div>
         </div>

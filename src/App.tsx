@@ -8,6 +8,7 @@ import { DeferredRootChrome } from "@/components/DeferredRootChrome";
 import { RouteIntentPrefetch } from "@/components/RouteIntentPrefetch";
 import { DataStoreProvider } from "@/lib/dataStore";
 import { UserPrefsProvider } from "@/lib/userPrefs";
+import { ThemeProvider } from "@/lib/theme";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { BottomTabBar } from "@/components/BottomTabBar";
 import { PullToRefresh } from "@/components/PullToRefresh";
@@ -67,8 +68,9 @@ const RouteFallback = () => (
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider delayDuration={200}>
-      <DataStoreProvider>
-        <UserPrefsProvider>
+      <ThemeProvider>
+        <DataStoreProvider>
+          <UserPrefsProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -101,8 +103,9 @@ const App = () => (
             <DeferredRootChrome />
             <BottomTabBar />
           </BrowserRouter>
-        </UserPrefsProvider>
-      </DataStoreProvider>
+          </UserPrefsProvider>
+        </DataStoreProvider>
+      </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
