@@ -18,6 +18,7 @@ import { optimizeImageUrl } from "@/lib/imageUrl";
 import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import { StarRating } from "@/components/StarRating";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
 import type { Shop } from "@/lib/types";
 import {
@@ -47,9 +48,17 @@ const ShopView = () => {
   const { shops, products, shopSources } = useDataStore();
   const { favorites, toggleFavorite } = useUserPrefs();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const legacyShop = shopId ? getLegacySinaaShopById(shopId) : null;
   const officialDealerShop = shopId ? mapOfficialDealerBranchToShop(shopId) : null;
   const storeDetailQuery = useStoreDetailQuery(!legacyShop && !officialDealerShop ? shopId : undefined);
+
+  // Detect scroll past hero so we can elevate the actions bar (sticky context).
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 280);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleBack = () => {
     // If user has history within the app, go back; otherwise go home.
@@ -209,39 +218,49 @@ const ShopView = () => {
 
       <main className="flex-1 container py-6 space-y-6 md:py-8">
         {/* ============ 1. HERO ============ */}
-        <header className="overflow-hidden rounded-3xl border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm">
-          <div className="relative h-52 sm:h-64 md:h-80 bg-muted">
+        <header className="overflow-hidden rounded-3xl border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm reveal-init reveal-on">
+          <div className="group relative h-56 sm:h-72 md:h-96 bg-muted overflow-hidden">
             <img
               src={optimizeImageUrl(heroImg, { width: 1600, height: 600 }) ?? heroImg}
               alt={shop.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
               loading="eager"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-l from-black/25 via-transparent to-black/45" />
-            <div className="absolute bottom-0 right-0 left-0 p-4 md:p-6 text-white">
+            {/* Layered gradients for depth */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-l from-black/30 via-transparent to-black/50" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+            <div className="absolute bottom-0 right-0 left-0 p-4 md:p-7 text-white">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-md bg-white/20 backdrop-blur px-2 py-0.5 text-[11px]">{shop.area}</span>
-                <span className="rounded-md bg-white/20 backdrop-blur px-2 py-0.5 text-[11px]">{shop.category}</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2.5 py-1 text-[11px] font-semibold">
+                  <MapPin className="h-3 w-3" /> {shop.area}
+                </span>
+                <span className="rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2.5 py-1 text-[11px] font-semibold">{shop.category}</span>
                 {shop.verified && (
-                  <span className="inline-flex items-center gap-1 rounded-md bg-success/90 px-2 py-0.5 text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold shadow-[0_4px_18px_-4px_hsl(var(--success)/0.55)]">
                     <ShieldCheck className="h-3 w-3" /> محل موثّق
                   </span>
                 )}
                 {pageData?.businessStatus === "OPERATIONAL" && pageData?.openNow === true && (
-                  <span className="inline-flex items-center gap-1 rounded-md bg-success/90 px-2 py-0.5 text-[11px] font-bold">
-                    <CheckCircle2 className="h-3 w-3" /> مفتوح الآن
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+                    </span>
+                    مفتوح الآن
                   </span>
                 )}
                 {pageData?.openNow === false && (
-                  <span className="inline-flex items-center gap-1 rounded-md bg-destructive/90 px-2 py-0.5 text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold">
                     <XCircle className="h-3 w-3" /> مغلق حالياً
                   </span>
                 )}
               </div>
-              <h1 className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold drop-shadow">{shop.name}</h1>
+              <h1 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+                {shop.name}
+              </h1>
               {googleRating && (
-                <div className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-black/45 px-2.5 py-1 backdrop-blur">
+                <div className="mt-2.5 inline-flex items-center gap-1 rounded-full bg-black/45 ring-1 ring-white/15 px-3 py-1.5 backdrop-blur-md">
                   <StarRating rating={googleRating.rating} reviews={googleRating.userRatingCount} size="sm" className="[&_*]:!text-white [&_svg.fill-warning]:!fill-warning [&_svg.fill-warning]:!text-warning" />
                 </div>
               )}
@@ -249,41 +268,49 @@ const ShopView = () => {
           </div>
 
           {/* ============ 2. ACTIONS BAR ============ */}
-          <div className="flex flex-wrap items-center gap-1.5 border-t border-border/60 p-3 sm:gap-2 sm:p-4 md:p-5">
+          <div
+            className={cn(
+              "sticky top-[60px] z-20 flex flex-wrap items-center gap-1.5 border-t border-border/60 p-3 transition-all duration-300 sm:gap-2 sm:p-4 md:p-5",
+              scrolled
+                ? "bg-card/95 backdrop-blur-md shadow-soft-md"
+                : "bg-transparent",
+            )}
+          >
             {shop.googleMapsUrl && (
-              <Button asChild size="sm" className="h-9 gap-1.5 rounded-full bg-primary px-3.5 text-xs text-primary-foreground hover:bg-primary/90 sm:h-10 sm:px-5 sm:text-sm">
+              <Button asChild size="sm" className="btn-ripple h-9 gap-1.5 rounded-full bg-primary px-3.5 text-xs text-primary-foreground shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.55)] transition-transform hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-5 sm:text-sm">
                 <a href={shop.googleMapsUrl} target="_blank" rel="noreferrer noopener">
                   <MapPin className="h-4 w-4" /> خرائط Google
                 </a>
               </Button>
             )}
             {shop.website && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={shop.website} target="_blank" rel="noreferrer noopener">
                   <Globe className="h-4 w-4" /> الموقع
                 </a>
               </Button>
             )}
             {shop.phone && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData?.callUrl ?? `tel:${shop.phone.replace(/\s/g, "")}`}>
                   <Phone className="h-4 w-4" /> <bdi dir="ltr">{shop.phone}</bdi>
                 </a>
               </Button>
             )}
             {pageData?.whatsappUrl && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full border-success/40 px-3 text-xs text-success hover:bg-success/10 sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full border-success/40 px-3 text-xs text-success transition-all hover:bg-success/10 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData.whatsappUrl} target="_blank" rel="noreferrer noopener">
                   <MessageCircle className="h-4 w-4" /> واتساب
                 </a>
               </Button>
             )}
+            <div className="ms-auto flex items-center gap-1">
             {shop.phone && (
-              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full sm:h-10 sm:w-10" onClick={handleCopyPhone} aria-label="نسخ الرقم">
+              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleCopyPhone} aria-label="نسخ الرقم">
                 <Copy className="h-4 w-4" />
               </Button>
             )}
-            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full sm:h-10 sm:w-10" onClick={handleShare} aria-label="مشاركة">
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleShare} aria-label="مشاركة">
               <Share2 className="h-4 w-4" />
             </Button>
             <Button
@@ -291,40 +318,47 @@ const ShopView = () => {
               size="icon"
               onClick={() => toggleFavorite(shop.id)}
               aria-label="حفظ"
-              className={cn("rounded-full", isFav && "text-primary")}
+              className={cn("rounded-full transition-transform hover:scale-110 active:scale-95", isFav && "text-primary")}
             >
-              <Heart className={cn("h-4 w-4", isFav && "fill-current")} />
+              <Heart className={cn("h-4 w-4 transition-all", isFav && "fill-current scale-110")} />
             </Button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 border-t border-border/60 p-4 md:grid-cols-4 md:p-5">
+          <div className="grid grid-cols-2 gap-3 border-t border-border/60 bg-gradient-to-br from-muted/20 to-transparent p-4 md:grid-cols-4 md:p-5">
             <SummaryTile
               icon={googleRating ? Star : ShieldCheck}
               value={googleRating ? googleRating.rating.toFixed(1) : shop.verified ? "موثّق" : "عام"}
               label={googleRating ? "تقييم Google" : "الحالة"}
+              accent={googleRating ? "warning" : "success"}
             />
             <SummaryTile
               icon={Package}
               value={shopProducts.length.toLocaleString("ar")}
               label="منتج مفهرس"
+              accent="primary"
             />
             <SummaryTile
               icon={Camera}
               value={`${pageData?.photosCount ?? gallery.length ?? 0}`}
               label="صورة متاحة"
+              accent="accent"
             />
             <SummaryTile
               icon={Clock}
               value={lastDataUpdatedAt ? relativeArabicTime(lastDataUpdatedAt) : "—"}
               label="آخر تحديث للبيانات"
+              accent="muted"
             />
           </div>
         </header>
 
         {/* ============ 3. QUICK DECISION STRIP ============ */}
         {pageData && (
-          <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
-            <h2 className="mb-3 text-sm font-bold text-muted-foreground">قرار سريع</h2>
+          <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
+            <h2 className="mb-3 inline-flex items-center gap-2 text-sm font-bold text-muted-foreground">
+              <Sparkles className="h-3.5 w-3.5 text-primary" /> قرار سريع
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
               <QuickFlag label="موقع رسمي" ok={pageData.quickDecision.has_website} />
               <QuickFlag label="على الخرائط" ok={pageData.quickDecision.has_google_maps} />
@@ -342,25 +376,32 @@ const ShopView = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* ============ 4. GALLERY ============ */}
             {gallery.length > 0 && (
-              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
-                <h2 className="mb-3 inline-flex items-center gap-2 text-lg font-bold">
-                  <Camera className="h-5 w-5 text-primary" /> الصور
+              <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+                <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-bold tracking-tight">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Camera className="h-4 w-4" />
+                  </span>
+                  الصور
                   <span className="text-xs font-normal text-muted-foreground">({pageData?.photosCount ?? gallery.length})</span>
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                   {gallery.slice(0, 8).map((g, i) => (
                     <button
                       key={i}
                       onClick={() => setLightboxIdx(i)}
-                      className="group relative aspect-square overflow-hidden rounded-lg bg-muted ring-1 ring-border hover:ring-primary transition-all"
+                      className="group relative aspect-square overflow-hidden rounded-xl bg-muted ring-1 ring-border transition-all duration-300 hover:ring-2 hover:ring-primary hover:shadow-soft-md hover:-translate-y-0.5"
                     >
                       <img
                         src={optimizeImageUrl(g, { width: 400, height: 400 }) ?? g}
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <div className="absolute bottom-2 right-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-foreground opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
+                        <ImageIcon className="h-3.5 w-3.5" />
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -463,16 +504,19 @@ const ShopView = () => {
             )}
 
             {/* ============ 5. INDEXED PRODUCTS ============ */}
-            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
-              <div className="mb-4 flex items-end justify-between gap-3">
+            <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <div className="mb-5 flex items-end justify-between gap-3">
                 <div>
-                  <h2 className="inline-flex items-center gap-2 text-lg font-bold">
-                    <Package className="h-5 w-5 text-primary" /> المنتجات المفهرسة
+                  <h2 className="inline-flex items-center gap-2 text-lg font-bold tracking-tight">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <Package className="h-4 w-4" />
+                    </span>
+                    المنتجات المفهرسة
                   </h2>
                   <p className="mt-1 text-xs text-muted-foreground">الأسعار والتوفر مبنية على آخر فهرسة، مو لحظية.</p>
                 </div>
                 {shopProducts.length > 0 && (
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary ring-1 ring-primary/20">
                     {shopProducts.length} منتج
                   </span>
                 )}
@@ -540,15 +584,18 @@ const ShopView = () => {
           {/* ============ SIDE COLUMN ============ */}
           <aside className="space-y-6">
             {/* ============ 7. DETAILS & TRUST ============ */}
-            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
-              <h2 className="mb-3 inline-flex items-center gap-2 text-base font-bold">
-                <ShieldCheck className="h-4 w-4 text-primary" /> التفاصيل والثقة
+            <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5 lg:sticky lg:top-[140px]">
+              <h2 className="mb-3 inline-flex items-center gap-2 text-base font-bold tracking-tight">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                </span>
+                التفاصيل والثقة
               </h2>
 
               {shop.address && (
-                <div className="mb-3 flex gap-2 text-xs">
-                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground mt-0.5" />
-                  <span className="text-muted-foreground">{shop.address}</span>
+                <div className="mb-3 flex gap-2 rounded-xl border border-border/50 bg-background/50 p-2.5 text-xs">
+                  <MapPin className="h-4 w-4 shrink-0 text-primary mt-0.5" />
+                  <span className="text-foreground/80">{shop.address}</span>
                 </div>
               )}
 
@@ -557,9 +604,9 @@ const ShopView = () => {
                   <div className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold">
                     <Clock className="h-3.5 w-3.5 text-primary" /> ساعات العمل
                   </div>
-                  <ul className="space-y-1 text-[11px] text-muted-foreground">
+                  <ul className="space-y-0.5 text-[11px] text-muted-foreground rounded-xl border border-border/50 bg-background/40 px-3">
                     {pageData.workingHours.map((h, i) => (
-                      <li key={i} className="flex justify-between gap-2 border-b border-border/50 last:border-0 py-1">
+                      <li key={i} className="flex justify-between gap-2 border-b border-border/30 last:border-0 py-1.5">
                         <span>{formatHours(h)}</span>
                       </li>
                     ))}
@@ -585,11 +632,14 @@ const ShopView = () => {
 
         {/* ============ 10. SIMILAR STORES ============ */}
         {pageData?.similarStores && pageData.similarStores.length > 0 && (
-          <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
-            <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-bold">
-              <Store className="h-5 w-5 text-primary" /> محلات مشابهة
+          <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+            <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-bold tracking-tight">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Store className="h-4 w-4" />
+              </span>
+              محلات مشابهة
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
               {pageData.similarStores.map((s, i) => {
                 // Try to find the matching shop in our store
                 const target = shops.find((x) => x.slug === s.slug);
@@ -601,18 +651,18 @@ const ShopView = () => {
                   <Link
                     key={i}
                     to={href}
-                    className="group rounded-lg border border-border bg-background overflow-hidden hover:border-primary hover:shadow-md transition-all"
+                    className="group rounded-xl border border-border bg-background overflow-hidden transition-all duration-300 hover:border-primary/60 hover:shadow-soft-md hover:-translate-y-1"
                   >
                     <div className="aspect-square bg-muted overflow-hidden">
                       <img
                         src={optimizeImageUrl(img, { width: 300, height: 300 }) ?? img}
                         alt={s.name}
                         loading="lazy"
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
-                    <div className="p-2">
-                      <div className="line-clamp-2 text-[11px] font-bold leading-tight">{s.name}</div>
+                    <div className="p-2.5">
+                      <div className="line-clamp-2 text-[11px] font-bold leading-tight transition-colors group-hover:text-primary">{s.name}</div>
                       {s.hasWebsite && (
                         <div className="mt-1 inline-flex items-center gap-0.5 text-[10px] text-success">
                           <Globe className="h-2.5 w-2.5" /> موقع
@@ -647,18 +697,27 @@ function SummaryTile({
   icon: Icon,
   value,
   label,
+  accent = "primary",
 }: {
   icon: ComponentType<{ className?: string }>;
   value: string;
   label: string;
+  accent?: "primary" | "warning" | "success" | "accent" | "muted";
 }) {
+  const tones: Record<string, string> = {
+    primary: "bg-primary/10 text-primary",
+    warning: "bg-warning/15 text-warning",
+    success: "bg-success/15 text-success",
+    accent: "bg-accent/15 text-accent-foreground",
+    muted: "bg-muted text-muted-foreground",
+  };
   return (
-    <div className="rounded-2xl border border-border/60 bg-background/75 p-3">
+    <div className="group rounded-2xl border border-border/60 bg-background/75 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md">
       <div className="flex items-center gap-2 text-muted-foreground">
-        <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <div className={cn("flex h-9 w-9 items-center justify-center rounded-2xl transition-transform group-hover:scale-110", tones[accent])}>
           <Icon className="h-4 w-4" />
         </div>
-        <div className="font-display text-xl font-bold text-foreground">{value}</div>
+        <div className="font-display text-xl font-bold text-foreground tracking-tight">{value}</div>
       </div>
       <div className="mt-2 text-[11px] leading-5 text-muted-foreground">{label}</div>
     </div>
