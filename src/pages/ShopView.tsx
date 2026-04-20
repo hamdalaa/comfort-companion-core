@@ -355,8 +355,10 @@ const ShopView = () => {
 
         {/* ============ 3. QUICK DECISION STRIP ============ */}
         {pageData && (
-          <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
-            <h2 className="mb-3 text-sm font-bold text-muted-foreground">قرار سريع</h2>
+          <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
+            <h2 className="mb-3 inline-flex items-center gap-2 text-sm font-bold text-muted-foreground">
+              <Sparkles className="h-3.5 w-3.5 text-primary" /> قرار سريع
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
               <QuickFlag label="موقع رسمي" ok={pageData.quickDecision.has_website} />
               <QuickFlag label="على الخرائط" ok={pageData.quickDecision.has_google_maps} />
