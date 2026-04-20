@@ -270,47 +270,47 @@ const ShopView = () => {
           {/* ============ 2. ACTIONS BAR ============ */}
           <div
             className={cn(
-              "sticky top-[60px] z-20 flex flex-wrap items-center gap-1.5 border-t border-border/60 p-3 transition-all duration-300 sm:gap-2 sm:p-4 md:p-5",
+              "sticky top-[56px] z-20 flex items-center gap-1.5 border-t border-border/60 p-2.5 transition-all duration-300 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:whitespace-normal sm:gap-2 sm:p-4 md:top-[60px] md:p-5",
               scrolled
                 ? "bg-card/95 backdrop-blur-md shadow-soft-md"
                 : "bg-transparent",
             )}
           >
             {shop.googleMapsUrl && (
-              <Button asChild size="sm" className="btn-ripple h-9 gap-1.5 rounded-full bg-primary px-3.5 text-xs text-primary-foreground shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.55)] transition-transform hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-5 sm:text-sm">
+              <Button asChild size="sm" className="btn-ripple h-9 shrink-0 gap-1.5 rounded-full bg-primary px-3.5 text-xs text-primary-foreground shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.55)] transition-transform hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-5 sm:text-sm">
                 <a href={shop.googleMapsUrl} target="_blank" rel="noreferrer noopener">
                   <MapPin className="h-4 w-4" /> خرائط Google
                 </a>
               </Button>
             )}
             {shop.website && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 shrink-0 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={shop.website} target="_blank" rel="noreferrer noopener">
                   <Globe className="h-4 w-4" /> الموقع
                 </a>
               </Button>
             )}
             {shop.phone && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 shrink-0 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData?.callUrl ?? `tel:${shop.phone.replace(/\s/g, "")}`}>
                   <Phone className="h-4 w-4" /> <bdi dir="ltr">{shop.phone}</bdi>
                 </a>
               </Button>
             )}
             {pageData?.whatsappUrl && (
-              <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 rounded-full border-success/40 px-3 text-xs text-success transition-all hover:bg-success/10 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
+              <Button asChild variant="outline" size="sm" className="h-9 shrink-0 gap-1.5 rounded-full border-success/40 px-3 text-xs text-success transition-all hover:bg-success/10 hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
                 <a href={pageData.whatsappUrl} target="_blank" rel="noreferrer noopener">
                   <MessageCircle className="h-4 w-4" /> واتساب
                 </a>
               </Button>
             )}
-            <div className="ms-auto flex items-center gap-1">
+            <div className="ms-auto flex shrink-0 items-center gap-0.5 ps-1 sm:gap-1 sm:ps-0">
             {shop.phone && (
-              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleCopyPhone} aria-label="نسخ الرقم">
+              <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleCopyPhone} aria-label="نسخ الرقم">
                 <Copy className="h-4 w-4" />
               </Button>
             )}
-            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleShare} aria-label="مشاركة">
+            <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10" onClick={handleShare} aria-label="مشاركة">
               <Share2 className="h-4 w-4" />
             </Button>
             <Button
@@ -318,7 +318,7 @@ const ShopView = () => {
               size="icon"
               onClick={() => toggleFavorite(shop.id)}
               aria-label="حفظ"
-              className={cn("rounded-full transition-transform hover:scale-110 active:scale-95", isFav && "text-primary")}
+              className={cn("h-9 w-9 shrink-0 rounded-full transition-transform hover:scale-110 active:scale-95 sm:h-10 sm:w-10", isFav && "text-primary")}
             >
               <Heart className={cn("h-4 w-4 transition-all", isFav && "fill-current scale-110")} />
             </Button>
