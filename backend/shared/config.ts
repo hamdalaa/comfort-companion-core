@@ -1,9 +1,12 @@
+import path from "node:path";
 import { config as loadEnv } from "dotenv";
 import { z } from "zod";
 
 loadEnv();
 
 const inferredRepoRoot = process.cwd();
+const defaultSqlitePath = path.join(inferredRepoRoot, ".catalog-data", "catalog.sqlite");
+const defaultDocsEnabled = process.env.NODE_ENV !== "production";
 
 const DEFAULT_TYPESENSE_KEY = "change-me-search-key";
 const DEFAULT_SNAPSHOT_KEY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
@@ -15,8 +18,23 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(4400),
   CATALOG_BIND_HOST: z.string().min(1).default("127.0.0.1"),
   CATALOG_REPO_ROOT: z.string().min(1).default(inferredRepoRoot),
+  CATALOG_API_BODY_LIMIT_BYTES: z.coerce.number().int().positive().default(128 * 1024),
+  CATALOG_API_MAX_URL_LENGTH: z.coerce.number().int().positive().default(2048),
+  CATALOG_PUBLIC_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(120),
+  CATALOG_PUBLIC_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
+  CATALOG_PUBLIC_SEARCH_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(40),
+  CATALOG_DOCS_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
+  CATALOG_DOCS_ENABLED: z
+    .string()
+    .optional()
+    .transform((value) => (value == null ? defaultDocsEnabled : value === "true")),
+  CATALOG_OUTBOUND_MAX_RESPONSE_BYTES: z.coerce.number().int().positive().default(5 * 1024 * 1024),
+  CATALOG_OUTBOUND_MAX_REDIRECTS: z.coerce.number().int().min(0).max(5).default(3),
+  CATALOG_DB_DRIVER: z.enum(["sqlite", "postgres"]).default("sqlite"),
+  SQLITE_DATABASE_PATH: z.string().min(1).default(defaultSqlitePath),
   DATABASE_URL: z.string().url().default("postgres://catalog:catalog@localhost:5432/catalog"),
   REDIS_URL: z.string().url().default("redis://localhost:6379"),
+  CATALOG_SEARCH_DRIVER: z.enum(["sqlite", "typesense"]).optional(),
   TYPESENSE_URL: z.string().url().default("http://localhost:8108"),
   TYPESENSE_API_KEY: z.string().min(8).default(DEFAULT_TYPESENSE_KEY),
   STORAGE_BUCKET: z.string().min(1).default("catalog-snapshots"),
@@ -96,12 +114,40 @@ const allowInsecureDefaults =
   parsedEnv.CATALOG_ALLOW_INSECURE_DEFAULTS === true || process.env.NODE_ENV === "test";
 
 const parsedServiceTokens = parseInternalServiceTokens(parsedEnv.INTERNAL_SERVICE_TOKENS);
+const resolvedSearchDriver =
+  parsedEnv.CATALOG_SEARCH_DRIVER ?? (parsedEnv.CATALOG_DB_DRIVER === "sqlite" ? "sqlite" : "typesense");
 
 export const catalogConfig = {
   port: parsedEnv.PORT,
   bindHost: parsedEnv.CATALOG_BIND_HOST,
   repoRoot: parsedEnv.CATALOG_REPO_ROOT,
+  api: {
+    bodyLimitBytes: parsedEnv.CATALOG_API_BODY_LIMIT_BYTES,
+    maxUrlLength: parsedEnv.CATALOG_API_MAX_URL_LENGTH,
+  },
+  docs: {
+    enabled: parsedEnv.CATALOG_DOCS_ENABLED ?? defaultDocsEnabled,
+    rateLimitMax: parsedEnv.CATALOG_DOCS_RATE_LIMIT_MAX,
+  },
+  publicRateLimit: {
+    max: parsedEnv.CATALOG_PUBLIC_RATE_LIMIT_MAX,
+    windowMs: parsedEnv.CATALOG_PUBLIC_RATE_LIMIT_WINDOW_MS,
+    searchMax: parsedEnv.CATALOG_PUBLIC_SEARCH_RATE_LIMIT_MAX,
+  },
+  outbound: {
+    maxResponseBytes: parsedEnv.CATALOG_OUTBOUND_MAX_RESPONSE_BYTES,
+    maxRedirects: parsedEnv.CATALOG_OUTBOUND_MAX_REDIRECTS,
+  },
   databaseUrl: parsedEnv.DATABASE_URL,
+  sqliteDatabasePath: parsedEnv.SQLITE_DATABASE_PATH,
+  database: {
+    driver: parsedEnv.CATALOG_DB_DRIVER,
+    url: parsedEnv.DATABASE_URL,
+    sqlitePath: parsedEnv.SQLITE_DATABASE_PATH,
+  },
+  search: {
+    driver: resolvedSearchDriver,
+  },
   redisUrl: parsedEnv.REDIS_URL,
   typesense: {
     url: parsedEnv.TYPESENSE_URL,
@@ -133,7 +179,7 @@ if (catalogConfig.snapshotEncryptionKey.byteLength !== 32) {
 
 if (!allowInsecureDefaults) {
   const errors: string[] = [];
-  if (parsedEnv.TYPESENSE_API_KEY === DEFAULT_TYPESENSE_KEY) {
+  if (resolvedSearchDriver === "typesense" && parsedEnv.TYPESENSE_API_KEY === DEFAULT_TYPESENSE_KEY) {
     errors.push("TYPESENSE_API_KEY must be replaced with a strong secret.");
   }
   if (parsedEnv.SNAPSHOT_ENCRYPTION_KEY_BASE64 === DEFAULT_SNAPSHOT_KEY) {

@@ -4,9 +4,8 @@ import { ArrowLeft, ExternalLink, MapPin, Phone, ShieldCheck, Sparkles } from "l
 import { Button } from "@/components/ui/button";
 import { VerifiedBadge } from "./Badges";
 import { StarRating } from "./StarRating";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import { optimizeImageUrl } from "@/lib/imageUrl";
-import { getRating } from "@/lib/googleRatings";
 import { categoryChipClass } from "@/lib/categoryColors";
 import type { Category, Shop } from "@/lib/types";
 
@@ -40,7 +39,9 @@ export function ShopCard({ shop }: { shop: Shop }) {
   const [imgFailed, setImgFailed] = useState(false);
   const rawImg = shop.imageUrl && !imgFailed ? shop.imageUrl : fallback;
   const img = optimizeImageUrl(rawImg, { width: 720, height: 520 }) ?? rawImg;
-  const rating = getRating(shop);
+  const rating = typeof shop.rating === "number" && shop.rating > 0
+    ? { rating: shop.rating, userRatingCount: shop.reviewCount ?? 0 }
+    : null;
 
   // Ribbon logic — verified > top-rated > none
   const isTopRated = rating && rating.rating >= 4.5;
@@ -61,7 +62,7 @@ export function ShopCard({ shop }: { shop: Shop }) {
 
       <Link
         to={`/shop-view/${shop.id}`}
-        className="relative block aspect-[4/3] overflow-hidden bg-surface-2"
+        className="img-frame relative block aspect-[4/3] overflow-hidden bg-surface-2"
         aria-label={`${shop.name} — افتح صفحة المحل`}
       >
         <img
@@ -86,7 +87,7 @@ export function ShopCard({ shop }: { shop: Shop }) {
       </Link>
 
       <div className="space-y-3 p-4 sm:p-5">
-        <h3 className="font-display text-lg sm:text-xl font-semibold leading-tight text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+        <h3 className="font-display text-balance text-lg font-semibold leading-tight text-foreground line-clamp-2 transition-colors group-hover:text-primary sm:text-xl">
           {shop.name}
         </h3>
 
@@ -105,7 +106,7 @@ export function ShopCard({ shop }: { shop: Shop }) {
           {formatPhone(shop.phone) && (
             <li className="flex items-start gap-1.5">
               <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
-              <span dir="ltr" className="font-numeric text-foreground/85">{formatPhone(shop.phone)}</span>
+              <span dir="ltr" className="font-numeric tabular-nums text-foreground/85">{formatPhone(shop.phone)}</span>
             </li>
           )}
         </ul>
@@ -121,13 +122,13 @@ export function ShopCard({ shop }: { shop: Shop }) {
           ))}
           {categories.length > 3 && (
             <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-              +{categories.length - 3}
+              <span className="font-numeric tabular-nums">+{categories.length - 3}</span>
             </span>
           )}
         </div>
 
         <div className="flex items-center gap-2 pt-1">
-          <Button asChild size="sm" className="btn-ripple h-9 flex-1 rounded-xl bg-foreground text-background hover:bg-primary transition-colors">
+          <Button asChild size="sm" className="btn-ripple flex-1 rounded-xl bg-foreground text-background transition-[transform,background-color,box-shadow,color] hover:bg-primary">
             <Link to={`/shop-view/${shop.id}`}>
               افتح المحل
               <ArrowLeft className="icon-nudge-x h-3.5 w-3.5" />
@@ -139,7 +140,7 @@ export function ShopCard({ shop }: { shop: Shop }) {
               asChild
               size="sm"
               variant="outline"
-              className="h-9 rounded-xl border-border bg-background px-3 text-foreground hover:border-primary hover:text-primary"
+              className="rounded-xl border-border bg-background px-3 text-foreground transition-[background-color,border-color,color,box-shadow] hover:border-primary hover:text-primary"
             >
               <a href={shop.googleMapsUrl} target="_blank" rel="noreferrer noopener" aria-label="خرائط Google">
                 <MapPin className="h-4 w-4" />
@@ -152,7 +153,7 @@ export function ShopCard({ shop }: { shop: Shop }) {
               asChild
               size="sm"
               variant="outline"
-              className="h-9 rounded-xl border-border bg-background px-3 text-foreground hover:border-primary hover:text-primary"
+              className="rounded-xl border-border bg-background px-3 text-foreground transition-[background-color,border-color,color,box-shadow] hover:border-primary hover:text-primary"
             >
               <a href={shop.website} target="_blank" rel="noreferrer noopener" aria-label="الموقع">
                 <ExternalLink className="h-4 w-4" />

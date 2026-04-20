@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StarRating } from "./StarRating";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import { buildGoogleMapsUrl } from "@/lib/googleMaps";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import type { CityShop } from "@/lib/cityData";

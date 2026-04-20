@@ -1,9 +1,11 @@
 import { buildSearchDocument } from "../catalog/searchDocuments.js";
+import { extractDomain, extractRootDomain } from "../catalog/normalization.js";
 import { summarizeStoreSize } from "../catalog/storeSizing.js";
 import { createId, nowIso } from "../catalog/normalization.js";
 import type { CatalogProductDraft, PartnerFeedRecord } from "../catalog/types.js";
 import type { CatalogRepository } from "../repositories/contracts.js";
 import type { SearchEngine } from "../search/contracts.js";
+import { guardedFetch, readJsonResponseBounded } from "../security/outboundRequestGuard.js";
 import { CoverageService } from "./coverageService.js";
 
 export interface FeedSyncInput {
@@ -38,7 +40,7 @@ export class FeedSyncService {
     if (!store) throw new Error(`Store ${storeId} not found.`);
 
     try {
-      const payload = await fetchJsonFeed(input.sourceUrl, input.authHeaders);
+      const payload = await fetchJsonFeed(input.sourceUrl, input.authHeaders, resolveAllowedRootDomain(input.sourceUrl));
       const products = mapFeedProducts(storeId, payload, input.fieldMap);
       await this.repository.replaceCatalogSnapshot(storeId, products, [], []);
       const summary = summarizeStoreSize({
@@ -95,18 +97,25 @@ export class FeedSyncService {
   }
 }
 
-async function fetchJsonFeed(sourceUrl: string, authHeaders?: Record<string, string>): Promise<unknown[]> {
-  const response = await fetch(sourceUrl, {
-    headers: {
-      accept: "application/json,text/plain,*/*",
-      ...(authHeaders ?? {}),
+async function fetchJsonFeed(
+  sourceUrl: string,
+  authHeaders?: Record<string, string>,
+  allowedRootDomain?: string,
+): Promise<unknown[]> {
+  const response = await guardedFetch(sourceUrl, {
+    accept: "application/json,text/plain,*/*",
+    allowedRootDomain,
+    init: {
+      headers: {
+        ...(authHeaders ?? {}),
+      },
+      signal: AbortSignal.timeout(30_000),
     },
-    signal: AbortSignal.timeout(30_000),
   });
   if (!response.ok) {
     throw new Error(`Failed to fetch partner feed ${sourceUrl}: ${response.status}`);
   }
-  const payload = await response.json();
+  const payload = await readJsonResponseBounded<unknown>(response);
   if (Array.isArray(payload)) return payload;
   if (payload && typeof payload === "object") {
     const items = (payload as Record<string, unknown>).items;
@@ -188,4 +197,9 @@ function numberOrUndefined(value: unknown): number | undefined {
 function stringToPath(value?: string): string[] {
   if (!value) return [];
   return value.split(/[>/|]+/).map((item) => item.trim()).filter(Boolean);
+}
+
+function resolveAllowedRootDomain(url: string): string | undefined {
+  const domain = extractDomain(url);
+  return domain ? extractRootDomain(domain) : undefined;
 }

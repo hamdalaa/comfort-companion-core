@@ -1,6 +1,6 @@
 import { Layers, Award } from "lucide-react";
 import { ProductCard } from "./ProductCard";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import type { ScoredProduct } from "@/lib/search";
 import type { Shop } from "@/lib/types";
 

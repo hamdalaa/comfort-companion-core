@@ -26,3 +26,5 @@ export const CATEGORY_REAL_IMAGES: Record<Category, string> = {
   Tablets: imgTablets,
   "Smart Devices": imgSmart,
 };
+
+export const CATEGORY_IMAGES = CATEGORY_REAL_IMAGES;

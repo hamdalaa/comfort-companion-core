@@ -100,6 +100,10 @@ export class MemoryCatalogRepository implements CatalogRepository {
     return this.sizeSummaries.get(storeId);
   }
 
+  async listStoreSizeSummaries(): Promise<StoreSizeSummaryRecord[]> {
+    return [...this.sizeSummaries.values()];
+  }
+
   async saveAcquisitionProfile(profile: DomainAcquisitionProfile): Promise<void> {
     this.acquisitionProfiles.set(profile.storeId, profile);
   }

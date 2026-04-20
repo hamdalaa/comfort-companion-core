@@ -4,6 +4,7 @@ import { ChevronLeft, Home, MapPin, Sparkles, Store } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { CITIES } from "@/lib/cityData";
+import { useCityListQuery } from "@/lib/catalogQueries";
 
 // Local, optimized landmark images (generated)
 import baghdadImg from "@/assets/cities/baghdad.jpg";
@@ -45,14 +46,16 @@ const CITY_TAGLINE: Record<string, string> = {
 };
 
 export default function IraqCities() {
+  const citiesQuery = useCityListQuery();
+  const cities = citiesQuery.data && citiesQuery.data.length > 0 ? citiesQuery.data : CITIES;
   const total = useMemo(
-    () => CITIES.reduce((sum, c) => sum + c.count, 0),
-    [],
+    () => cities.reduce((sum, c) => sum + c.count, 0),
+    [cities],
   );
 
   const filtered = useMemo(
-    () => [...CITIES].sort((a, b) => b.count - a.count),
-    [],
+    () => [...cities].sort((a, b) => b.count - a.count),
+    [cities],
   );
 
   return (
@@ -114,7 +117,7 @@ export default function IraqCities() {
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/15">
                   <MapPin className="h-3 w-3 text-accent" />
                 </span>
-                <span className="text-foreground tabular-nums">{CITIES.length}</span>
+                <span className="text-foreground tabular-nums">{cities.length}</span>
                 <span className="text-muted-foreground">محافظات</span>
               </div>
             </div>

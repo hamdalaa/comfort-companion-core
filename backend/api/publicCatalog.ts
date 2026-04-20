@@ -8,6 +8,8 @@ import type {
   StoreRecord,
 } from "../shared/catalog/types.js";
 import { catalogConfig } from "../shared/config.js";
+import { getSqlitePublicCatalogDataStore } from "../shared/db/sqlitePublicCatalogData.js";
+import { scoreSearchTextMatch } from "../shared/search/relevance.js";
 
 interface RawCityIndexEntry {
   slug: string;
@@ -268,8 +270,18 @@ let streetAreaLookupCache: Promise<{
   byName: Map<string, string>;
 }> | null = null;
 
+function getUnifiedPublicDataStore() {
+  if (catalogConfig.database.driver !== "sqlite") return null;
+  return getSqlitePublicCatalogDataStore(catalogConfig.database.sqlitePath);
+}
+
 async function loadCityIndex(): Promise<RawCityIndexEntry[]> {
   if (cityIndexCache) return cityIndexCache;
+  const sqliteStore = getUnifiedPublicDataStore();
+  if (sqliteStore) {
+    cityIndexCache = sqliteStore.listCityIndex();
+    return cityIndexCache;
+  }
   const raw = await fs.readFile(path.join(citiesDir, "index.json"), "utf8");
   cityIndexCache = JSON.parse(raw) as RawCityIndexEntry[];
   return cityIndexCache;
@@ -277,6 +289,12 @@ async function loadCityIndex(): Promise<RawCityIndexEntry[]> {
 
 async function loadCityFile(slug: string): Promise<RawCityFile | null> {
   if (cityFileCache.has(slug)) return cityFileCache.get(slug)!;
+  const sqliteStore = getUnifiedPublicDataStore();
+  if (sqliteStore) {
+    const city = sqliteStore.getCityFile(slug);
+    if (city) cityFileCache.set(slug, city);
+    return city;
+  }
   try {
     const raw = await fs.readFile(path.join(citiesDir, `${slug}.json`), "utf8");
     const parsed = JSON.parse(raw) as RawCityFile;
@@ -357,6 +375,19 @@ export async function getPublicCity(slug: string) {
 }
 
 async function findRawStore(store: StoreRecord): Promise<RawStoreLookupEntry | undefined> {
+  const sqliteStore = getUnifiedPublicDataStore();
+  if (sqliteStore) {
+    const byPlaceId = store.placeId ? sqliteStore.findRawStoreByLookupKey(store.placeId) : undefined;
+    if (byPlaceId) return byPlaceId;
+    const byStoreId = sqliteStore.findRawStoreByLookupKey(store.id);
+    if (byStoreId) return byStoreId;
+    const sourceSlug = store.sourceFile?.replace(/\.json$/i, "");
+    if (!sourceSlug) return undefined;
+    const bySlugAndName = sqliteStore.findRawStoreByCitySlugAndName(sourceSlug, compactText(store.name));
+    if (bySlugAndName) return bySlugAndName;
+    return undefined;
+  }
+
   const lookup = await loadRawStoreLookup();
   const byPlaceId = store.placeId ? lookup.get(store.placeId) : undefined;
   if (byPlaceId) return byPlaceId;
@@ -378,6 +409,19 @@ async function findRawStore(store: StoreRecord): Promise<RawStoreLookupEntry | u
 }
 
 async function inferStreetArea(store: StoreRecord, raw?: RawCityStore): Promise<string | undefined> {
+  const sqliteStore = getUnifiedPublicDataStore();
+  if (sqliteStore) {
+    const cid = extractGoogleCid(raw?.googleMapsUrl ?? store.googleMapsUrl);
+    if (cid) {
+      const byCid = sqliteStore.findStreetAreaByCid(cid);
+      if (byCid) return byCid;
+    }
+    const normalizedName = compactText(raw?.name ?? store.name);
+    const byName = sqliteStore.findStreetAreaByName(normalizedName);
+    if (byName) return byName;
+    return undefined;
+  }
+
   const lookup = await loadStreetAreaLookup();
   const cid = extractGoogleCid(raw?.googleMapsUrl ?? store.googleMapsUrl);
   if (cid && lookup.byCid.has(cid)) return lookup.byCid.get(cid);
@@ -536,24 +580,64 @@ async function mapStoreRecordToPublicStore(
   };
 }
 
-async function getStoreCatalogCached(
-  context: CatalogContext,
-  storeId: string,
-  cache: Map<string, Promise<Awaited<ReturnType<CatalogContext["repository"]["getStoreCatalog"]>>>>,
-) {
-  if (!cache.has(storeId)) {
-    cache.set(storeId, context.repository.getStoreCatalog(storeId));
-  }
-  return cache.get(storeId)!;
+function mapStoreRecordToPublicStoreFast(
+  store: StoreRecord,
+  options?: {
+    productCount?: number;
+    offerCount?: number;
+  },
+): PublicStore {
+  const categories = uniqueStrings([
+    store.primaryCategory,
+    store.suggestedCategory,
+  ]);
+  const category = categories[0] ?? "Uncategorized";
+  const area =
+    store.area?.trim() ||
+    store.cityAr?.trim() ||
+    store.city?.trim() ||
+    "العراق";
+  const verified = Boolean(store.website && store.websiteType === "official");
+
+  return {
+    id: store.id,
+    slug: store.slug,
+    seedKey: store.placeId ?? store.id,
+    name: store.name,
+    city: store.city,
+    cityAr: store.cityAr,
+    citySlug: store.sourceFile?.replace(/\.json$/i, ""),
+    area,
+    category,
+    categories: categories.length > 0 ? categories : [category],
+    address: store.address,
+    lat: store.lat,
+    lng: store.lng,
+    googleMapsUrl: store.googleMapsUrl,
+    website: store.website,
+    phone: store.phone,
+    whatsapp: store.whatsapp,
+    discoverySource: store.discoverySource,
+    verified,
+    verificationStatus: verified ? "verified" : "unverified",
+    notes: store.blockedReason,
+    createdAt: store.createdAt,
+    updatedAt: store.updatedAt,
+    featured: Boolean(store.highPriority),
+    productCount: options?.productCount,
+    offerCount: options?.offerCount,
+    lastSyncAt: store.lastSyncAt,
+    lastProbeAt: store.lastProbeAt,
+    sourceStatus: store.status,
+  };
 }
 
 async function mapCatalogProductToPublicProduct(
-  context: CatalogContext,
   store: StoreRecord,
   product: CatalogProductDraft,
   storeCache: Map<string, PublicStore>,
 ): Promise<PublicProductIndex> {
-  const publicStore = storeCache.get(store.id) ?? (await mapStoreRecordToPublicStore(store));
+  const publicStore = storeCache.get(store.id) ?? mapStoreRecordToPublicStoreFast(store);
   storeCache.set(store.id, publicStore);
 
   return {
@@ -587,29 +671,68 @@ async function mapCatalogProductToPublicProduct(
   };
 }
 
+function mapSearchDocumentToPublicProduct(
+  document: SearchDocument,
+  store: StoreRecord,
+  storeCache: Map<string, PublicStore>,
+): PublicProductIndex {
+  const publicStore = storeCache.get(store.id) ?? mapStoreRecordToPublicStoreFast(store);
+  storeCache.set(store.id, publicStore);
+  const categoryPath = document.categoryPath
+    .split(" > ")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+
+  return {
+    id: document.id,
+    canonicalProductId: buildCanonicalProductId({
+      normalizedTitle: document.normalizedTitle,
+      title: document.title,
+      brand: document.brand,
+      model: document.model,
+    }),
+    shopId: store.id,
+    shopName: document.storeName,
+    city: publicStore.city,
+    cityAr: publicStore.cityAr,
+    citySlug: publicStore.citySlug,
+    area: publicStore.area,
+    category: categoryPath.at(-1) ?? publicStore.category,
+    categoryPath,
+    name: document.title,
+    slug: slugify(document.title),
+    sku: document.sku,
+    brand: document.brand,
+    model: document.model,
+    priceValue: document.livePrice,
+    priceText:
+      typeof document.livePrice === "number" && document.currency
+        ? `${document.livePrice.toLocaleString("en-US")} ${document.currency}`
+        : undefined,
+    originalPriceValue: document.originalPrice,
+    productUrl: document.sourceUrl,
+    imageUrl: sanitizeProductImage(document.imageUrl),
+    rating: publicStore.rating,
+    reviewCount: publicStore.reviewCount,
+    inStock: document.availability === "in_stock",
+    stockState: document.availability,
+    currency: document.currency ?? "IQD",
+    offerLabel: document.offerLabel,
+    crawledAt: document.freshnessAt,
+  };
+}
+
 async function mapSearchDocumentsToPublicProducts(
-  context: CatalogContext,
   documents: SearchDocument[],
   storesById: Map<string, StoreRecord>,
 ) {
-  const catalogCache = new Map<
-    string,
-    Promise<Awaited<ReturnType<CatalogContext["repository"]["getStoreCatalog"]>>>
-  >();
   const storeCache = new Map<string, PublicStore>();
   const items: PublicProductIndex[] = [];
 
   for (const document of documents) {
-    const separator = document.id.indexOf(":");
-    if (separator === -1) continue;
-    const storeId = document.id.slice(0, separator);
-    const sourceProductId = document.id.slice(separator + 1);
-    const store = storesById.get(storeId);
+    const store = storesById.get(document.storeId);
     if (!store) continue;
-    const catalog = await getStoreCatalogCached(context, storeId, catalogCache);
-    const product = catalog.products.find((entry) => entry.sourceProductId === sourceProductId);
-    if (!product) continue;
-    items.push(await mapCatalogProductToPublicProduct(context, store, product, storeCache));
+    items.push(mapSearchDocumentToPublicProduct(document, store, storeCache));
   }
 
   return items;
@@ -869,9 +992,11 @@ function availabilityLabel(value: CatalogProductDraft["availability"]) {
 
 export async function buildPublicBootstrap(context: CatalogContext): Promise<PublicBootstrapPayload> {
   const stores = await context.repository.listStores();
+  const sizeSummaries = await context.repository.listStoreSizeSummaries();
+  const sizeByStoreId = new Map(sizeSummaries.map((summary) => [summary.storeId, summary]));
   const publicStores = await Promise.all(
     stores.map(async (store) => {
-      const size = await context.repository.getStoreSizeSummary(store.id);
+      const size = sizeByStoreId.get(store.id);
       return mapStoreRecordToPublicStore(store, {
         productCount: size?.indexedProductCount,
         offerCount: size?.activeOfferCount,
@@ -895,9 +1020,9 @@ export async function buildPublicBootstrap(context: CatalogContext): Promise<Pub
     return bScore - aScore || new Date(b.freshnessAt).getTime() - new Date(a.freshnessAt).getTime();
   });
 
-  const deals = await mapSearchDocumentsToPublicProducts(context, dealsSorted.slice(0, 12), storesById);
-  const trending = await mapSearchDocumentsToPublicProducts(context, trendingSorted.slice(0, 12), storesById);
-  const latest = await mapSearchDocumentsToPublicProducts(context, latestSorted.slice(0, 12), storesById);
+  const deals = await mapSearchDocumentsToPublicProducts(dealsSorted.slice(0, 12), storesById);
+  const trending = await mapSearchDocumentsToPublicProducts(trendingSorted.slice(0, 12), storesById);
+  const latest = await mapSearchDocumentsToPublicProducts(latestSorted.slice(0, 12), storesById);
   const brands = mapBrandSummaries(searchDocuments, publicStoresById);
 
   return {
@@ -930,11 +1055,7 @@ export async function buildPublicCatalogProducts(
   const latestSorted = [...searchDocuments].sort((a, b) => new Date(b.freshnessAt).getTime() - new Date(a.freshnessAt).getTime());
   const limit = Math.max(1, Math.min(options?.limit ?? 2000, 10000));
   const offset = Math.max(0, options?.offset ?? 0);
-  const items = await mapSearchDocumentsToPublicProducts(
-    context,
-    latestSorted.slice(offset, offset + limit),
-    storesById,
-  );
+  const items = await mapSearchDocumentsToPublicProducts(latestSorted.slice(offset, offset + limit), storesById);
 
   return {
     total: searchDocuments.length,
@@ -956,7 +1077,7 @@ export async function buildPublicStoreDetail(context: CatalogContext, storeId: s
   });
   const storeCache = new Map<string, PublicStore>([[store.id, publicStore]]);
   const products = await Promise.all(
-    catalog.products.map((product) => mapCatalogProductToPublicProduct(context, store, product, storeCache)),
+    catalog.products.map((product) => mapCatalogProductToPublicProduct(store, product, storeCache)),
   );
 
   const sources = [
@@ -1020,7 +1141,7 @@ export async function buildPublicProductsByIds(context: CatalogContext, ids: str
     for (const sourceProductId of sourceProductIds) {
       const product = catalog.products.find((entry) => entry.sourceProductId === sourceProductId);
       if (!product) continue;
-      items.push(await mapCatalogProductToPublicProduct(context, store, product, storeCache));
+      items.push(await mapCatalogProductToPublicProduct(store, product, storeCache));
     }
   }
 
@@ -1040,7 +1161,7 @@ export async function buildPublicBrandDetail(context: CatalogContext, slug: stri
   const storesForBrand = [...new Set(brandDocuments.map((document) => document.storeId))]
     .map((storeId) => publicStoresById.get(storeId))
     .filter(Boolean) as PublicStore[];
-  const products = await mapSearchDocumentsToPublicProducts(context, brandDocuments, storesById);
+  const products = await mapSearchDocumentsToPublicProducts(brandDocuments, storesById);
 
   return {
     brand,
@@ -1067,8 +1188,9 @@ export async function buildPublicUnifiedSearch(
   },
 ): Promise<PublicUnifiedSearchResponse> {
   const startedAt = Date.now();
+  const normalizedQuery = query.q?.trim() ?? "";
   const stores = await context.repository.listStores();
-  const publicStores = await Promise.all(stores.map((store) => mapStoreRecordToPublicStore(store)));
+  const publicStores = stores.map((store) => mapStoreRecordToPublicStoreFast(store));
   const publicStoresById = new Map(publicStores.map((store) => [store.id, store]));
   const storesById = new Map(stores.map((store) => [store.id, store]));
 
@@ -1081,7 +1203,7 @@ export async function buildPublicUnifiedSearch(
     limit: 200,
   });
 
-  let offerProducts = await mapSearchDocumentsToPublicProducts(context, rawSearch.hits, storesById);
+  let offerProducts = await mapSearchDocumentsToPublicProducts(rawSearch.hits, storesById);
   let offers = offerProducts
     .map((product) => {
       const store = publicStoresById.get(product.shopId);
@@ -1119,7 +1241,8 @@ export async function buildPublicUnifiedSearch(
     offers = offers.filter((offer) => offer.officialDealer);
   }
 
-  offerProducts = offerProducts.filter((product) => offers.some((offer) => offer.id === product.id));
+  const keptOfferIds = new Set(offers.map((offer) => offer.id));
+  offerProducts = offerProducts.filter((product) => keptOfferIds.has(product.id));
 
   const productGroups = new Map<string, PublicProductIndex[]>();
   for (const product of offerProducts) {
@@ -1128,34 +1251,65 @@ export async function buildPublicUnifiedSearch(
     productGroups.set(product.canonicalProductId, current);
   }
 
-  const products = [...productGroups.entries()].map(([canonicalId, group]) => {
-    const groupOffers = offers.filter((offer) => offer.productId === canonicalId);
-    return buildUnifiedProduct(group, groupOffers);
+  const offersByProductId = new Map<string, PublicUnifiedOffer[]>();
+  for (const offer of offers) {
+    const current = offersByProductId.get(offer.productId) ?? [];
+    current.push(offer);
+    offersByProductId.set(offer.productId, current);
+  }
+
+  const hitIndexByOfferId = new Map(rawSearch.hits.map((hit, index) => [hit.id, index]));
+  const relevanceByOfferId = new Map(
+    offerProducts.map((product) => [product.id, scoreUnifiedProductForQuery(normalizedQuery, product)]),
+  );
+
+  const productEntries = [...productGroups.entries()].map(([canonicalId, group]) => {
+    const groupOffers = offersByProductId.get(canonicalId) ?? [];
+    const freshness = Math.max(0, ...groupOffers.map((offer) => new Date(offer.lastSeenAt).getTime()));
+    const bestHitIndex = Math.min(
+      Number.MAX_SAFE_INTEGER,
+      ...group.map((product) => hitIndexByOfferId.get(product.id) ?? Number.MAX_SAFE_INTEGER),
+    );
+    const relevanceScore = normalizedQuery
+      ? Math.max(0, ...group.map((product) => relevanceByOfferId.get(product.id) ?? 0))
+      : 0;
+
+    return {
+      product: buildUnifiedProduct(group, groupOffers),
+      freshness,
+      bestHitIndex,
+      relevanceScore,
+    };
   });
 
   switch (query.sort) {
     case "price_asc":
-      products.sort((a, b) => (a.lowestPrice ?? Number.MAX_SAFE_INTEGER) - (b.lowestPrice ?? Number.MAX_SAFE_INTEGER));
+      productEntries.sort(
+        (a, b) =>
+          (a.product.lowestPrice ?? Number.MAX_SAFE_INTEGER) - (b.product.lowestPrice ?? Number.MAX_SAFE_INTEGER),
+      );
       break;
     case "price_desc":
-      products.sort((a, b) => (b.lowestPrice ?? 0) - (a.lowestPrice ?? 0));
+      productEntries.sort((a, b) => (b.product.lowestPrice ?? 0) - (a.product.lowestPrice ?? 0));
       break;
     case "rating_desc":
-      products.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+      productEntries.sort((a, b) => (b.product.rating ?? 0) - (a.product.rating ?? 0));
       break;
     case "offers_desc":
-      products.sort((a, b) => b.offerCount - a.offerCount);
+      productEntries.sort((a, b) => b.product.offerCount - a.product.offerCount);
       break;
     case "freshness_desc":
-      products.sort((a, b) => {
-        const aFreshness = Math.max(...offers.filter((offer) => offer.productId === a.id).map((offer) => new Date(offer.lastSeenAt).getTime()));
-        const bFreshness = Math.max(...offers.filter((offer) => offer.productId === b.id).map((offer) => new Date(offer.lastSeenAt).getTime()));
-        return bFreshness - aFreshness;
-      });
+      productEntries.sort((a, b) => b.freshness - a.freshness);
       break;
     case "relevance":
     default:
-      products.sort((a, b) => b.offerCount - a.offerCount || (b.inStockCount - a.inStockCount));
+      productEntries.sort(
+        (a, b) =>
+          b.relevanceScore - a.relevanceScore ||
+          a.bestHitIndex - b.bestHitIndex ||
+          b.product.inStockCount - a.product.inStockCount ||
+          b.product.offerCount - a.product.offerCount,
+      );
       break;
   }
 
@@ -1166,13 +1320,13 @@ export async function buildPublicUnifiedSearch(
   let minPrice = Number.POSITIVE_INFINITY;
   let maxPrice = 0;
 
-  for (const product of products) {
+  for (const { product } of productEntries) {
     if (product.brand) brandMap.set(product.brand, (brandMap.get(product.brand) ?? 0) + 1);
     if (product.category) categoryMap.set(product.category, (categoryMap.get(product.category) ?? 0) + 1);
     if (typeof product.lowestPrice === "number") minPrice = Math.min(minPrice, product.lowestPrice);
     if (typeof product.highestPrice === "number") maxPrice = Math.max(maxPrice, product.highestPrice);
 
-    for (const offer of offers.filter((entry) => entry.productId === product.id)) {
+    for (const offer of offersByProductId.get(product.id) ?? []) {
       const current = storeMap.get(offer.storeId) ?? { label: offer.storeName, count: 0 };
       current.count += 1;
       storeMap.set(offer.storeId, current);
@@ -1182,12 +1336,12 @@ export async function buildPublicUnifiedSearch(
 
   return {
     query: query.q ?? "",
-    totalProducts: products.length,
+    totalProducts: productEntries.length,
     totalOffers: offers.length,
     storesCovered: storeMap.size,
     storesScanned: rawSearch.total,
     durationMs: Date.now() - startedAt,
-    products,
+    products: productEntries.map((entry) => entry.product),
     facets: {
       brands: [...brandMap.entries()].map(([key, count]) => ({ key, label: key, count })).sort((a, b) => b.count - a.count),
       categories: [...categoryMap.entries()].map(([key, count]) => ({ key, label: key, count })).sort((a, b) => b.count - a.count),
@@ -1201,6 +1355,33 @@ export async function buildPublicUnifiedSearch(
   };
 }
 
+function scoreUnifiedProductForQuery(query: string, product: PublicProductIndex): number {
+  if (!query) return 0;
+
+  let score = scoreSearchTextMatch(query, [
+    { value: product.name, weight: 5 },
+    { value: product.brand, weight: 3.5 },
+    { value: product.model, weight: 3 },
+    { value: product.sku, weight: 4 },
+    { value: product.category, weight: 1.5 },
+    { value: product.categoryPath.join(" "), weight: 1.2 },
+    { value: product.shopName, weight: 1 },
+    { value: product.cityAr ?? product.city, weight: 0.8 },
+    { value: product.area, weight: 0.5 },
+  ]);
+
+  if (product.inStock) score += 0.5;
+  if (
+    typeof product.originalPriceValue === "number" &&
+    typeof product.priceValue === "number" &&
+    product.originalPriceValue > product.priceValue
+  ) {
+    score += 0.2;
+  }
+
+  return score;
+}
+
 export async function buildPublicProductDetail(context: CatalogContext, canonicalId: string) {
   const collected = await collectCanonicalAndFamilyProducts(context, canonicalId);
   if (collected.products.length === 0) return null;
@@ -1209,11 +1390,11 @@ export async function buildPublicProductDetail(context: CatalogContext, canonica
     collected.products.map(async (product) => {
       const store = collected.storesById.get(product.storeId);
       if (!store) return null;
-      return mapCatalogProductToPublicProduct(context, store, product, new Map());
+      return mapCatalogProductToPublicProduct(store, product, new Map());
     }),
   );
   const normalizedProducts = offerProducts.filter((product): product is PublicProductIndex => Boolean(product));
-  const storesPublic = await Promise.all([...collected.storesById.values()].map((store) => mapStoreRecordToPublicStore(store)));
+  const storesPublic = [...collected.storesById.values()].map((store) => mapStoreRecordToPublicStoreFast(store));
   const publicStoresById = new Map(storesPublic.map((store) => [store.id, store]));
   const offers = normalizedProducts
     .map((product) => {
@@ -1235,11 +1416,11 @@ export async function buildPublicProductOffers(context: CatalogContext, canonica
     collected.products.map(async (product) => {
       const store = collected.storesById.get(product.storeId);
       if (!store) return null;
-      return mapCatalogProductToPublicProduct(context, store, product, new Map());
+      return mapCatalogProductToPublicProduct(store, product, new Map());
     }),
   );
   const normalizedProducts = offerProducts.filter((product): product is PublicProductIndex => Boolean(product));
-  const publicStores = await Promise.all([...collected.storesById.values()].map((store) => mapStoreRecordToPublicStore(store)));
+  const publicStores = [...collected.storesById.values()].map((store) => mapStoreRecordToPublicStoreFast(store));
   const publicStoresById = new Map(publicStores.map((store) => [store.id, store]));
 
   return normalizedProducts

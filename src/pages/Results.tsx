@@ -12,7 +12,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useDataStore } from "@/lib/dataStore";
 import { groupComparable, searchProducts, SUGGESTED_QUERIES } from "@/lib/search";
-import { getRating } from "@/lib/googleRatings";
 import { compareShopsByPopularity } from "@/lib/shopRanking";
 import { ALL_AREAS, ALL_CATEGORIES, type Area, type Category } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -73,7 +72,7 @@ const Results = () => {
         area,
         category,
         sort,
-        ratingByShopId: (shopId) => getRating({ googleMapsUrl: shopsById[shopId]?.googleMapsUrl })?.rating,
+        ratingByShopId: (shopId) => shopsById[shopId]?.rating,
       }),
     [products, q, area, category, sort, shopsById],
   );

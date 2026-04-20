@@ -293,6 +293,9 @@ export interface SearchDocument {
   freshnessAt: string;
   sourceUrl: string;
   categoryPath: string;
+  imageUrl?: string;
+  currency?: string;
+  offerLabel?: string;
   sellerName?: string;
 }
 

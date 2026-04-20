@@ -3,6 +3,29 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
+function serviceWorkerManifestPlugin() {
+  return {
+    name: "service-worker-manifest",
+    generateBundle(_options: unknown, bundle: Record<string, { type: string; fileName: string }>) {
+      const assets = Object.values(bundle)
+        .filter((chunk) => chunk.type === "chunk" || chunk.type === "asset")
+        .map((chunk) => `/${chunk.fileName}`)
+        .filter((fileName) => !fileName.endsWith("sw-manifest.js"));
+
+      const manifest = {
+        version: Date.now().toString(36),
+        assets: ["/", "/index.html", ...assets],
+      };
+
+      this.emitFile({
+        type: "asset",
+        fileName: "sw-manifest.js",
+        source: `self.__SW_MANIFEST = ${JSON.stringify(manifest)};`,
+      });
+    },
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
@@ -21,7 +44,25 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [react(), serviceWorkerManifestPlugin(), mode === "development" && componentTagger()].filter(Boolean),
+  build: {
+    modulePreload: {
+      polyfill: true,
+    },
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return undefined;
+          if (id.includes("@tanstack")) return "react-query";
+          if (id.includes("react-router")) return "router";
+          if (id.includes("cmdk") || id.includes("sonner") || id.includes("vaul") || id.includes("lenis")) {
+            return "app-chrome";
+          }
+          return "vendor";
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,25 +8,42 @@
    Color psychology: teal lowers stress + builds trust,
    amber motivates action, generous whitespace = clarity.
    ========================================================= */
-/* SF Pro (variable) — Latin/Numerals */
+/* SF Pro (subset) — Latin/Numerals */
 @font-face {
   font-family: "SF Pro";
-  src: url("/fonts/SF-Pro.ttf") format("truetype-variations"),
-       url("/fonts/SF-Pro.ttf") format("truetype");
-  font-weight: 100 900;
+  src: url("/fonts/SF-Pro-Text-Regular.subset.woff2") format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-024F, U+2000-206F, U+20A0-20CF;
 }
 
-/* SF Arabic (variable) — Arabic script */
+@font-face {
+  font-family: "SF Pro";
+  src: url("/fonts/SF-Pro-Text-Semibold.subset.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-024F, U+2000-206F, U+20A0-20CF;
+}
+
+@font-face {
+  font-family: "SF Pro";
+  src: url("/fonts/SF-Pro-Display-Bold.subset.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-024F, U+2000-206F, U+20A0-20CF;
+}
+
+/* SF Arabic (subset) — Arabic script */
 @font-face {
   font-family: "SF Arabic";
-  src: url("/fonts/SF-Arabic.ttf") format("truetype-variations"),
-       url("/fonts/SF-Arabic.ttf") format("truetype");
+  src: url("/fonts/SF-Arabic.subset.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+  unicode-range: U+0030-0039, U+0600-06FF, U+0660-0669, U+0750-077F, U+08A0-08FF, U+2000-206F, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 @layer base {
@@ -169,11 +184,23 @@
 
   html {
     font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-size: 120%;
+    font-size: 123%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      font-size: 126%;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    html {
+      font-size: 130%;
+    }
   }
 
   body {
@@ -200,11 +227,16 @@
     font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.025em;
+    text-wrap: balance;
   }
 
   h1 { line-height: 1.05; letter-spacing: -0.04em; }
   h2 { line-height: 1.1; letter-spacing: -0.03em; }
   h3 { line-height: 1.2; }
+
+  p {
+    text-wrap: pretty;
+  }
 
   ::selection {
     background: hsl(var(--primary) / 0.2);
@@ -218,10 +250,12 @@
   }
 
   .font-numeric {
-    font-family: "JetBrains Mono", "Inter", system-ui, sans-serif;
+    font-family: ui-monospace, "SFMono-Regular", "SF Pro", "Menlo", "Monaco", "Consolas", monospace;
     font-feature-settings: "tnum", "ss01";
+    font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
   }
+
 }
 
 @layer utilities {
@@ -240,18 +274,17 @@
 
   .atlas-panel {
     position: relative;
-    border-radius: 1rem;
+    border-radius: var(--radius-xl);
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
     box-shadow: var(--shadow-md);
   }
 
   .atlas-card {
-    border-radius: 1rem;
+    border-radius: var(--radius-lg);
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
     transform: translate3d(0, 0, 0);
-    will-change: transform;
     transition:
       border-color 0.25s var(--ease-premium),
       box-shadow 0.25s var(--ease-premium),
@@ -394,12 +427,11 @@
       filter 0.18s var(--ease-premium);
   }
   .press:active {
-    transform: translateY(1px) scale(0.99);
+    transform: scale(0.96);
   }
 
   .smooth-img {
     transform: translate3d(0, 0, 0);
-    will-change: transform;
     transition: transform 0.5s var(--ease-premium);
   }
   .group:hover .smooth-img {
@@ -523,7 +555,6 @@
   /* 3D tilt — uses inline custom-property fallback */
   .tilt-3d {
     transform: translate3d(0, 0, 0);
-    will-change: transform;
     transition: transform 0.35s var(--ease-premium);
   }
   .tilt-3d:hover {
@@ -644,7 +675,12 @@
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
     color: hsl(var(--foreground));
-    transition: all 0.25s var(--ease-premium);
+    transition:
+      transform 0.25s var(--ease-premium),
+      border-color 0.25s var(--ease-premium),
+      background-color 0.25s var(--ease-premium),
+      color 0.25s var(--ease-premium),
+      box-shadow 0.25s var(--ease-premium);
     cursor: pointer;
     white-space: nowrap;
   }
@@ -664,6 +700,65 @@
   /* Compare drawer slide-up */
   .drawer-slide {
     animation: drawer-slide-up 0.4s var(--ease-out-expo);
+  }
+
+  .atlas-separator {
+    border-bottom: 1px solid hsl(var(--border) / 0.65);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .tabular-stable {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .img-frame {
+    outline: 1px solid rgba(0, 0, 0, 0.1);
+    outline-offset: -1px;
+  }
+
+  .dark .img-frame {
+    outline-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .hit-target {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
+
+  .icon-swap {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .icon-swap > span {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+      opacity 0.3s cubic-bezier(0.2, 0, 0, 1),
+      filter 0.3s cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .icon-swap[data-active="false"] > .icon-secondary,
+  .icon-swap[data-active="true"] > .icon-primary {
+    transform: scale(0.25);
+    opacity: 0;
+    filter: blur(4px);
+  }
+
+  .icon-swap[data-active="false"] > .icon-primary,
+  .icon-swap[data-active="true"] > .icon-secondary {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -699,14 +794,17 @@
     transition:
       transform 0.18s var(--ease-ios-spring),
       background-color 0.18s var(--ease-ios-spring),
+      border-color 0.18s var(--ease-ios-spring),
+      box-shadow 0.18s var(--ease-ios-spring),
+      color 0.18s var(--ease-ios-spring),
       opacity 0.18s var(--ease-ios-spring);
     -webkit-tap-highlight-color: transparent;
   }
   .ios-tap:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
   }
   .ios-tap-strong:active {
-    transform: scale(0.94);
+    transform: scale(0.96);
   }
 
   /* Apply gentle press to all buttons + interactive surfaces by default */

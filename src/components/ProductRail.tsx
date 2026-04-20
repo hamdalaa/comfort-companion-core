@@ -43,10 +43,13 @@ export function ProductRail({ title, seeAllTo, products }: Props) {
         <div
           ref={railRef}
           className="flex gap-3 overflow-x-auto px-4 pb-2 pt-1 snap-x snap-mandatory scroll-smooth sm:gap-4 sm:px-6"
-          style={{ scrollbarWidth: "none" }}
+          style={{ scrollbarWidth: "none", scrollPaddingInline: "1.5rem" }}
         >
           {products.map((product) => (
-            <div key={product.id} className="w-[170px] shrink-0 snap-start sm:w-[210px] md:w-[230px] lg:w-[250px]">
+            <div
+              key={product.id}
+              className="min-w-0 shrink-0 snap-start basis-[78%] sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] xl:basis-[calc((100%-3rem)/4)] 2xl:basis-[calc((100%-4rem)/5)]"
+            >
               <ProductCard product={product} />
             </div>
           ))}

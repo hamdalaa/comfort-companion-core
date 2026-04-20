@@ -5,7 +5,6 @@ import { CatalogRefreshService } from "../shared/services/catalogRefreshService.
 import { catalogConfig } from "../shared/config.js";
 import { createCatalogApiServer } from "../api/server.js";
 import { buildPublicBootstrap } from "../api/publicCatalog.js";
-import { importScrapedSiteCatalogs } from "../shared/seeds/importScrapedSiteCatalogs.js";
 
 function parseArgs(argv: string[]) {
   const get = (flag: string) => {
@@ -101,23 +100,6 @@ if (!args.skipRefresh) {
     ),
   );
 }
-
-const scrapedImport = await importScrapedSiteCatalogs({
-  repository: context.repository,
-  searchEngine: context.searchEngine,
-  repoRoot: catalogConfig.repoRoot,
-});
-console.log(
-  JSON.stringify(
-    {
-      phase: "scraped_import_complete",
-      storesImported: scrapedImport.storesImported,
-      productsImported: scrapedImport.productsImported,
-    },
-    null,
-    2,
-  ),
-);
 
 const bootstrap = await buildPublicBootstrap(context);
 console.log(

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ComponentType } from "react";
+import { useRef, useState, type ComponentType } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -10,15 +10,13 @@ import { EmptyState } from "@/components/EmptyState";
 import { VerifiedBadge } from "@/components/Badges";
 import { useDataStore } from "@/lib/dataStore";
 import { useUserPrefs } from "@/lib/userPrefs";
+import { useStoreDetailQuery } from "@/lib/catalogQueries";
 import { relativeArabicTime } from "@/lib/search";
 import { SINAA_SHOP_PAGES } from "@/lib/sinaaShopPages";
 import { getLegacySinaaShopById } from "@/lib/legacyStreetShops";
-import { ApiError } from "@/lib/api";
-import { getStoreDetail, type StoreDetailResponse } from "@/lib/catalogApi";
 import { optimizeImageUrl } from "@/lib/imageUrl";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
-import { getRating, topReviews } from "@/lib/googleRatings";
 import { StarRating } from "@/components/StarRating";
 import { cn } from "@/lib/utils";
 import type { Shop } from "@/lib/types";
@@ -49,8 +47,9 @@ const ShopView = () => {
   const { shops, products, shopSources } = useDataStore();
   const { favorites, toggleFavorite } = useUserPrefs();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
-  const [remoteDetail, setRemoteDetail] = useState<StoreDetailResponse | null>(null);
-  const [detailStatus, setDetailStatus] = useState<"idle" | "loading" | "ready" | "not_found">("idle");
+  const legacyShop = shopId ? getLegacySinaaShopById(shopId) : null;
+  const officialDealerShop = shopId ? mapOfficialDealerBranchToShop(shopId) : null;
+  const storeDetailQuery = useStoreDetailQuery(!legacyShop && !officialDealerShop ? shopId : undefined);
 
   const handleBack = () => {
     // If user has history within the app, go back; otherwise go home.
@@ -61,44 +60,18 @@ const ShopView = () => {
     }
   };
 
-  const legacyShop = shopId ? getLegacySinaaShopById(shopId) : null;
-  const officialDealerShop = shopId ? mapOfficialDealerBranchToShop(shopId) : null;
   const localShop = shops.find((s) => s.id === shopId) ?? legacyShop ?? officialDealerShop;
+  const remoteDetail = storeDetailQuery.data;
   const shop = remoteDetail?.store ?? localShop;
   const pageData = shopId ? SINAA_SHOP_PAGES[shopId] : undefined;
-
-  useEffect(() => {
-    let alive = true;
-    setRemoteDetail(null);
-
-    if (!shopId || legacyShop || officialDealerShop) {
-      setDetailStatus("idle");
-      return () => {
-        alive = false;
-      };
-    }
-
-    setDetailStatus("loading");
-    getStoreDetail(shopId)
-      .then((detail) => {
-        if (!alive) return;
-        setRemoteDetail(detail);
-        setDetailStatus("ready");
-      })
-      .catch((error) => {
-        if (!alive) return;
-        setRemoteDetail(null);
-        if (error instanceof ApiError && error.status === 404) {
-          setDetailStatus("not_found");
-          return;
-        }
-        setDetailStatus(localShop ? "idle" : "not_found");
-      });
-
-    return () => {
-      alive = false;
-    };
-  }, [shopId, legacyShop, officialDealerShop, localShop]);
+  const detailStatus =
+    (!shopId || legacyShop || officialDealerShop)
+      ? "idle"
+      : storeDetailQuery.isLoading && !remoteDetail
+        ? "loading"
+        : !shop
+          ? "not_found"
+          : "ready";
 
   if (!shop && detailStatus === "loading") {
     return (
@@ -171,8 +144,17 @@ const ShopView = () => {
   const gallery = pageData?.gallery?.filter((g) => g && g !== "Not found")
     ?? shop.gallery?.filter((g) => g && g !== "Not found")
     ?? [];
-  const googleRating = getRating(shop);
-  const topRevs = topReviews(googleRating, 4);
+  const googleRating =
+    typeof shop.rating === "number" && shop.rating > 0
+      ? {
+          rating: shop.rating,
+          userRatingCount: shop.reviewCount ?? 0,
+          reviews: (shop.reviewsSample ?? []).filter((review) => review?.text?.trim()),
+          editorialSummary: shop.editorialSummary,
+          reviewSummary: shop.reviewSummary,
+        }
+      : null;
+  const topRevs = [...(googleRating?.reviews ?? [])].slice(0, 4);
   const latestSource = [...sources]
     .filter((source) => source.lastCrawledAt)
     .sort((a, b) => new Date(b.lastCrawledAt!).getTime() - new Date(a.lastCrawledAt!).getTime())[0];

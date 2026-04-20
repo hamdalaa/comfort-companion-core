@@ -91,6 +91,16 @@ describe("catalog integration", () => {
     const queue = new RecordingQueue();
     const app = await createCatalogApiServer(context, queue);
 
+    const docs = await app.inject({
+      method: "GET",
+      url: "/docs/json",
+    });
+    expect(docs.statusCode).toBe(200);
+    const spec = docs.json();
+    expect(spec.openapi).toBe("3.0.3");
+    expect(spec.paths["/public/bootstrap"]).toBeDefined();
+    expect(spec.paths["/internal/stores"]).toBeDefined();
+
     const withoutAuth = await app.inject({
       method: "GET",
       url: "/internal/stores",

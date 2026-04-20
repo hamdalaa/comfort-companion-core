@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -6,11 +6,10 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/EmptyState";
 import { ProductCard } from "@/components/ProductCard";
 import { useDataStore } from "@/lib/dataStore";
-import { getBrandDetail, type BrandDetailResponse } from "@/lib/catalogApi";
+import { useBrandDetailQuery } from "@/lib/catalogQueries";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import { useBrandLogo } from "@/hooks/useBrandLogo";
-import type { BrandDealer } from "@/lib/types";
 import {
   ChevronLeft,
   ExternalLink,
@@ -28,28 +27,25 @@ const Brand = () => {
   const { slug } = useParams<{ slug: string }>();
   const { brands, products } = useDataStore();
   const fallbackBrand = brands.find((b) => b.slug === slug);
-  const [brandDetail, setBrandDetail] = useState<BrandDetailResponse | null>(null);
-
-  useEffect(() => {
-    if (!slug) return;
-    let active = true;
-    getBrandDetail(slug)
-      .then((payload) => {
-        if (!active) return;
-        setBrandDetail(payload);
-      })
-      .catch(() => {
-        if (!active) return;
-        setBrandDetail(null);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [slug]);
+  const brandDetailQuery = useBrandDetailQuery(slug);
+  const brandDetail = brandDetailQuery.data;
 
   const brand = fallbackBrand ?? brandDetail?.brand;
   const logoSrc = useBrandLogo(brand?.slug, brand?.brandName, "default");
+
+  if (brandDetailQuery.isLoading && !brand) {
+    return (
+      <div className="min-h-screen flex flex-col bg-muted/30">
+        <TopNav />
+        <main className="flex-1 container py-12">
+          <div className="rounded-3xl border border-border/70 bg-card/88 p-8 text-center shadow-soft-lg">
+            <p className="text-sm text-muted-foreground">جاري تحميل صفحة البراند…</p>
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
+    );
+  }
 
   if (!brand) {
     return (
@@ -80,11 +76,21 @@ const Brand = () => {
   const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
   const logoClassName = brand.slug === "apple" ? "brightness-0" : "";
-  const storeNames = [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))];
-  const topCategories = [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4);
-  const pricedProducts = related
-    .map((product) => product.priceValue)
-    .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+  const storeNames = useMemo(
+    () => [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))],
+    [brandDetail?.stores],
+  );
+  const topCategories = useMemo(
+    () => [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4),
+    [related],
+  );
+  const pricedProducts = useMemo(
+    () =>
+      related
+        .map((product) => product.priceValue)
+        .filter((value): value is number => typeof value === "number" && Number.isFinite(value)),
+    [related],
+  );
   const insights = {
     storeNames,
     topCategories,
@@ -396,7 +402,7 @@ const Brand = () => {
           ) : (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {related.map((p) => (
-                <ProductCard key={p.id} product={{ ...p, score: 0 }} />
+                <ProductCard key={p.id} product={{ ...p, score: 0 }} compact />
               ))}
             </div>
           )}

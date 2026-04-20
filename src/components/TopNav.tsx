@@ -122,7 +122,7 @@ export function TopNav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-all duration-300",
+        "sticky top-0 z-40 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300",
         scrolled
           ? "border-b border-border/40 bg-background/80 shadow-[0_1px_0_0_hsl(var(--border)/0.4),0_8px_24px_-12px_hsl(var(--foreground)/0.08)] backdrop-blur-xl"
           : "border-b border-transparent bg-background",
@@ -150,11 +150,11 @@ export function TopNav() {
                 to={link.to}
                 className={({ isActive }) =>
                   cn(
-                    "relative rounded-lg px-3 py-1.5 text-[13px] font-medium transition-all duration-200",
+                    "relative inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-[13px] font-medium transition-[color,transform] duration-200",
                     isActive
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground",
-                    "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-primary after:transition-all after:duration-300",
+                    "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-primary after:transition-[transform,opacity] after:duration-300",
                     "after:scale-x-0 after:opacity-0",
                   )
                 }
@@ -174,8 +174,8 @@ export function TopNav() {
           <div className="ms-auto flex items-center gap-1 sm:gap-1.5">
             {/* City */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="group/city hidden items-center gap-1.5 rounded-full border border-border/60 bg-surface/60 px-3 py-1.5 text-[13px] font-medium text-foreground transition-all hover:border-primary/30 hover:bg-primary-soft hover:shadow-soft md:flex">
-                <MapPin className="h-3.5 w-3.5 text-primary transition-transform group-hover/city:scale-110" />
+              <DropdownMenuTrigger className="group/city hidden min-h-10 items-center gap-1.5 rounded-full border border-border/60 bg-surface/60 px-3 py-1.5 text-[13px] font-medium text-foreground transition-[background-color,border-color,box-shadow,color] hover:border-primary/30 hover:bg-primary-soft hover:shadow-soft md:flex">
+                <MapPin className="h-3.5 w-3.5 -translate-y-px text-primary transition-transform group-hover/city:scale-110" />
                 <span>{selectedCity.cityAr}</span>
                 <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-data-[state=open]/city:rotate-180" />
               </DropdownMenuTrigger>
@@ -208,7 +208,7 @@ export function TopNav() {
                           key={city.slug}
                           onClick={() => pickCity(city.slug, city.cityAr, `/city/${city.slug}`)}
                           className={cn(
-                            "group/item flex cursor-pointer items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-sm transition-all focus:bg-primary/10 focus:text-primary data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary",
+                            "group/item flex min-h-10 cursor-pointer items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-sm transition-[background-color,color,transform] focus:bg-primary/10 focus:text-primary data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary",
                             active
                               ? "bg-primary/10 text-primary"
                               : "text-foreground hover:bg-primary/10 hover:text-primary",
@@ -245,7 +245,7 @@ export function TopNav() {
                 <div className="border-t border-border/60 bg-muted/30 p-2">
                   <DropdownMenuItem
                     onClick={() => nav("/iraq")}
-                    className="group/all cursor-pointer rounded-xl bg-gradient-to-r from-primary to-primary/85 px-3 py-2.5 text-center text-sm font-bold !text-primary-foreground transition-all hover:from-primary hover:to-primary hover:shadow-soft-md focus:bg-primary focus:!text-primary-foreground data-[highlighted]:from-primary data-[highlighted]:to-primary data-[highlighted]:!text-primary-foreground"
+                    className="group/all cursor-pointer rounded-xl bg-gradient-to-r from-primary to-primary/85 px-3 py-2.5 text-center text-sm font-bold !text-primary-foreground transition-[transform,box-shadow,filter] hover:shadow-soft-md focus:bg-primary focus:!text-primary-foreground data-[highlighted]:!text-primary-foreground"
                   >
                     <span className="flex w-full items-center justify-center gap-1.5">
                       كل محلات العراق
@@ -258,7 +258,7 @@ export function TopNav() {
 
             <button
               onClick={openTour}
-              className="hidden h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-surface hover:text-foreground md:flex"
+              className="ios-tap hidden h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-[background-color,color] hover:bg-surface hover:text-foreground md:flex"
               aria-label="دليل الاستخدام"
             >
               <HelpCircle className="h-4 w-4" />
@@ -267,7 +267,7 @@ export function TopNav() {
 
             <Link
               to="/about"
-              className="group/dev hidden h-8 items-center gap-1.5 rounded-full border border-violet/25 bg-gradient-to-r from-violet/10 via-violet/5 to-rose/10 px-3 text-[11px] font-bold text-violet transition-all hover:-translate-y-0.5 hover:border-violet/50 hover:shadow-[0_4px_12px_-4px_hsl(var(--violet)/0.4)] md:inline-flex"
+              className="group/dev ios-tap hidden min-h-10 items-center gap-1.5 rounded-full border border-violet/25 bg-gradient-to-r from-violet/10 via-violet/5 to-rose/10 px-3 text-[11px] font-bold text-violet transition-[transform,box-shadow,border-color,background-color,color] hover:-translate-y-0.5 hover:border-violet/50 hover:shadow-[0_4px_12px_-4px_hsl(var(--violet)/0.4)] md:inline-flex"
               aria-label="المطوّر"
             >
               <Heart className="h-3 w-3 fill-current transition-transform group-hover/dev:scale-110" />
@@ -276,10 +276,13 @@ export function TopNav() {
 
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="hidden h-8 w-8 items-center justify-center rounded-full text-foreground transition-all hover:bg-surface md:flex lg:hidden"
+              className="ios-tap hidden h-10 w-10 items-center justify-center rounded-full text-foreground transition-[background-color,color] hover:bg-surface md:flex lg:hidden"
               aria-label="القائمة"
             >
-              {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              <span className="icon-swap h-4 w-4" data-active={mobileOpen ? "true" : "false"}>
+                <span className="icon-primary"><Menu className="h-4 w-4" /></span>
+                <span className="icon-secondary"><X className="h-4 w-4" /></span>
+              </span>
             </button>
           </div>
         </div>
@@ -318,7 +321,12 @@ export function TopNav() {
                   className="h-8 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
                 />
                 {q && (
-                  <button type="button" onClick={() => setQ("")} aria-label="مسح">
+                  <button
+                    type="button"
+                    onClick={() => setQ("")}
+                    aria-label="مسح"
+                    className="ios-tap hit-target inline-flex items-center justify-center rounded-full text-muted-foreground transition-[background-color,color,transform] hover:bg-muted/70 hover:text-foreground"
+                  >
                     <XCircle className="h-4 w-4 text-muted-foreground" />
                   </button>
                 )}
@@ -340,7 +348,7 @@ export function TopNav() {
                         to={link.to}
                         onClick={() => setMobileOpen(false)}
                         className={cn(
-                          "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all",
+                          "ios-tap flex min-h-10 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-[background-color,color,transform]",
                           active
                             ? "bg-primary-soft text-primary"
                             : "text-foreground hover:bg-surface",
@@ -374,7 +382,7 @@ export function TopNav() {
                 <li>
                   <button
                     onClick={() => { setMobileOpen(false); openTour(); }}
-                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface"
+                    className="ios-tap flex min-h-10 w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground transition-[background-color,color,transform] hover:bg-surface"
                   >
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                       <HelpCircle className="h-4 w-4" />
@@ -386,7 +394,7 @@ export function TopNav() {
                   <Link
                     to="/dashboard"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface"
+                    className="ios-tap flex min-h-10 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground transition-[background-color,color,transform] hover:bg-surface"
                   >
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                       <LayoutDashboard className="h-4 w-4" />
@@ -402,7 +410,7 @@ export function TopNav() {
               <Link
                 to="/about"
                 onClick={() => setMobileOpen(false)}
-                className="group/dev flex items-center justify-center gap-2 rounded-full border border-violet/25 bg-gradient-to-r from-violet/10 via-violet/5 to-rose/10 px-4 py-3 text-sm font-bold text-violet transition-all hover:border-violet/50 hover:shadow-[0_4px_14px_-4px_hsl(var(--violet)/0.4)]"
+                className="group/dev ios-tap flex items-center justify-center gap-2 rounded-full border border-violet/25 bg-gradient-to-r from-violet/10 via-violet/5 to-rose/10 px-4 py-3 text-sm font-bold text-violet transition-[transform,box-shadow,border-color,background-color,color] hover:border-violet/50 hover:shadow-[0_4px_14px_-4px_hsl(var(--violet)/0.4)]"
               >
                 <Heart className="h-4 w-4 fill-current transition-transform group-hover/dev:scale-110" />
                 <span>المطوّر</span>
@@ -442,7 +450,7 @@ export function TopNav() {
                   </div>
                   <button
                     aria-label="إزالة"
-                    className="text-muted-foreground hover:text-destructive"
+                    className="ios-tap hit-target inline-flex items-center justify-center rounded-full text-muted-foreground transition-[background-color,color,transform] hover:bg-destructive/10 hover:text-destructive"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>

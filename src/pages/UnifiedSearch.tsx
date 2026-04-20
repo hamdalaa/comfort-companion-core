@@ -15,12 +15,11 @@
  *   - Shops:    searchShops()   — replace local filter with GET /api/shops/search
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   Clock,
-  Globe2,
   Package,
   Search,
   Sparkles,
@@ -38,12 +37,12 @@ import { UnifiedProductCard } from "@/components/UnifiedProductCard";
 import { UnifiedSearchFilters } from "@/components/UnifiedSearchFilters";
 import { ShopFilters } from "@/components/ShopFilters";
 import { ShopResultCard } from "@/components/ShopResultCard";
-import type { Shop } from "@/lib/types";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { EmptyState } from "@/components/EmptyState";
 
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicProductCount, getPublicStoreCount } from "@/lib/catalogCounts";
+import { getShopImage, preloadShopImages } from "@/lib/shopImages";
 import { cn } from "@/lib/utils";
 import {
   buildAutocomplete,
@@ -56,8 +55,6 @@ import {
   type UnifiedSearchFilters as Filters,
   type UnifiedSearchResponse,
 } from "@/lib/unifiedSearch";
-
-// ---------- Constants ----------
 
 type Tab = "products" | "shops";
 
@@ -83,6 +80,8 @@ const POPULAR_QUERIES = [
 ];
 
 const RECENT_KEY = "hayer:recent-unified-searches";
+const AUTOCOMPLETE_PRODUCT_POOL_LIMIT = 1500;
+const INITIAL_VISIBLE_PRODUCT_COUNT = 24;
 
 function getRecent(): string[] {
   try { return JSON.parse(localStorage.getItem(RECENT_KEY) ?? "[]"); } catch { return []; }
@@ -96,18 +95,14 @@ function pushRecent(q: string) {
   saveRecent([q, ...cur]);
 }
 
-// ---------- Component ----------
-
 export default function UnifiedSearch() {
   const nav = useNavigate();
   const [params, setParams] = useSearchParams();
-  const { shops, products, summary } = useDataStore();
+  const { shops, products, summary, prefetchProductIndex } = useDataStore();
 
-  // URL-driven state
   const activeQuery = params.get("q") ?? "";
   const activeTab: Tab = (params.get("tab") as Tab) === "shops" ? "shops" : "products";
 
-  // Local UI state
   const [query, setQuery] = useState(activeQuery);
   const [filters, setFilters] = useState<Filters>({});
   const [shopFilters, setShopFilters] = useState<ShopSearchFilters>({});
@@ -116,23 +111,24 @@ export default function UnifiedSearch() {
   const [data, setData] = useState<UnifiedSearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [recent, setRecent] = useState<string[]>(getRecent());
+  const [visibleProductCount, setVisibleProductCount] = useState(INITIAL_VISIBLE_PRODUCT_COUNT);
 
-  // Autocomplete state
   const [acOpen, setAcOpen] = useState(false);
   const [acIndex, setAcIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Sync local query when URL changes externally (e.g. recent-search click)
   useEffect(() => { setQuery(activeQuery); }, [activeQuery]);
 
-  // Document title
   useEffect(() => {
     document.title = activeQuery
       ? `${activeQuery} — بحث | حاير`
       : "البحث الموحّد | حاير";
   }, [activeQuery]);
 
-  // Fetch products whenever query/filters/sort change
+  useEffect(() => {
+    void prefetchProductIndex();
+  }, [prefetchProductIndex]);
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -142,19 +138,37 @@ export default function UnifiedSearch() {
     return () => { cancelled = true; };
   }, [activeQuery, filters, sort]);
 
-  // Local shop search — synchronous, very cheap
   const shopResult = useMemo(
     () => searchShops(shops, { ...shopFilters, q: activeQuery, sort: shopSort }),
     [shops, activeQuery, shopSort, shopFilters],
   );
 
-  // Autocomplete suggestions (cap at 8 across products+shops)
+  const deferredAutocompleteQuery = useDeferredValue(query);
+  const normalizedAutocompleteQuery = deferredAutocompleteQuery.trim();
+  const shouldShowAutocomplete = normalizedAutocompleteQuery.length >= 2;
+  const autocompleteProducts = useMemo(
+    () => (products.length > AUTOCOMPLETE_PRODUCT_POOL_LIMIT
+      ? products.slice(0, AUTOCOMPLETE_PRODUCT_POOL_LIMIT)
+      : products),
+    [products],
+  );
   const suggestions: AutocompleteSuggestion[] = useMemo(
-    () => buildAutocomplete(query, shops, products, 8),
-    [query, shops, products],
+    () => (shouldShowAutocomplete
+      ? buildAutocomplete(normalizedAutocompleteQuery, shops, autocompleteProducts, 8)
+      : []),
+    [shouldShowAutocomplete, normalizedAutocompleteQuery, shops, autocompleteProducts],
   );
 
-  // Global "/" shortcut to focus search
+  useEffect(() => {
+    setVisibleProductCount(INITIAL_VISIBLE_PRODUCT_COUNT);
+  }, [activeQuery, filters, sort]);
+
+  const resetProductFilters = useCallback(() => setFilters({}), []);
+  const resetShopFilters = useCallback(() => setShopFilters({}), []);
+  const handleLoadMoreProducts = useCallback(() => {
+    setVisibleProductCount((count) => count + INITIAL_VISIBLE_PRODUCT_COUNT);
+  }, []);
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -168,7 +182,6 @@ export default function UnifiedSearch() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Helpers
   function commitSearch(q: string, tab: Tab = activeTab) {
     const next = q.trim();
     if (next) pushRecent(next);
@@ -232,7 +245,6 @@ export default function UnifiedSearch() {
     }
   }
 
-  // Active-filter chips (products tab only)
   const activeChips = useMemo(() => {
     const chips: { label: string; clear: () => void }[] = [];
     filters.brands?.forEach((b) => chips.push({ label: b, clear: () => setFilters((f) => ({ ...f, brands: f.brands?.filter((x) => x !== b) })) }));
@@ -268,21 +280,25 @@ export default function UnifiedSearch() {
     Boolean(shopFilters.hasWebsite) ||
     Boolean(shopFilters.hasPhone);
   const publicShopCount = shops.filter((shop) => !shop.archivedAt).length;
+  const visibleProducts = useMemo(
+    () => data?.products.slice(0, visibleProductCount) ?? [],
+    [data, visibleProductCount],
+  );
+  const hasMoreProducts = (data?.products.length ?? 0) > visibleProductCount;
 
-  const productCount = hasProductFilters
-    ? (data?.totalProducts ?? 0)
-    : getPublicProductCount(summary.totalProducts, products.length);
-  const shopCount = hasShopFilters
-    ? shopResult.totalShops
-    : getPublicStoreCount(summary.totalStores, publicShopCount);
+  const defaultProductCount = getPublicProductCount(summary.totalProducts, products.length);
+  const defaultShopCount = getPublicStoreCount(summary.totalStores, publicShopCount);
+  const productCount = data?.totalProducts ?? (hasProductFilters ? 0 : defaultProductCount);
+  const shopCount = activeTab === "products"
+    ? (data?.storesCovered ?? defaultShopCount)
+    : (hasShopFilters ? shopResult.totalShops : defaultShopCount);
 
-  // ---------- Render ----------
   return (
     <div className="min-h-screen bg-background">
       <TopNav />
 
       {/* HERO + SEARCH BAR */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
+      <section className="relative border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
         <div className="container mx-auto px-4 py-8 sm:py-10">
           <div className="mx-auto max-w-3xl text-center">
@@ -297,10 +313,9 @@ export default function UnifiedSearch() {
               نجمع لك العروض من جميع المتاجر العراقية ودليل المحلات في مكان واحد.
             </p>
 
-            {/* Search bar with autocomplete */}
             <form
               onSubmit={(e) => { e.preventDefault(); commitSearch(query); }}
-              className="relative mx-auto mt-6 max-w-2xl"
+              className="relative z-40 mx-auto mt-6 max-w-2xl"
             >
               <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-1.5 shadow-soft-xl transition-all focus-within:border-primary/50 focus-within:shadow-glow">
                 <div className="flex flex-1 items-center gap-2 rounded-xl bg-background/60 px-3">
@@ -308,8 +323,13 @@ export default function UnifiedSearch() {
                   <input
                     ref={inputRef}
                     value={query}
-                    onChange={(e) => { setQuery(e.target.value); setAcOpen(true); setAcIndex(-1); }}
-                    onFocus={() => setAcOpen(true)}
+                    onChange={(e) => {
+                      const nextValue = e.target.value;
+                      setQuery(nextValue);
+                      setAcOpen(nextValue.trim().length >= 2);
+                      setAcIndex(-1);
+                    }}
+                    onFocus={() => setAcOpen(query.trim().length >= 2)}
                     onBlur={() => setTimeout(() => setAcOpen(false), 150)}
                     onKeyDown={onInputKeyDown}
                     placeholder="iPhone 15، PlayStation، اسم محل…  (اضغط / للتركيز)"
@@ -333,7 +353,7 @@ export default function UnifiedSearch() {
                 </Button>
               </div>
 
-              {acOpen && (
+              {acOpen && shouldShowAutocomplete && (
                 <SearchAutocomplete
                   query={query}
                   suggestions={suggestions}
@@ -345,7 +365,6 @@ export default function UnifiedSearch() {
               )}
             </form>
 
-            {/* Recent + Popular */}
             {!activeQuery && (
               <div className="mt-5 space-y-3">
                 {recent.length > 0 && (
@@ -409,42 +428,42 @@ export default function UnifiedSearch() {
       </section>
 
       {/* TABS BAR */}
-      <div className="sticky top-[56px] z-30 border-b border-border bg-background/95 backdrop-blur-md">
+      <div className="z-30 border-b border-border bg-background md:sticky md:top-[56px] md:bg-background/95 md:backdrop-blur-md">
         <div className="container mx-auto flex items-center justify-between gap-4 px-4">
           <div className="flex">
-              <TabButton
-                active={activeTab === "products"}
-                onClick={() => setTab("products")}
-                icon={<Package className="h-4 w-4" />}
-                label="منتجات"
-                count={productCount}
-              />
-              <TabButton
-                active={activeTab === "shops"}
-                onClick={() => setTab("shops")}
-                icon={<Store className="h-4 w-4" />}
-                label="محلات"
-                count={shopCount}
-              />
+            <TabButton
+              active={activeTab === "products"}
+              onClick={() => setTab("products")}
+              icon={<Package className="h-4 w-4" />}
+              label="منتجات"
+              count={productCount}
+            />
+            <TabButton
+              active={activeTab === "shops"}
+              onClick={() => setTab("shops")}
+              icon={<Store className="h-4 w-4" />}
+              label="محلات"
+              count={shopCount}
+            />
           </div>
 
           <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
             <span>ترتيب:</span>
-              {activeTab === "products" ? (
-                <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
+            {activeTab === "products" ? (
+              <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
                 <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Select value={shopSort} onValueChange={(v) => setShopSort(v as ShopSortKey)}>
+                <SelectContent>
+                  {PRODUCT_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Select value={shopSort} onValueChange={(v) => setShopSort(v as ShopSortKey)}>
                 <SelectTrigger className="h-8 w-[180px] rounded-lg text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              )}
+                <SelectContent>
+                  {SHOP_SORT.map((opt) => <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            )}
           </div>
         </div>
       </div>
@@ -455,12 +474,15 @@ export default function UnifiedSearch() {
           <ProductsView
             data={data}
             loading={loading}
+            visibleProducts={visibleProducts}
+            hasMoreProducts={hasMoreProducts}
+            onLoadMore={handleLoadMoreProducts}
             filters={filters}
             setFilters={setFilters}
             sort={sort}
             setSort={setSort}
             activeChips={activeChips}
-            onResetFilters={() => setFilters({})}
+            onResetFilters={resetProductFilters}
           />
         ) : (
           <ShopsView
@@ -469,7 +491,7 @@ export default function UnifiedSearch() {
             setSort={setShopSort}
             filters={shopFilters}
             setFilters={setShopFilters}
-            onResetFilters={() => setShopFilters({})}
+            onResetFilters={resetShopFilters}
           />
         )}
       </main>
@@ -478,8 +500,6 @@ export default function UnifiedSearch() {
     </div>
   );
 }
-
-/* ---------------- Subcomponents ---------------- */
 
 function TabButton({
   active, onClick, icon, label, count,
@@ -510,11 +530,14 @@ function TabButton({
   );
 }
 
-function ProductsView({
-  data, loading, filters, setFilters, sort, setSort, activeChips, onResetFilters,
+const ProductsView = memo(function ProductsView({
+  data, loading, visibleProducts, hasMoreProducts, onLoadMore, filters, setFilters, sort, setSort, activeChips, onResetFilters,
 }: {
   data: UnifiedSearchResponse | null;
   loading: boolean;
+  visibleProducts: UnifiedSearchResponse["products"];
+  hasMoreProducts: boolean;
+  onLoadMore: () => void;
   filters: Filters;
   setFilters: (f: Filters) => void;
   sort: SortKey;
@@ -577,7 +600,14 @@ function ProductsView({
           </div>
         )}
 
-        {loading ? (
+        {loading && visibleProducts.length > 0 && (
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
+            <Sparkles className="h-3.5 w-3.5" />
+            جاري تحديث النتائج...
+          </div>
+        )}
+
+        {loading && visibleProducts.length === 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <Skeleton key={i} className="aspect-[3/4] w-full rounded-2xl" />
@@ -590,16 +620,27 @@ function ProductsView({
             action={<Button onClick={onResetFilters} variant="outline">مسح الفلاتر</Button>}
           />
         ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
-            {data?.products.map((p) => <UnifiedProductCard key={p.id} product={p} />)}
-          </div>
+          <>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+              {visibleProducts.map((p) => <UnifiedProductCard key={p.id} product={p} />)}
+            </div>
+
+            {hasMoreProducts && (
+              <div className="mt-6 flex justify-center">
+                <Button onClick={onLoadMore} variant="outline" className="rounded-full px-6">
+                  عرض المزيد
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
   );
-}
+});
+ProductsView.displayName = "ProductsView";
 
-function ShopsView({
+const ShopsView = memo(function ShopsView({
   shopResult, sort, setSort, filters, setFilters, onResetFilters,
 }: {
   shopResult: ReturnType<typeof searchShops>;
@@ -609,6 +650,27 @@ function ShopsView({
   setFilters: (f: ShopSearchFilters) => void;
   onResetFilters: () => void;
 }) {
+  const [, setShopImagesVersion] = useState(0);
+  const shopsToEnrich = useMemo(
+    () => shopResult.shops.filter((shop) => !shop.imageUrl && shop.citySlug).slice(0, 48),
+    [shopResult.shops],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    if (shopsToEnrich.length === 0) return;
+
+    preloadShopImages(shopsToEnrich).then(() => {
+      if (!cancelled) {
+        setShopImagesVersion((version) => version + 1);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [shopsToEnrich]);
+
   const activeChips: { label: string; clear: () => void }[] = [];
   filters.categories?.forEach((c) =>
     activeChips.push({
@@ -632,9 +694,9 @@ function ShopsView({
     activeChips.push({ label: "عنده موقع", clear: () => setFilters({ ...filters, hasWebsite: undefined }) });
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+    <div className="grid gap-6 xl:grid-cols-[280px_1fr]">
       {/* Desktop sidebar */}
-      <div className="hidden lg:block">
+      <div className="hidden xl:block">
         <ShopFilters
           facets={shopResult.facets}
           value={filters}
@@ -645,7 +707,7 @@ function ShopsView({
 
       <div className="min-w-0 space-y-4">
         {/* Mobile filter + sort bar */}
-        <div className="flex items-center justify-between gap-2 lg:hidden">
+        <div className="flex items-center justify-between gap-2 xl:hidden">
           <ShopFilters
             facets={shopResult.facets}
             value={filters}
@@ -692,13 +754,14 @@ function ShopsView({
             }
           />
         ) : (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {shopResult.shops.map((s) => (
-              <ShopResultCard key={s.id} shop={s} />
+              <ShopResultCard key={s.id} shop={s} previewImageUrl={getShopImage(s)} />
             ))}
           </div>
         )}
       </div>
     </div>
   );
-}
+});
+ShopsView.displayName = "ShopsView";

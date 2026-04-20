@@ -76,7 +76,10 @@ export function HeroBanner() {
       <div className="container relative pt-10 pb-14 sm:pt-20 sm:pb-24 md:pt-28 md:pb-32">
         <div className="mx-auto max-w-4xl text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft/80 backdrop-blur-md px-3.5 py-1.5 text-[11px] font-semibold text-primary shadow-soft sm:text-xs">
+          <div
+            className="animate-fade-in-up inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft/80 px-3.5 py-1.5 text-[11px] font-semibold text-primary shadow-soft backdrop-blur-md sm:text-xs"
+            style={{ animationDelay: "0ms", animationFillMode: "backwards" }}
+          >
             <Sparkles className="h-3.5 w-3.5 shrink-0 animate-pulse" />
             <span>أكبر دليل إلكترونيات بالعراق · مُحدَّث يومياً</span>
             <span className="mx-1 h-1 w-1 rounded-full bg-emerald" />
@@ -84,7 +87,10 @@ export function HeroBanner() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-display mt-6 text-[clamp(2.25rem,6.4vw,5.5rem)] font-medium leading-[1.05] tracking-tight text-foreground sm:mt-8">
+          <h1
+            className="animate-fade-in-up font-display mt-6 text-balance text-[clamp(2.25rem,6.4vw,5.5rem)] font-medium leading-[1.05] tracking-tight text-foreground sm:mt-8"
+            style={{ animationDelay: "80ms", animationFillMode: "backwards" }}
+          >
             كل محلات الإلكترونيات
             <br className="hidden sm:inline" />
             <span className="font-bold bg-gradient-to-r from-primary via-primary to-emerald bg-clip-text text-transparent"> بمكان واحد</span>
@@ -92,7 +98,10 @@ export function HeroBanner() {
           </h1>
 
           {/* Service explanation */}
-          <p className="mx-auto mt-5 max-w-[62ch] text-[13px] leading-7 text-muted-foreground sm:mt-7 sm:text-base sm:leading-8">
+          <p
+            className="animate-fade-in-up mx-auto mt-5 max-w-[62ch] text-pretty text-[13px] leading-7 text-muted-foreground sm:mt-7 sm:text-base sm:leading-8"
+            style={{ animationDelay: "160ms", animationFillMode: "backwards" }}
+          >
             دور على أي منتج إلكتروني — موبايل، لابتوب، شاشة، إكسسوار — وشوف
             <span className="text-foreground"> أسعاره عند كل المحلات</span>،
             مع <span className="text-foreground">العنوان والتقييمات وتلفون المحل</span>،
@@ -100,7 +109,10 @@ export function HeroBanner() {
           </p>
 
           {/* Search */}
-          <div className="relative z-30 mx-auto mt-7 max-w-2xl sm:mt-10">
+          <div
+            className="animate-fade-in-up relative z-30 mx-auto mt-7 max-w-2xl sm:mt-10"
+            style={{ animationDelay: "240ms", animationFillMode: "backwards" }}
+          >
             <HeroSearch />
           </div>
 
@@ -120,20 +132,21 @@ export function HeroBanner() {
             { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · شبكات", kicker: "بغداد", img: sinaaImg },
             { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن", kicker: "بغداد", img: rubaieImg },
             { to: "/iraq", title: "كل المحافظات", note: "10 محافظات", kicker: "العراق", img: iraqImg },
-          ].map((entry) => (
+          ].map((entry, index) => (
             <Link
               key={entry.to}
               to={entry.to}
-              className="group relative isolate flex h-36 items-end overflow-hidden rounded-2xl border border-border/60 bg-card shadow-soft transition-shadow duration-300 hover:shadow-soft-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:h-40"
+              className="group press animate-fade-in-up relative isolate flex h-36 items-end overflow-hidden rounded-3xl border border-border/60 bg-card shadow-soft-md transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-soft-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:h-40"
+              style={{ animationDelay: `${280 + index * 90}ms`, animationFillMode: "backwards" }}
             >
-              <div className="absolute inset-0 overflow-hidden">
+              <div className="img-frame absolute inset-0 overflow-hidden">
                 <img
                   src={entry.img}
                   alt={entry.title}
                   loading="lazy"
                   width={800}
                   height={512}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 {/* Single elegant gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/35 to-transparent" />
@@ -148,15 +161,15 @@ export function HeroBanner() {
 
               <div className="relative z-10 flex w-full items-end justify-between gap-3 p-4 text-right text-white">
                 <div className="min-w-0">
-                  <div className="font-display text-lg font-semibold leading-tight tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+                  <div className="font-display text-balance text-lg font-semibold leading-tight tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                     {entry.title}
                   </div>
                   <div className="mt-1 text-[11px] font-medium text-white/85">
                     {entry.note}
                   </div>
                 </div>
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-background/95 text-foreground shadow-soft transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                  <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background/95 text-foreground shadow-soft transition-[transform,background-color,color,box-shadow] duration-300 group-hover:scale-[1.02] group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-soft-lg">
+                  <ArrowLeft className="h-3.5 w-3.5 translate-x-px transition-transform duration-300 group-hover:-translate-x-0.5" />
                 </div>
               </div>
             </Link>
@@ -165,10 +178,11 @@ export function HeroBanner() {
 
         {/* Stats — premium light cards */}
         <div className="mx-auto mt-8 grid max-w-5xl grid-cols-3 gap-2 sm:gap-4 md:mt-12">
-          {stats.map((stat) => (
+          {stats.map((stat, index) => (
             <div
               key={stat.label}
-              className="relative flex min-w-0 flex-col items-center justify-center rounded-2xl border border-border bg-card/80 px-2 py-4 text-center backdrop-blur-md shadow-soft transition-all hover:shadow-soft-lg sm:px-6 sm:py-7 md:px-8 md:py-8"
+              className="animate-fade-in-up relative flex min-w-0 flex-col items-center justify-center rounded-3xl border border-border bg-card/80 px-2 py-4 text-center shadow-soft-md backdrop-blur-md transition-[transform,box-shadow,border-color,background-color] duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card hover:shadow-soft-xl sm:px-6 sm:py-7 md:px-8 md:py-8"
+              style={{ animationDelay: `${420 + index * 80}ms`, animationFillMode: "backwards" }}
             >
               <CountUp
                 value={stat.value}

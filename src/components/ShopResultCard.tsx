@@ -3,6 +3,7 @@
  * Different from <ShopCard /> (used on home/listing) — denser, more meta data,
  * built for scanning a long list quickly.
  */
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -16,9 +17,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import { optimizeImageUrl } from "@/lib/imageUrl";
-import { getRating } from "@/lib/googleRatings";
 import { cn } from "@/lib/utils";
 import type { Category, Shop } from "@/lib/types";
 
@@ -36,12 +36,20 @@ const CAT_LABELS: Partial<Record<Category, string>> = {
   "Smart Devices": "أجهزة ذكية",
 };
 
-export function ShopResultCard({ shop }: { shop: Shop }) {
+export const ShopResultCard = memo(function ShopResultCard({
+  shop,
+  previewImageUrl,
+}: {
+  shop: Shop;
+  previewImageUrl?: string;
+}) {
   const categories = shop.categories?.length ? shop.categories : [shop.category];
   const fallback = CATEGORY_IMAGES[categories[0]];
-  const rawImg = shop.imageUrl ?? fallback;
+  const rawImg = previewImageUrl ?? shop.gallery?.[0] ?? shop.imageUrl ?? fallback;
   const img = optimizeImageUrl(rawImg, { width: 280, height: 280 }) ?? rawImg;
-  const rating = getRating(shop);
+  const rating = typeof shop.rating === "number" && shop.rating > 0
+    ? { rating: shop.rating, userRatingCount: shop.reviewCount ?? 0 }
+    : null;
 
   return (
     <article className="group relative flex gap-3 overflow-hidden rounded-2xl border border-border bg-card p-3 shadow-soft-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-soft-md sm:gap-4 sm:p-4">
@@ -173,4 +181,4 @@ export function ShopResultCard({ shop }: { shop: Shop }) {
       </div>
     </article>
   );
-}
+});

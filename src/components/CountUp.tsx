@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useCountUp } from "@/hooks/useCountUp";
 
 export function CountUp({
@@ -11,7 +12,7 @@ export function CountUp({
 }) {
   const { ref, value: current } = useCountUp(value);
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={cn("tabular-nums", className)}>
       {current.toLocaleString(locale)}
     </span>
   );

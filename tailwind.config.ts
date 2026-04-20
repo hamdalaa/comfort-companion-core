@@ -9,12 +9,12 @@ export default {
     container: {
       center: true,
       padding: {
-        DEFAULT: "1rem",
-        sm: "1.25rem",
-        md: "1.5rem",
-        lg: "2rem",
+        DEFAULT: "1.125rem",
+        sm: "1.5rem",
+        md: "1.75rem",
+        lg: "2.25rem",
       },
-      screens: { "2xl": "1400px" },
+      screens: { "2xl": "1480px" },
     },
     extend: {
       fontFamily: {

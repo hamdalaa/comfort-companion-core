@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { CATEGORY_IMAGES } from "@/lib/mockData";
+import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 
 const fmt = (n?: number) => (typeof n === "number" ? `${n.toLocaleString("en-US")} IQD` : "—");

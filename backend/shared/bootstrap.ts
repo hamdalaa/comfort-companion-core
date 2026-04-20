@@ -1,6 +1,8 @@
 import path from "node:path";
 import { catalogConfig } from "./config.js";
 import { PostgresCatalogRepository } from "./db/postgresCatalogRepository.js";
+import { SqliteCatalogRepository } from "./db/sqliteCatalogRepository.js";
+import { getSqlitePublicCatalogDataStore } from "./db/sqlitePublicCatalogData.js";
 import { MemoryCatalogRepository } from "./repositories/memoryCatalogRepository.js";
 import { CatalogHttpClient } from "./http/catalogHttpClient.js";
 import { ProbeService } from "./services/probeService.js";
@@ -10,6 +12,7 @@ import { CoverageService } from "./services/coverageService.js";
 import { FeedSyncService } from "./services/feedSyncService.js";
 import { LocalObjectStorage, S3CompatibleObjectStorage } from "./storage/objectStorage.js";
 import { MemorySearchEngine } from "./search/memorySearchEngine.js";
+import { SqliteSearchEngine } from "./search/sqliteSearchEngine.js";
 import { TypesenseSearchEngine } from "./search/typesenseSearchEngine.js";
 import type { CatalogRepository } from "./repositories/contracts.js";
 import type { SearchEngine } from "./search/contracts.js";
@@ -30,7 +33,7 @@ export interface CatalogContext {
 
 export async function createCatalogContext(options?: { useMemory?: boolean }): Promise<CatalogContext> {
   const repository = options?.useMemory ? new MemoryCatalogRepository() : await createRepository();
-  const searchEngine = options?.useMemory ? new MemorySearchEngine() : new TypesenseSearchEngine();
+  const searchEngine = options?.useMemory ? new MemorySearchEngine() : createSearchEngine();
   await searchEngine.ensureReady();
 
   const storage = createObjectStorage(options?.useMemory ?? false);
@@ -61,6 +64,12 @@ export async function createCatalogContext(options?: { useMemory?: boolean }): P
     searchEngine,
     repoRoot: catalogConfig.repoRoot,
   });
+  if (!options?.useMemory && catalogConfig.search.driver === "sqlite") {
+    await rebuildPersistentSearchIndex(repository, searchEngine);
+  }
+  if (!options?.useMemory && catalogConfig.database.driver === "sqlite") {
+    await getSqlitePublicCatalogDataStore(catalogConfig.database.sqlitePath).importFromRepo(catalogConfig.repoRoot);
+  }
 
   return {
     repository,
@@ -74,9 +83,21 @@ export async function createCatalogContext(options?: { useMemory?: boolean }): P
 }
 
 async function createRepository(): Promise<CatalogRepository> {
-  const repository = new PostgresCatalogRepository(catalogConfig.databaseUrl);
+  if (catalogConfig.database.driver === "sqlite") {
+    const repository = new SqliteCatalogRepository(catalogConfig.database.sqlitePath);
+    await repository.bootstrap();
+    return repository;
+  }
+
+  const repository = new PostgresCatalogRepository(catalogConfig.database.url);
   await repository.bootstrap();
   return repository;
+}
+
+function createSearchEngine(): SearchEngine {
+  return catalogConfig.search.driver === "sqlite"
+    ? new SqliteSearchEngine(catalogConfig.database.sqlitePath)
+    : new TypesenseSearchEngine();
 }
 
 function createObjectStorage(useMemory: boolean): ObjectStorage {
@@ -101,4 +122,19 @@ function createObjectStorage(useMemory: boolean): ObjectStorage {
   }
 
   throw new Error("Snapshot storage is not configured securely. Refusing to fall back to local disk.");
+}
+
+async function rebuildPersistentSearchIndex(repository: CatalogRepository, searchEngine: SearchEngine) {
+  const stores = await repository.listStores();
+  const documents = await repository.listSearchDocuments();
+  const grouped = new Map<string, typeof documents>();
+  for (const document of documents) {
+    const current = grouped.get(document.storeId) ?? [];
+    current.push(document);
+    grouped.set(document.storeId, current);
+  }
+
+  for (const store of stores) {
+    await searchEngine.replaceStoreDocuments(store.id, grouped.get(store.id) ?? []);
+  }
 }

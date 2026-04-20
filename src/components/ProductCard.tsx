@@ -18,11 +18,13 @@ export function ProductCard({
   shopGoogleMapsUrl,
   bestPrice = false,
   layout = "grid",
+  compact = false,
 }: {
   product: ScoredProduct;
   shopGoogleMapsUrl?: string;
   bestPrice?: boolean;
   layout?: "grid" | "list";
+  compact?: boolean;
 }) {
   const stale = isStale(product.crawledAt);
   const productName = decodeHtmlEntities(product.name);
@@ -58,11 +60,11 @@ export function ProductCard({
     return (
       <article
         className={cn(
-          "group grid gap-4 rounded-3xl border border-border/75 bg-card/94 p-3 shadow-soft-lg transition-all duration-300 md:grid-cols-[170px_minmax(0,1fr)]",
+          "group grid gap-4 rounded-3xl border border-border/75 bg-card/94 p-3 shadow-soft-lg transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:shadow-soft-xl md:grid-cols-[170px_minmax(0,1fr)]",
           inCompare && "ring-1 ring-primary/60",
         )}
       >
-        <Link to={`/shop-view/${product.shopId}`} className="relative block overflow-hidden rounded-2xl bg-surface-2">
+        <Link to={`/shop-view/${product.shopId}`} className="img-frame relative block overflow-hidden rounded-2xl bg-surface-2">
           <img
             src={img}
             alt={productName}
@@ -103,7 +105,7 @@ export function ProductCard({
             )}
           </div>
 
-          <h3 className="mt-3 line-clamp-2 font-display text-3xl font-bold leading-[0.92] text-foreground">
+          <h3 className="mt-3 line-clamp-2 text-balance font-display text-3xl font-bold leading-[0.92] text-foreground">
             {productName}
           </h3>
 
@@ -121,7 +123,7 @@ export function ProductCard({
                 <Store className="h-3.5 w-3.5 text-accent" />
                 {shopName}
               </div>
-              <div className="text-[11px] text-muted-foreground">آخر فهرسة {relativeArabicTime(product.crawledAt)}</div>
+              <div className="text-[11px] tabular-nums text-muted-foreground">آخر فهرسة {relativeArabicTime(product.crawledAt)}</div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -157,7 +159,7 @@ export function ProductCard({
   return (
     <article
       className={cn(
-        "group tilt-3d relative overflow-hidden rounded-2xl border border-border/75 bg-card/94 shadow-soft-lg transition-all duration-300 sm:rounded-3xl",
+        "group tilt-3d relative overflow-hidden rounded-2xl border border-border/75 bg-card/94 shadow-soft-lg transition-[transform,box-shadow,border-color] duration-300 hover:shadow-soft-xl sm:rounded-3xl",
         inCompare && "ring-1 ring-primary/60",
       )}
     >
@@ -170,7 +172,7 @@ export function ProductCard({
         </span>
       )}
 
-      <Link to={`/shop-view/${product.shopId}`} className="relative block aspect-[1/1.02] overflow-hidden bg-surface-2 sm:aspect-[1/1.06]">
+      <Link to={`/shop-view/${product.shopId}`} className="img-frame relative block aspect-[1/1.02] overflow-hidden bg-surface-2 sm:aspect-[1/1.06]">
         <img
             src={img}
             alt={productName}
@@ -203,12 +205,19 @@ export function ProductCard({
                   {productBrand}
                 </div>
               )}
-              <h3 className="line-clamp-2 font-display text-[1.35rem] font-bold leading-[0.96] drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)] sm:text-2xl sm:leading-[0.92]">
-          {productName}
+              <h3
+                className={cn(
+                  "line-clamp-2 font-display font-bold drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]",
+                  compact
+                    ? "text-[0.92rem] leading-[1.06] sm:text-[1.02rem] sm:leading-[1.04]"
+                    : "text-balance text-[1.35rem] leading-[0.96] sm:text-2xl sm:leading-[0.92]",
+                )}
+              >
+                {productName}
               </h3>
             </div>
             {product.rating && (
-              <div className="rounded-full bg-black/28 px-2.5 py-1 text-xs font-bold backdrop-blur-sm">
+              <div className="font-numeric tabular-nums rounded-full bg-black/28 px-2.5 py-1 text-xs font-bold backdrop-blur-sm">
                 {product.rating.toFixed(1)}
               </div>
             )}
@@ -218,7 +227,7 @@ export function ProductCard({
 
       <div className="space-y-3 p-3.5 text-right sm:p-4">
         <div className="flex items-center justify-between gap-3">
-          <Link to={`/shop-view/${product.shopId}`} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground">
+          <Link to={`/shop-view/${product.shopId}`} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground">
             <Store className="h-3.5 w-3.5 text-accent" />
             <span className="truncate">{shopName}</span>
           </Link>
@@ -282,7 +291,7 @@ function QuickActions({
   floating?: boolean;
 }) {
   const base = floating
-    ? "h-9 w-9 rounded-full border border-white/16 bg-black/30 text-white backdrop-blur-sm"
+    ? "h-10 w-10 rounded-full border border-white/16 bg-black/30 text-white backdrop-blur-sm"
     : "h-10 w-10 rounded-full border border-border/75 bg-background text-foreground";
 
   return (
@@ -293,7 +302,7 @@ function QuickActions({
             onClick={onFav}
             aria-label={fav ? "حذف من المفضلة" : "إضافة للمفضلة"}
             className={cn(
-              "flex items-center justify-center transition-colors",
+              "ios-tap flex items-center justify-center transition-[transform,background-color,border-color,color,box-shadow,opacity]",
               base,
               fav && !floating && "border-destructive/20 bg-destructive/10 text-destructive",
             )}
@@ -310,7 +319,7 @@ function QuickActions({
             onClick={onCompare}
             aria-label={inCompare ? "إزالة من المقارنة" : "أضف للمقارنة"}
             className={cn(
-              "flex items-center justify-center transition-colors",
+              "ios-tap flex items-center justify-center transition-[transform,background-color,border-color,color,box-shadow,opacity]",
               base,
               inCompare && !floating && "border-primary/20 bg-primary/10 text-primary",
             )}

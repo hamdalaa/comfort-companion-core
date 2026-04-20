@@ -62,6 +62,7 @@ export interface CatalogRepository {
   }>;
   saveStoreSizeSummary(summary: StoreSizeSummaryRecord): Promise<void>;
   getStoreSizeSummary(storeId: string): Promise<StoreSizeSummaryRecord | undefined>;
+  listStoreSizeSummaries(): Promise<StoreSizeSummaryRecord[]>;
   saveAcquisitionProfile(profile: DomainAcquisitionProfile): Promise<void>;
   getAcquisitionProfile(storeId: string): Promise<DomainAcquisitionProfile | undefined>;
   listAcquisitionProfiles(): Promise<DomainAcquisitionProfile[]>;

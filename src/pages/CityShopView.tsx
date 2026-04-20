@@ -32,7 +32,8 @@ import { Button } from "@/components/ui/button";
 import { LightboxViewer } from "@/components/LightboxViewer";
 import { EmptyState } from "@/components/EmptyState";
 import { StarRating } from "@/components/StarRating";
-import { getCityIndexEntry, loadCity, type CityFile } from "@/lib/cityData";
+import { useCityDetailQuery } from "@/lib/catalogQueries";
+import { getCityIndexEntry } from "@/lib/cityData";
 import { buildGoogleMapsUrl } from "@/lib/googleMaps";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { cn } from "@/lib/utils";
@@ -58,24 +59,10 @@ export default function CityShopView() {
   const { slug = "", shopId = "" } = useParams<{ slug: string; shopId: string }>();
   const navigate = useNavigate();
   const meta = getCityIndexEntry(slug);
-  const [data, setData] = useState<CityFile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const cityQuery = useCityDetailQuery(slug);
+  const data = cityQuery.data ?? null;
+  const loading = cityQuery.isLoading && !data;
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    let alive = true;
-    setLoading(true);
-    loadCity(slug).then((nextData) => {
-      if (alive) {
-        setData(nextData);
-        setLoading(false);
-      }
-    });
-
-    return () => {
-      alive = false;
-    };
-  }, [slug]);
 
   // Keyboard navigation handled inside LightboxViewer
 

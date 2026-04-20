@@ -6,9 +6,10 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { CityShopCard } from "@/components/CityShopCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
+import { useCityDetailQuery } from "@/lib/catalogQueries";
 import { compareCityShopsByPopularity } from "@/lib/shopRanking";
 import { cn } from "@/lib/utils";
-import { getCityIndexEntry, loadCity, type CityFile } from "@/lib/cityData";
+import { getCityIndexEntry } from "@/lib/cityData";
 
 const PAGE_SIZE = 24;
 
@@ -16,30 +17,17 @@ export default function CityPage() {
   const { slug = "" } = useParams<{ slug: string }>();
   const nav = useNavigate();
   const meta = getCityIndexEntry(slug);
-
-  const [data, setData] = useState<CityFile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const cityQuery = useCityDetailQuery(slug);
+  const data = cityQuery.data ?? null;
+  const loading = cityQuery.isLoading && !data;
   const [activeCat, setActiveCat] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
-    let alive = true;
-    setLoading(true);
     setVisibleCount(PAGE_SIZE);
     setActiveCat("all");
     setQuery("");
-
-    loadCity(slug).then((nextData) => {
-      if (alive) {
-        setData(nextData);
-        setLoading(false);
-      }
-    });
-
-    return () => {
-      alive = false;
-    };
   }, [slug]);
 
   const categories = useMemo(() => {
@@ -204,7 +192,7 @@ export default function CityPage() {
 
           <div className="mt-6">
             {loading ? (
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {Array.from({ length: 6 }).map((_, index) => (
                   <Skeleton key={index} className="h-[196px] w-full rounded-2xl" />
                 ))}
@@ -229,7 +217,7 @@ export default function CityPage() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {visible.map((store, index) => (
                     <div
                       key={store.id}

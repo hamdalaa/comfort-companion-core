@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type FormEvent } from "react";
+import { useDeferredValue, useMemo, useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,13 +15,15 @@ interface Props {
   variant?: "hero" | "compact";
 }
 
+const AUTOCOMPLETE_PRODUCT_POOL_LIMIT = 1500;
+
 export function HeroSearch({
   initialQ = "",
   initialArea = "all",
   initialCategory = "all",
 }: Props) {
   const nav = useNavigate();
-  const { shops, products } = useDataStore();
+  const { shops, products, prefetchProductIndex } = useDataStore();
   const [q, setQ] = useState(initialQ);
   const [area, setArea] = useState<Area | "all">(initialArea);
   const [category, setCategory] = useState<Category | "all">(initialCategory);
@@ -30,9 +32,16 @@ export function HeroSearch({
   const [acOpen, setAcOpen] = useState(false);
   const [acIndex, setAcIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const deferredQuery = useDeferredValue(q);
+  const autocompleteProducts = useMemo(
+    () => (products.length > AUTOCOMPLETE_PRODUCT_POOL_LIMIT
+      ? products.slice(0, AUTOCOMPLETE_PRODUCT_POOL_LIMIT)
+      : products),
+    [products],
+  );
   const suggestions: AutocompleteSuggestion[] = useMemo(
-    () => buildAutocomplete(q, shops, products, 8),
-    [q, shops, products],
+    () => buildAutocomplete(deferredQuery, shops, autocompleteProducts, 8),
+    [deferredQuery, shops, autocompleteProducts],
   );
 
   function handleAcSelect(s: AutocompleteSuggestion) {
@@ -77,7 +86,10 @@ export function HeroSearch({
             ref={inputRef}
             value={q}
             onChange={(event) => { setQ(event.target.value); setAcOpen(true); setAcIndex(-1); }}
-            onFocus={() => setAcOpen(true)}
+            onFocus={() => {
+              setAcOpen(true);
+              void prefetchProductIndex();
+            }}
             onBlur={() => setTimeout(() => setAcOpen(false), 150)}
             onKeyDown={onInputKeyDown}
             placeholder="iPhone 15، PlayStation 5، اسم محل…"

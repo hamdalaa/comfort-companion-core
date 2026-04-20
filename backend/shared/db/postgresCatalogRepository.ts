@@ -529,12 +529,28 @@ export class PostgresCatalogRepository implements CatalogRepository {
       indexedVariantCount: row.indexed_variant_count,
       activeOfferCount: row.active_offer_count,
       categoryCount: row.category_count,
-      lastSuccessfulSyncAt: row.last_successful_sync_at?.toISOString(),
+      lastSuccessfulSyncAt: asOptionalIsoString(row.last_successful_sync_at),
       estimatedCatalogSize: row.estimated_catalog_size,
       coveragePct: Number(row.coverage_pct),
       syncPriorityTier: row.sync_priority_tier,
       computedAt: row.computed_at.toISOString(),
     };
+  }
+
+  async listStoreSizeSummaries(): Promise<StoreSizeSummaryRecord[]> {
+    const result = await this.pool.query("SELECT * FROM store_size_summaries");
+    return result.rows.map((row: DbRow) => ({
+      storeId: String(row.store_id),
+      indexedProductCount: Number(row.indexed_product_count ?? 0),
+      indexedVariantCount: Number(row.indexed_variant_count ?? 0),
+      activeOfferCount: Number(row.active_offer_count ?? 0),
+      categoryCount: Number(row.category_count ?? 0),
+      lastSuccessfulSyncAt: asOptionalIsoString(row.last_successful_sync_at),
+      estimatedCatalogSize: Number(row.estimated_catalog_size ?? 0),
+      coveragePct: Number(row.coverage_pct ?? 0),
+      syncPriorityTier: String(row.sync_priority_tier) as StoreSizeSummaryRecord["syncPriorityTier"],
+      computedAt: asRequiredIsoString(row.computed_at),
+    }));
   }
 
   async saveAcquisitionProfile(profile: DomainAcquisitionProfile): Promise<void> {
@@ -797,6 +813,9 @@ export class PostgresCatalogRepository implements CatalogRepository {
       freshnessAt: asRequiredIsoString(row.freshness_at),
       sourceUrl: String(row.source_url),
       categoryPath: asStringArray(row.category_path).join(" > "),
+      imageUrl: row.image_url == null ? undefined : String(row.image_url),
+      currency: row.currency == null ? undefined : String(row.currency),
+      offerLabel: row.offer_label == null ? undefined : String(row.offer_label),
       sellerName: row.seller_name == null ? undefined : String(row.seller_name),
     }));
   }

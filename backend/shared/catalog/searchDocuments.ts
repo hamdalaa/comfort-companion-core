@@ -17,6 +17,9 @@ export function buildSearchDocument(store: StoreRecord, product: CatalogProductD
     freshnessAt: product.freshnessAt,
     sourceUrl: product.sourceUrl,
     categoryPath: product.categoryPath.join(" > "),
+    imageUrl: product.imageUrl,
+    currency: product.currency,
+    offerLabel: product.offerLabel,
     sellerName: product.sellerName,
   };
 }

@@ -183,10 +183,10 @@ export function StreetShopsSection({
               return (
                 <>
                   {/* Mobile + tablet: premium snap carousel */}
-                  <ShopCarousel shops={list} hideAbove="lg" />
+                  <ShopCarousel shops={list} hideAbove="xl" />
 
                   {/* Desktop: grid */}
-                  <div className="hidden lg:grid lg:grid-cols-3 lg:gap-4">
+                  <div className="hidden xl:grid xl:grid-cols-3 xl:gap-4">
                     {list.map((shop, index) => (
                       <div
                         key={shop.id}

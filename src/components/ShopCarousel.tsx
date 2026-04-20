@@ -7,7 +7,7 @@ import type { Shop } from "@/lib/types";
 interface Props {
   shops: Shop[];
   /** Hide the carousel on this breakpoint and above (parent renders grid). */
-  hideAbove?: "sm" | "md" | "lg";
+  hideAbove?: "sm" | "md" | "lg" | "xl";
 }
 
 const MAX_DOTS = 7;
@@ -93,7 +93,13 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
   }, []);
 
   const hideClass =
-    hideAbove === "sm" ? "sm:hidden" : hideAbove === "md" ? "md:hidden" : "lg:hidden";
+    hideAbove === "sm"
+      ? "sm:hidden"
+      : hideAbove === "md"
+        ? "md:hidden"
+        : hideAbove === "lg"
+          ? "lg:hidden"
+          : "xl:hidden";
 
   if (shops.length === 0) return null;
 

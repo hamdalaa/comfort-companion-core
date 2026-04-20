@@ -1,0 +1,12 @@
+export const loadShopViewRoute = () => import("../pages/ShopView.tsx");
+export const loadBrandRoute = () => import("../pages/Brand.tsx");
+export const loadBrandsRoute = () => import("../pages/Brands.tsx");
+export const loadDashboardRoute = () => import("../pages/Dashboard.tsx");
+export const loadNotFoundRoute = () => import("../pages/NotFound.tsx");
+export const loadStreetPageRoute = () => import("../pages/StreetPage.tsx");
+export const loadIraqCitiesRoute = () => import("../pages/IraqCities.tsx");
+export const loadCityPageRoute = () => import("../pages/CityPage.tsx");
+export const loadCityShopViewRoute = () => import("../pages/CityShopView.tsx");
+export const loadAboutRoute = () => import("../pages/About.tsx");
+export const loadUnifiedSearchRoute = () => import("../pages/UnifiedSearch.tsx");
+export const loadProductDetailRoute = () => import("../pages/ProductDetail.tsx");

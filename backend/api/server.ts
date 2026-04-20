@@ -1,3 +1,5 @@
+import helmet from "@fastify/helmet";
+import rateLimit from "@fastify/rate-limit";
 import Fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import type { CatalogContext } from "../shared/bootstrap.js";
 import { createCatalogContext } from "../shared/bootstrap.js";
@@ -6,7 +8,7 @@ import { createRedisConnection, BullCatalogJobQueue, type CatalogJobQueue } from
 import { TokenRateLimiter } from "../shared/security/rateLimiter.js";
 import { createInternalAuth, requireCatalogScopes } from "./auth.js";
 import { CatalogRefreshService } from "../shared/services/catalogRefreshService.js";
-import { importScrapedSiteCatalogs } from "../shared/seeds/importScrapedSiteCatalogs.js";
+import { catalogRouteSchemas, registerSwaggerInternal } from "./swagger.js";
 import {
   buildPublicBootstrap,
   buildPublicCatalogProducts,
@@ -26,11 +28,6 @@ export async function createCatalogApiServer(
 ) {
   const context = providedContext ?? (await createCatalogContext());
   await context.discoveryService.rescan("bootstrap");
-  await importScrapedSiteCatalogs({
-    repository: context.repository,
-    searchEngine: context.searchEngine,
-    repoRoot: catalogConfig.repoRoot,
-  });
   const queue =
     providedQueue ??
     new BullCatalogJobQueue(createRedisConnection());
@@ -44,26 +41,126 @@ export async function createCatalogApiServer(
     context.coverageService,
   );
 
-  const app = Fastify({ logger: true });
+  const app = Fastify({
+    logger: true,
+    bodyLimit: catalogConfig.api.bodyLimitBytes,
+    routerOptions: {
+      maxParamLength: 256,
+    },
+  });
+  await app.register(rateLimit, {
+    global: false,
+    keyGenerator: (request) => request.ip,
+  });
+  const docsRateLimit = app.rateLimit({
+    max: catalogConfig.docs.rateLimitMax,
+    timeWindow: catalogConfig.publicRateLimit.windowMs,
+  });
+  if (catalogConfig.docs.enabled) {
+    await registerSwaggerInternal(app, {
+      docsPreHandler: docsRateLimit,
+    });
+  }
+  const helmetStatics = helmet as unknown as {
+    contentSecurityPolicy: {
+      getDefaultDirectives(): Record<string, string[]>;
+    };
+  };
+  await app.register(helmet, (instance) => ({
+    contentSecurityPolicy: catalogConfig.docs.enabled
+      ? {
+          directives: {
+            ...helmetStatics.contentSecurityPolicy.getDefaultDirectives(),
+            "form-action": ["'self'"],
+            "img-src": ["'self'", "data:", "validator.swagger.io"],
+            "script-src": ["'self'"].concat(instance.swaggerCSP.script),
+            "style-src": ["'self'", "https:"].concat(instance.swaggerCSP.style),
+          },
+        }
+      : undefined,
+  }));
+  const publicReadRateLimit = app.rateLimit({
+    max: catalogConfig.publicRateLimit.max,
+    timeWindow: catalogConfig.publicRateLimit.windowMs,
+  });
+  const publicSearchRateLimit = app.rateLimit({
+    max: catalogConfig.publicRateLimit.searchMax,
+    timeWindow: catalogConfig.publicRateLimit.windowMs,
+  });
+  const publicResponseCache = new Map<
+    string,
+    { expiresAt: number; resolved: boolean; value: unknown; pending?: Promise<unknown> }
+  >();
 
-  app.get("/healthz", async () => ({ ok: true }));
-  app.get("/public/healthz", async () => ({ ok: true }));
-  app.get("/public/bootstrap", async () => buildPublicBootstrap(context));
+  const getPublicCacheControl = (url: string) => {
+    if (/^\/public\/healthz(?:\?|$)/.test(url)) return "no-store";
+    if (
+      /^\/public\/bootstrap(?:\?|$)/.test(url) ||
+      /^\/public\/search(?:\?|$)/.test(url) ||
+      /^\/public\/catalog-products(?:\?|$)/.test(url) ||
+      /^\/public\/products\/by-ids(?:\?|$)/.test(url) ||
+      /^\/public\/products\/[^/]+\/offers(?:\?|$)/.test(url)
+    ) {
+      return "public, max-age=30, stale-while-revalidate=300";
+    }
+    if (
+      /^\/public\/products\/[^/]+(?:\?|$)/.test(url) ||
+      /^\/public\/stores\/[^/]+(?:\?|$)/.test(url) ||
+      /^\/public\/brands\/[^/]+(?:\?|$)/.test(url)
+    ) {
+      return "public, max-age=300, stale-while-revalidate=900";
+    }
+    if (/^\/public\/cities(?:\/[^/]+)?(?:\?|$)/.test(url)) {
+      return "public, max-age=3600, stale-while-revalidate=86400";
+    }
+    return "public, max-age=30, stale-while-revalidate=300";
+  };
+
+  app.addHook("onRequest", async (request, reply) => {
+    const requestUrl = request.raw.url ?? request.url;
+    if (requestUrl.length > catalogConfig.api.maxUrlLength) {
+      reply.code(414).send({ error: "request_uri_too_large" });
+      return reply;
+    }
+    return undefined;
+  });
+
+  app.addHook("onSend", async (request, reply, payload) => {
+    if (request.url.startsWith("/internal")) {
+      reply.header("cache-control", "no-store");
+    } else if (request.url.startsWith("/public")) {
+      reply.header("cache-control", getPublicCacheControl(request.url));
+    } else if (request.url.startsWith("/docs")) {
+      reply.header("cache-control", "no-store");
+      reply.header("x-robots-tag", "noindex");
+    }
+    return payload;
+  });
+
+  app.get("/healthz", { schema: catalogRouteSchemas.healthz }, async () => ({ ok: true }));
+  app.get("/public/healthz", { schema: catalogRouteSchemas.publicHealthz, preHandler: publicReadRateLimit }, async () => ({ ok: true }));
+  app.get("/public/bootstrap", { schema: catalogRouteSchemas.publicBootstrap, preHandler: publicReadRateLimit }, async (request) =>
+    getCachedPublicResponse(request.url, 30_000, () => buildPublicBootstrap(context)),
+  );
   app.get<{
     Querystring: {
       limit?: string;
       offset?: string;
     };
-  }>("/public/catalog-products", async (request) =>
-    buildPublicCatalogProducts(context, {
-      limit: request.query.limit ? Number(request.query.limit) : undefined,
-      offset: request.query.offset ? Number(request.query.offset) : undefined,
-    }),
+  }>("/public/catalog-products", { schema: catalogRouteSchemas.publicCatalogProducts, preHandler: publicReadRateLimit }, async (request) =>
+    getCachedPublicResponse(request.url, 30_000, () =>
+      buildPublicCatalogProducts(context, {
+        limit: request.query.limit ? Number(request.query.limit) : undefined,
+        offset: request.query.offset ? Number(request.query.offset) : undefined,
+      }),
+    ),
   );
-  app.get("/public/cities", async () => listPublicCities());
+  app.get("/public/cities", { schema: catalogRouteSchemas.publicCities, preHandler: publicReadRateLimit }, async (request) =>
+    getCachedPublicResponse(request.url, 60 * 60_000, () => listPublicCities()),
+  );
 
-  app.get<{ Params: { slug: string } }>("/public/cities/:slug", async (request, reply) => {
-    const city = await getPublicCity(request.params.slug);
+  app.get<{ Params: { slug: string } }>("/public/cities/:slug", { schema: catalogRouteSchemas.publicCityDetail, preHandler: publicReadRateLimit }, async (request, reply) => {
+    const city = await getCachedPublicResponse(request.url, 60 * 60_000, () => getPublicCity(request.params.slug));
     if (!city) {
       reply.code(404).send({ error: "city_not_found" });
       return;
@@ -71,8 +168,8 @@ export async function createCatalogApiServer(
     return city;
   });
 
-  app.get<{ Params: { id: string } }>("/public/stores/:id", async (request, reply) => {
-    const detail = await buildPublicStoreDetail(context, request.params.id);
+  app.get<{ Params: { id: string } }>("/public/stores/:id", { schema: catalogRouteSchemas.publicStoreDetail, preHandler: publicReadRateLimit }, async (request, reply) => {
+    const detail = await getCachedPublicResponse(request.url, 5 * 60_000, () => buildPublicStoreDetail(context, request.params.id));
     if (!detail) {
       reply.code(404).send({ error: "store_not_found" });
       return;
@@ -84,20 +181,20 @@ export async function createCatalogApiServer(
     Querystring: {
       id?: string | string[];
     };
-  }>("/public/products/by-ids", async (request) => {
+  }>("/public/products/by-ids", { schema: catalogRouteSchemas.publicProductsByIds, preHandler: publicReadRateLimit }, async (request) => {
     const ids = Array.isArray(request.query.id)
       ? request.query.id
       : request.query.id
         ? [request.query.id]
         : [];
 
-    return {
+    return getCachedPublicResponse(request.url, 30_000, async () => ({
       items: await buildPublicProductsByIds(context, ids),
-    };
+    }));
   });
 
-  app.get<{ Params: { id: string } }>("/public/products/:id", async (request, reply) => {
-    const product = await buildPublicProductDetail(context, request.params.id);
+  app.get<{ Params: { id: string } }>("/public/products/:id", { schema: catalogRouteSchemas.publicProductDetail, preHandler: publicReadRateLimit }, async (request, reply) => {
+    const product = await getCachedPublicResponse(request.url, 5 * 60_000, () => buildPublicProductDetail(context, request.params.id));
     if (!product) {
       reply.code(404).send({ error: "product_not_found" });
       return;
@@ -105,8 +202,8 @@ export async function createCatalogApiServer(
     return product;
   });
 
-  app.get<{ Params: { id: string } }>("/public/products/:id/offers", async (request, reply) => {
-    const offers = await buildPublicProductOffers(context, request.params.id);
+  app.get<{ Params: { id: string } }>("/public/products/:id/offers", { schema: catalogRouteSchemas.publicProductOffers, preHandler: publicReadRateLimit }, async (request, reply) => {
+    const offers = await getCachedPublicResponse(request.url, 30_000, () => buildPublicProductOffers(context, request.params.id));
     if (offers.length === 0) {
       const product = await buildPublicProductDetail(context, request.params.id);
       if (!product) {
@@ -117,8 +214,8 @@ export async function createCatalogApiServer(
     return offers;
   });
 
-  app.get<{ Params: { slug: string } }>("/public/brands/:slug", async (request, reply) => {
-    const brand = await buildPublicBrandDetail(context, request.params.slug);
+  app.get<{ Params: { slug: string } }>("/public/brands/:slug", { schema: catalogRouteSchemas.publicBrandDetail, preHandler: publicReadRateLimit }, async (request, reply) => {
+    const brand = await getCachedPublicResponse(request.url, 5 * 60_000, () => buildPublicBrandDetail(context, request.params.slug));
     if (!brand) {
       reply.code(404).send({ error: "brand_not_found" });
       return;
@@ -141,7 +238,7 @@ export async function createCatalogApiServer(
       officialDealerOnly?: string;
       sort?: "relevance" | "price_asc" | "price_desc" | "rating_desc" | "freshness_desc" | "offers_desc";
     };
-  }>("/public/search", async (request) => {
+  }>("/public/search", { schema: catalogRouteSchemas.publicSearch, preHandler: publicSearchRateLimit }, async (request) => {
     const asList = (value?: string | string[]) =>
       Array.isArray(value)
         ? value.flatMap((entry) => entry.split(",")).map((entry) => entry.trim()).filter(Boolean)
@@ -149,20 +246,22 @@ export async function createCatalogApiServer(
           ? value.split(",").map((entry) => entry.trim()).filter(Boolean)
           : undefined;
 
-    return buildPublicUnifiedSearch(context, {
-      q: request.query.q,
-      brands: asList(request.query.brands),
-      categories: asList(request.query.categories),
-      stores: asList(request.query.stores),
-      cities: asList(request.query.cities),
-      priceMin: request.query.priceMin ? Number(request.query.priceMin) : undefined,
-      priceMax: request.query.priceMax ? Number(request.query.priceMax) : undefined,
-      inStockOnly: request.query.inStockOnly === "true",
-      onSaleOnly: request.query.onSaleOnly === "true",
-      verifiedOnly: request.query.verifiedOnly === "true",
-      officialDealerOnly: request.query.officialDealerOnly === "true",
-      sort: request.query.sort,
-    });
+    return getCachedPublicResponse(request.url, 30_000, () =>
+      buildPublicUnifiedSearch(context, {
+        q: request.query.q,
+        brands: asList(request.query.brands),
+        categories: asList(request.query.categories),
+        stores: asList(request.query.stores),
+        cities: asList(request.query.cities),
+        priceMin: request.query.priceMin ? Number(request.query.priceMin) : undefined,
+        priceMax: request.query.priceMax ? Number(request.query.priceMax) : undefined,
+        inStockOnly: request.query.inStockOnly === "true",
+        onSaleOnly: request.query.onSaleOnly === "true",
+        verifiedOnly: request.query.verifiedOnly === "true",
+        officialDealerOnly: request.query.officialDealerOnly === "true",
+        sort: request.query.sort,
+      }),
+    );
   });
 
   app.addHook("preHandler", async (request, reply) => {
@@ -171,14 +270,28 @@ export async function createCatalogApiServer(
     if (reply.sent) return reply;
   });
 
+  app.setNotFoundHandler(
+    {
+      preHandler: app.rateLimit({
+        max: 20,
+        timeWindow: catalogConfig.publicRateLimit.windowMs,
+      }),
+    },
+    async (_request, reply) => {
+      reply.code(404).send({ error: "not_found" });
+    },
+  );
+
   app.get<{
     Querystring: {
       limit?: string;
       offset?: string;
     };
-  }>("/internal/stores", async (request, reply) => {
+  }>("/internal/stores", { schema: catalogRouteSchemas.internalStores }, async (request, reply) => {
     if (!guard(request, reply, ["catalog.read"], "stores:list", 20, 60_000)) return;
     const stores = await context.repository.listStores();
+    const sizeSummaries = await context.repository.listStoreSizeSummaries();
+    const sizeByStoreId = new Map(sizeSummaries.map((summary) => [summary.storeId, summary]));
     const limit = clampLimit(request.query.limit, 100, 200);
     const offset = Math.max(0, Number(request.query.offset ?? "0") || 0);
     const pagedStores = stores.slice(offset, offset + limit);
@@ -190,13 +303,13 @@ export async function createCatalogApiServer(
         pagedStores.map(async (store) => ({
           store,
           connectorProfile: await context.repository.getConnectorProfile(store.id),
-          size: await context.repository.getStoreSizeSummary(store.id),
+          size: sizeByStoreId.get(store.id),
         })),
       ),
     };
   });
 
-  app.get<{ Params: { id: string } }>("/internal/stores/:id", async (request, reply) => {
+  app.get<{ Params: { id: string } }>("/internal/stores/:id", { schema: catalogRouteSchemas.internalStoreDetail }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.read"])) return;
     if (!consumeRate(request, "stores:get", 60, 60_000, reply)) return;
     const store = await context.repository.getStoreById(request.params.id);
@@ -211,7 +324,7 @@ export async function createCatalogApiServer(
     };
   });
 
-  app.get<{ Params: { id: string } }>("/internal/stores/:id/size", async (request, reply) => {
+  app.get<{ Params: { id: string } }>("/internal/stores/:id/size", { schema: catalogRouteSchemas.internalStoreSize }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.read"])) return;
     if (!consumeRate(request, "stores:size", 60, 60_000, reply)) return;
     const size = await context.repository.getStoreSizeSummary(request.params.id);
@@ -222,21 +335,21 @@ export async function createCatalogApiServer(
     return size;
   });
 
-  app.post<{ Params: { id: string } }>("/internal/stores/:id/probe", async (request, reply) => {
+  app.post<{ Params: { id: string } }>("/internal/stores/:id/probe", { schema: catalogRouteSchemas.internalProbe }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.queue"])) return;
     if (!consumeRate(request, "queue:probe", 10, 60_000, reply)) return;
     await queue.enqueueProbe({ storeId: request.params.id, actor: "api" });
     reply.code(202).send({ enqueued: true, queue: "probe", storeId: request.params.id });
   });
 
-  app.post<{ Params: { id: string } }>("/internal/stores/:id/sync", async (request, reply) => {
+  app.post<{ Params: { id: string } }>("/internal/stores/:id/sync", { schema: catalogRouteSchemas.internalSync }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.queue"])) return;
     if (!consumeRate(request, "queue:sync", 10, 60_000, reply)) return;
     await queue.enqueueSync({ storeId: request.params.id, actor: "api" });
     reply.code(202).send({ enqueued: true, queue: "sync", storeId: request.params.id });
   });
 
-  app.post("/internal/discovery/rescan", async (request, reply) => {
+  app.post("/internal/discovery/rescan", { schema: catalogRouteSchemas.internalDiscoveryRescan }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.queue"])) return;
     if (!consumeRate(request, "queue:discovery", 2, 60_000, reply)) return;
     await queue.enqueueDiscoveryRescan({ actor: "api" });
@@ -251,7 +364,7 @@ export async function createCatalogApiServer(
       dedupeByDomain?: boolean;
       concurrency?: number;
     };
-  }>("/internal/catalog/refresh", async (request, reply) => {
+  }>("/internal/catalog/refresh", { schema: catalogRouteSchemas.internalCatalogRefresh }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.queue"])) return;
     if (!consumeRate(request, "catalog:refresh", 1, 10 * 60_000, reply)) return;
     const result = await refreshService.refresh({
@@ -262,6 +375,7 @@ export async function createCatalogApiServer(
       limit: request.body?.limit,
       concurrency: request.body?.concurrency,
     });
+    clearPublicResponseCache();
     reply.code(200).send(result);
   });
 
@@ -271,7 +385,7 @@ export async function createCatalogApiServer(
       limit?: number;
       concurrency?: number;
     };
-  }>("/internal/catalog/retry-failed", async (request, reply) => {
+  }>("/internal/catalog/retry-failed", { schema: catalogRouteSchemas.internalCatalogRetryFailed }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.queue"])) return;
     if (!consumeRate(request, "catalog:retry-failed", 1, 10 * 60_000, reply)) return;
     const candidateIds = await context.coverageService.getRetryCandidateStoreIds(
@@ -289,17 +403,17 @@ export async function createCatalogApiServer(
     reply.code(200).send(result);
   });
 
-  app.get("/internal/coverage/summary", async (request, reply) => {
+  app.get("/internal/coverage/summary", { schema: catalogRouteSchemas.internalCoverageSummary }, async (request, reply) => {
     if (!guard(request, reply, ["catalog.read"], "coverage:summary", 60, 60_000)) return;
     return context.coverageService.summarizeCoverage();
   });
 
-  app.get("/internal/domains/backlog", async (request, reply) => {
+  app.get("/internal/domains/backlog", { schema: catalogRouteSchemas.internalDomainsBacklog }, async (request, reply) => {
     if (!guard(request, reply, ["catalog.read"], "domains:backlog", 60, 60_000)) return;
     return context.coverageService.listBacklog();
   });
 
-  app.get<{ Params: { id: string } }>("/internal/domains/:id/evidence", async (request, reply) => {
+  app.get<{ Params: { id: string } }>("/internal/domains/:id/evidence", { schema: catalogRouteSchemas.internalDomainEvidence }, async (request, reply) => {
     if (!guard(request, reply, ["catalog.read"], "domains:evidence", 60, 60_000)) return;
     try {
       return await context.coverageService.getDomainEvidence(request.params.id);
@@ -316,7 +430,7 @@ export async function createCatalogApiServer(
       notes?: string;
       expiresAt?: string;
     };
-  }>("/internal/domains/:id/session", async (request, reply) => {
+  }>("/internal/domains/:id/session", { schema: catalogRouteSchemas.internalDomainSession }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.session"])) return;
     if (!consumeRate(request, "domains:session", 20, 60_000, reply)) return;
     const session = await context.coverageService.registerSession(request.params.id, {
@@ -335,7 +449,7 @@ export async function createCatalogApiServer(
       authHeaders?: Record<string, string>;
       fieldMap?: Record<string, string>;
     };
-  }>("/internal/domains/:id/feed-sync", async (request, reply) => {
+  }>("/internal/domains/:id/feed-sync", { schema: catalogRouteSchemas.internalDomainFeedSync }, async (request, reply) => {
     if (!requireCatalogScopes(request, reply, ["catalog.feed"])) return;
     if (!consumeRate(request, "domains:feed-sync", 10, 60_000, reply)) return;
     const feed = await context.feedSyncService.saveAndSync(
@@ -347,6 +461,7 @@ export async function createCatalogApiServer(
       },
       "api",
     );
+    clearPublicResponseCache();
     reply.code(200).send(feed);
   });
 
@@ -360,7 +475,7 @@ export async function createCatalogApiServer(
       availability?: string;
       limit?: string;
     };
-  }>("/internal/search", async (request, reply) => {
+  }>("/internal/search", { schema: catalogRouteSchemas.internalSearch }, async (request, reply) => {
     if (!guard(request, reply, ["catalog.read"], "search", 120, 60_000)) return;
     return context.searchEngine.search({
       q: request.query.q ?? "",
@@ -409,6 +524,43 @@ export async function createCatalogApiServer(
     const parsed = Number(raw ?? defaultValue);
     if (!Number.isFinite(parsed) || parsed <= 0) return defaultValue;
     return Math.min(Math.floor(parsed), maxValue);
+  }
+
+  async function getCachedPublicResponse<T>(key: string, ttlMs: number, loader: () => Promise<T>): Promise<T> {
+    const now = Date.now();
+    const cached = publicResponseCache.get(key);
+    if (cached && cached.expiresAt > now && cached.resolved) {
+      return cached.value as T;
+    }
+    if (cached?.pending) {
+      return cached.pending as Promise<T>;
+    }
+
+    const pending = loader()
+      .then((value) => {
+        publicResponseCache.set(key, {
+          expiresAt: Date.now() + ttlMs,
+          resolved: true,
+          value,
+        });
+        return value;
+      })
+      .catch((error) => {
+        publicResponseCache.delete(key);
+        throw error;
+      });
+
+    publicResponseCache.set(key, {
+      expiresAt: now + ttlMs,
+      resolved: false,
+      value: undefined,
+      pending,
+    });
+    return pending;
+  }
+
+  function clearPublicResponseCache() {
+    publicResponseCache.clear();
   }
 
   return app;
