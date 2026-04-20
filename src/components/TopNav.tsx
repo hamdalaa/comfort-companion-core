@@ -10,8 +10,10 @@ import {
   LayoutDashboard,
   MapPin,
   Menu,
+  Moon,
   Search,
   Store,
+  Sun,
   Trash2,
   X,
   XCircle,
@@ -34,6 +36,7 @@ import {
 import { ALL_CATEGORIES, type Category } from "@/lib/types";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { useDataStore } from "@/lib/dataStore";
+import { useTheme } from "@/lib/theme";
 import { CITIES } from "@/lib/cityData";
 import { cn } from "@/lib/utils";
 
