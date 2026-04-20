@@ -45,7 +45,7 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-soft-sm ring-1 ring-transparent transition-[transform,border-color,box-shadow,ring-color] duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-soft-xl hover:ring-primary/10"
     >
       {/* ===== Image area ===== */}
-      <div className="relative aspect-[5/4] overflow-hidden bg-gradient-to-br from-surface via-white to-surface/60">
+      <div className="relative aspect-[5/4] overflow-hidden bg-card">
         {/* Subtle radial glow on hover */}
         <div
           aria-hidden
