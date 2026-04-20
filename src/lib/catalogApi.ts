@@ -1,5 +1,5 @@
 import type { BrandDealer, ProductIndex, Shop } from "./types";
-import { fetchJson } from "./api";
+import { fetchJson, withQuery } from "./api";
 
 export interface CatalogBootstrap {
   summary: {
@@ -113,10 +113,9 @@ export async function getCatalogBootstrap() {
 }
 
 export async function getCatalogProducts(limit = 2000, offset = 0) {
-  const url = new URL("/public/catalog-products", window.location.origin);
-  url.searchParams.set("limit", String(limit));
-  url.searchParams.set("offset", String(offset));
-  return fetchJson<CatalogProductsResponse>(`${url.pathname}${url.search}`);
+  return fetchJson<CatalogProductsResponse>(
+    withQuery("/public/catalog-products", { limit, offset }),
+  );
 }
 
 export async function getStoreDetail(storeId: string) {
@@ -125,9 +124,11 @@ export async function getStoreDetail(storeId: string) {
 
 export async function getProductsByIds(ids: string[]) {
   if (ids.length === 0) return [];
-  const url = new URL("/public/products/by-ids", window.location.origin);
-  ids.forEach((id) => url.searchParams.append("id", id));
-  const response = await fetchJson<{ items: ProductIndex[] }>(`${url.pathname}${url.search}`);
+  const params = new URLSearchParams();
+  ids.forEach((id) => params.append("id", id));
+  const response = await fetchJson<{ items: ProductIndex[] }>(
+    `/public/products/by-ids?${params.toString()}`,
+  );
   return response.items;
 }
 
