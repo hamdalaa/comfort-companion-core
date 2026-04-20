@@ -504,16 +504,19 @@ const ShopView = () => {
             )}
 
             {/* ============ 5. INDEXED PRODUCTS ============ */}
-            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
-              <div className="mb-4 flex items-end justify-between gap-3">
+            <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+              <div className="mb-5 flex items-end justify-between gap-3">
                 <div>
-                  <h2 className="inline-flex items-center gap-2 text-lg font-bold">
-                    <Package className="h-5 w-5 text-primary" /> المنتجات المفهرسة
+                  <h2 className="inline-flex items-center gap-2 text-lg font-bold tracking-tight">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <Package className="h-4 w-4" />
+                    </span>
+                    المنتجات المفهرسة
                   </h2>
                   <p className="mt-1 text-xs text-muted-foreground">الأسعار والتوفر مبنية على آخر فهرسة، مو لحظية.</p>
                 </div>
                 {shopProducts.length > 0 && (
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary ring-1 ring-primary/20">
                     {shopProducts.length} منتج
                   </span>
                 )}
