@@ -1,88 +1,117 @@
 
-# تِيه — دليل إلكترونيات بغداد (MVP)
 
-## Stack & foundations
-- React + Vite + Tailwind, RTL-first (`<html dir="rtl" lang="ar">`)
-- **Lovable Cloud** (Postgres) for shops, shop_sources, products_index, brands_dealers, crawl_runs
-- **Firecrawl connector** (edge function) for shop website scraping — manual per-shop trigger from admin
-- Fonts: IBM Plex Sans Arabic (UI) + Space Grotesk (numerals/Latin), loaded via Google Fonts
-- Dark design system in `index.css` + `tailwind.config.ts`:
-  - bg `#0B1020` charcoal-blue, surface `#121833`, border `#1E2747`
-  - primary accent warm orange `#FF7A1A`, secondary cyan `#22D3EE`
-  - subtle radial/grid background atmosphere on hero
-- **Admin gate:** single shared passcode (client-side prompt, stored in sessionStorage). Honest disclaimer: not real security, fine for MVP demo.
+# إعادة بناء واجهة الموقع — Clean • Premium • Apple-inspired UX
 
-## Routes
-- `/` Home
-- `/results` Search results
-- `/shop-view/:shopId` Shop detail
-- `/brand/:slug` Brand/dealer page
-- `/dashboard` Admin (passcode-gated)
+## الهدف
+إعادة تصميم كامل للواجهة (UI/UX فقط) بأسلوب Apple — هادئ، فخم، منظّم، ومرتّب — مع **عدم المساس بأي منطق باكند، API، repositories، routes، أو data layer**.
 
-## Home page
-- Top nav (RTL, logo right): الرئيسية · البحث · الوكلاء · الأدمن
-- Hero: eyebrow "شارع الصناعة + شارع الربيعي", big Arabic headline, supporting text, then a single panel with **search input + area select + category select + CTA "ابحث بكل المحلات"** and secondary "افتح الداشبورد"
-- 3-up metrics strip: shops count · "فهرس محلي، بدون scraping وقت البحث" · "آخر تحديث منذ X"
-- Quick query chips: RTX 4060, RX 7800 XT, iPhone 15 Pro Max case, Anker 65W, Wi-Fi 6 router, Power Bank 20000mAh
-- Featured shops row (verified first)
-- Brands teaser (Apple, Samsung, ASUS, Anker)
+---
 
-## Results page (`/results?q&area&category`)
-- Sticky search/filter bar with current q, area, category, sort (relevance / price / freshness)
-- **Auto-grouped comparison blocks**: results normalized to the same product (token + brand-aware) collapse into one block showing each shop side-by-side (price, area, last crawled, links). Ungrouped results appear below.
-- Each row: product name, shop, area, category, brand, price/priceText, "آخر فهرسة منذ X", buttons: فتح المنتج · فتح المحل · خرائط Google
-- Side panel: similar/suggested queries
-- Empty state with the exact Arabic copy from the brief
-- Stale results (>30 days) get a subtle "قديم" badge
+## مبادئ التصميم الجديد
 
-## Shop detail (`/shop-view/:shopId`)
-- Header: name, area chip, category chip, verification badge
-- Action buttons: خرائط Google · الموقع · هاتف · واتساب (only render if present)
-- Indexed products list with disclaimer: "الأسعار والتوفر مبنية على آخر فهرسة، مو لحظية"
-- Crawl/source history table (from shop_sources)
-- "بدون فهرسة منتجات" empty state for shops without a website
+1. **Whitespace أولاً** — مسافات سخية، لا ازدحام، تنفّس بين العناصر.
+2. **Typography كبطل بصري** — هرمية واضحة جداً (تباين أحجام كبير بين العناوين والنص).
+3. **لون محدود ومنضبط** — خلفية ناعمة (off-white)، حبر داكن، لون تمييز واحد فقط (Brass/Amber دافئ)، رمادي للنصوص الثانوية.
+4. **Glass + Soft Shadows** — بطاقات بظلال ناعمة جداً، بدون حدود قوية، blur خفيف عند الـ overlays.
+5. **حركات Apple-like** — easing هادئ (`cubic-bezier(0.32, 0.72, 0, 1)`)، مدد 300–500ms، fade + subtle scale، لا bounces مزعجة.
+6. **صور كبطل** — منتجات/محلات بصور كبيرة، نسب ثابتة، object-cover، corners ناعمة (rounded-2xl/3xl).
+7. **RTL محكم** — كل alignment ومسافات مراجعة للعربي.
+8. **موبايل أولاً** — كل breakpoint مدروس بعناية.
 
-## Brand page (`/brand/:slug`)
-- Brand + dealer name, official website, verification state, covered cities, coverage description
-- Related indexed products from the platform (filtered by brand)
+---
 
-## Admin dashboard (`/dashboard`)
-1. **Telemetry**: total shops, indexed products, indexed shops, crawl success rate, last seed run, last crawl run
-2. **Area scans**: "Run area scan: الصناعة" / "Run area scan: الربيعي" — for MVP these are simulated (log a run + bump timestamps) since Google Maps scraping isn't viable
-3. **Recrawl tools**: shop multi-select + "Recrawl selected" → calls Firecrawl edge function on each shop's website, parses product-like results, upserts into `products_index`. Per-shop single recrawl button too.
-4. **Manual shop creation**: name, area, category, googleMapsUrl, website, phone, whatsapp, notes
-5. **Verification**: toggle verified on a shop
-6. **Duplicate management**: surface candidates (same googleMapsUrl, or normalized name similarity within same area) → merge primary+secondary
-7. **Crawl runs log** table
+## نظام التصميم (Design Tokens)
 
-## Data model (Postgres tables)
-`shops`, `shop_sources`, `products_index`, `brands_dealers`, `crawl_runs` — exactly the fields from the brief, plus indexes on `products_index(shopId)`, `products_index(name)` for search, and `shops(area, category)`.
+تحديث `src/index.css` و `tailwind.config.ts`:
 
-RLS: all tables readable by anon (this is a public directory); writes restricted via edge functions that check the admin passcode header. No user auth in MVP.
+| Token | القيمة |
+|---|---|
+| `--background` | `#FAFAF7` (paper warm white) |
+| `--foreground` | `#0A0A0A` (deep ink) |
+| `--muted` | `#F2F2EE` |
+| `--muted-foreground` | `#6B6B66` |
+| `--border` | `rgba(10,10,10,0.08)` |
+| `--accent` | `#B8763E` (warm brass) |
+| `--card` | `#FFFFFF` |
+| Radius scale | 12 / 20 / 28 px |
+| Shadow scale | `0 1px 2px rgba(0,0,0,.04)`, `0 8px 24px rgba(0,0,0,.06)`, `0 24px 64px rgba(0,0,0,.08)` |
+| Font display | SF Pro Display (system) → fallback Inter |
+| Font Arabic | IBM Plex Arabic / Noto Kufi Arabic |
+| Easing | `cubic-bezier(0.32, 0.72, 0, 1)` |
 
-## Search & ranking (client-side over fetched index)
-- Normalize query: lowercase, strip spaces (`rtx4060` ↔ `rtx 4060` ↔ `4060`), Arabic/English brand aliases
-- Score: exact compact match (×5) + token overlap + brand match bonus + freshness bonus (decays after 14 days)
-- Filter by area/category before ranking
-- Hide results crawled >60 days ago unless sort=freshness explicitly asked
+---
 
-## Real scraping (Firecrawl edge function)
-- Single edge function `recrawl-shop` takes `shopId`, fetches the shop's website with Firecrawl (`scrape` + `links` + `markdown`), runs a lightweight extractor for product-like patterns (name + price + url), upserts into `products_index`, writes a row to `crawl_runs` and updates `shop_sources.lastCrawledAt`
-- Triggered only from admin, never on user search
-- Will need the **Firecrawl connector** linked — I'll prompt for it during build
+## المراحل (Phases)
 
-## Seed data (inserted via migration)
-- 3 shops شارع الصناعة (Computing/PC Parts/Networking, one without website, one unverified)
-- 3 shops شارع الربيعي (Phones/Chargers/Accessories)
-- ~15 realistic products spanning ASUS Dual RTX 4060, MSI RTX 4070 Super, Ryzen 5 7600, TP-Link Archer AX3000, iPhone 15 Pro Max 256GB, Galaxy S24 Ultra 256GB, iPhone clear case, Anker 65W, UGREEN 100W, Anker PowerCore 20000
-- 4 brands: Apple, Samsung, ASUS, Anker with Iraqi dealer placeholders
+### Phase 1 — Foundation (نظام التصميم)
+- إعادة كتابة `src/index.css`: tokens, base typography, scrollbar, selection, focus rings
+- تحديث `tailwind.config.ts`: shadows, radii, fonts, easings, animations
+- تحديث `src/components/ui/button.tsx`, `card.tsx`, `input.tsx`, `badge.tsx` بالأسلوب الجديد (Apple-style: minimal borders, soft shadows, refined hover states)
 
-## Reusable components
-TopNav, HeroSearch, MetricsStrip, QuickQueryChips, ShopCard, ProductResultRow, ComparisonGroup, BrandCard, TelemetryPanel, AdminActionBlock, FormField primitives, EmptyState, StaleBadge, VerifiedBadge.
+### Phase 2 — Navigation & Chrome
+- إعادة بناء `TopNav.tsx`: شريط رفيع، شفاف مع blur عند scroll، شعار يسار، روابط مركزية، بحث + أيقونات يمين
+- إعادة بناء `BottomTabBar.tsx` (موبايل): glass-morphism floating bar
+- تحديث `SiteFooter.tsx`: minimal، 3 أعمدة، نص رمادي ناعم
+- `BreadcrumbBar` جديد بسيط
 
-## Out of scope (per brief)
-No realtime stock, no payments, no user accounts, no notifications, no chatbot, no auto-scheduler, no coverage outside Baghdad's two streets.
+### Phase 3 — Home (`Index.tsx` + الأقسام)
+- **HeroBanner / HeroSearch** جديد: عنوان ضخم (60–80px display)، sub-copy مهدّب، حقل بحث كبير وسطي بـ glass
+- **CategoryCircles / CategoryGrid**: بطاقات أكبر، صور تملأ، تسميات تحت
+- **ProductRail / ShopCarousel**: scroll أفقي ناعم، بطاقات بمسافات أكبر
+- **MetricsStrip**: أرقام كبيرة مع labels صغيرة (Apple keynote style)
+- **HowItWorks**: 3 خطوات بأيقونات outline ناعمة
+- **BrandShowcase**: شبكة شعارات على خلفية بيضاء نقية
 
-## What I'll need from you during build
-- Confirm the **shared admin passcode** (or I'll set a placeholder you can change)
-- Approve linking the **Firecrawl connector** when I reach the recrawl step
+### Phase 4 — بطاقات المنتج والمحل
+- `ProductCard.tsx` و `UnifiedProductCard.tsx`: تصميم جديد — صورة مربعة كبيرة، عنوان أسفلها، سعر بارز، actions تظهر بـ hover ناعم، badge أفضل سعر minimal
+- `ShopCard.tsx` / `CityShopCard.tsx` / `ShopResultCard.tsx`: layout مرتّب، صورة + اسم + verification + rating + مسافة، CTA واحد واضح
+- `PriceBlock.tsx`: tabular numerals، تباين قوي للسعر الحالي، شطب ناعم للأصلي
+- `StarRating.tsx`: نجوم أنحف وألطف
+
+### Phase 5 — صفحات الـ Listing
+- `Results.tsx` / `UnifiedSearch.tsx`: sidebar فلاتر يمين (RTL)، grid منتجات، sticky toolbar، empty state أنيق
+- `Brands.tsx` / `Brand.tsx`: hero للبراند، grid وكلاء
+- `IraqCities.tsx` / `CityPage.tsx`: hero للمدينة، أقسام محلات
+- `StreetPage.tsx`: تصميم محرر-magazine
+- `UnifiedSearchFilters.tsx` / `ShopFilters.tsx` / `QuickFilterPills.tsx`: pills نظيفة، حالات active واضحة
+
+### Phase 6 — صفحات التفاصيل
+- `ProductDetail.tsx`: gallery يسار/أعلى، تفاصيل يمين، sticky CTA، sections منظّمة
+- `ShopView.tsx` / `CityShopView.tsx`: hero بصورة المحل، tabs (منتجات/تقييمات/معلومات)، بطاقات مراجعات، خريطة مدمجة
+- `About.tsx` / `Dashboard.tsx`: editorial layout
+
+### Phase 7 — Overlays & Micro-interactions
+- `CommandPalette.tsx`: Spotlight-style، blur backdrop قوي، قائمة نتائج أنيقة
+- `LightboxViewer.tsx`: full-screen أسود مع تحكم minimal
+- `CompareBar.tsx`: floating bar بـ glass
+- `WelcomeTour.tsx`: cards منعشة
+- Skeletons: shimmer ناعم بدل النبض الحاد
+- Toast/Sonner: تحديث الأسلوب
+- Page transitions: fade + 4px translate
+
+---
+
+## ما لن يتغيّر (مضمون)
+
+- ❌ مجلد `backend/` بالكامل
+- ❌ `src/lib/api.ts`, `catalogApi.ts`, `catalogQueries.ts`, `dataStore.tsx`, `shopsRepository.ts`, `unifiedSearch.ts`, `search.ts`, `routeLoaders.ts`, `routePrefetch.ts`
+- ❌ `src/lib/types.ts` (شكل البيانات)
+- ❌ `src/App.tsx` routes (المسارات نفسها)
+- ❌ React Query keys / fetching logic
+- ❌ Service worker و caching
+- ❌ Tests الموجودة
+
+التغيير حصراً في: components UI، pages markup/layout، CSS/Tailwind tokens، animations.
+
+---
+
+## ملاحظة مهمّة
+يوجد حالياً **20 خطأ TypeScript** بالبناء (مذكورة سابقاً). هذي الأخطاء غير متعلّقة بإعادة التصميم لكن لازم نصلّحها بنفس المرحلة الأولى حتى المشروع يكمبايل ويعرض التصميم الجديد. سأصلّحها كأول خطوة في Phase 1 (إصلاحات سطحية: imports ناقصة، types، lib references).
+
+---
+
+## التنفيذ
+سأنفّذ المراحل بالترتيب أعلاه على دفعات. كل phase = دفعة تعديلات. بعد كل phase تقدر تختبر وتعطي ملاحظات قبل ما أكمل للي بعدها.
+
+**نقطة البداية بعد الموافقة:** Phase 1 (Foundation + إصلاح أخطاء البناء).
+
