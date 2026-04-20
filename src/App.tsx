@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/lib/theme";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { BottomTabBar } from "@/components/BottomTabBar";
 import { PullToRefresh } from "@/components/PullToRefresh";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { queryClient } from "@/lib/queryClient";
 import {
   loadAboutRoute,
@@ -76,9 +77,10 @@ const App = () => (
           <BrowserRouter>
             <ScrollToTop />
             <RouteIntentPrefetch />
-            <Suspense fallback={<RouteFallback />}>
-              <PullToRefresh>
-                <Routes>
+            <ErrorBoundary>
+              <Suspense fallback={<RouteFallback />}>
+                <PullToRefresh>
+                  <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/results" element={<ResultsRedirect />} />
                   <Route path="/search" element={<UnifiedSearch />} />
@@ -97,9 +99,10 @@ const App = () => (
                   <Route path="/about" element={<About />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
-                </Routes>
-              </PullToRefresh>
-            </Suspense>
+                  </Routes>
+                </PullToRefresh>
+              </Suspense>
+            </ErrorBoundary>
             <DeferredRootChrome />
             <BottomTabBar />
           </BrowserRouter>

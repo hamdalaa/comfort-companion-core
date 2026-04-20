@@ -11,6 +11,8 @@ import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import type { BrandDealer } from "@/lib/types";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import { useBrandLogo } from "@/hooks/useBrandLogo";
+import { BrandPageSkeleton } from "@/components/skeletons/PageSkeletons";
+import { BackendErrorState } from "@/components/BackendErrorState";
 import {
   ChevronLeft,
   ExternalLink,
@@ -34,17 +36,39 @@ const Brand = () => {
   const brand = fallbackBrand ?? brandDetail?.brand;
   const logoSrc = useBrandLogo(brand?.slug, brand?.brandName, "default");
 
+  const related =
+    brandDetail?.products ??
+    (brand
+      ? products.filter((p) => p.brand?.toLowerCase() === brand.brandName.toLowerCase())
+      : []);
+  const storeNames = useMemo(
+    () => [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))],
+    [brandDetail?.stores],
+  );
+  const topCategories = useMemo(
+    () => [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4),
+    [related],
+  );
+  const pricedProducts = useMemo(
+    () =>
+      related
+        .map((product) => product.priceValue)
+        .filter((value): value is number => typeof value === "number" && Number.isFinite(value)),
+    [related],
+  );
+
   if (brandDetailQuery.isLoading && !brand) {
+    return <BrandPageSkeleton />;
+  }
+
+  if (!brand && brandDetailQuery.isError) {
     return (
-      <div className="min-h-screen flex flex-col bg-muted/30">
-        <TopNav />
-        <main className="flex-1 container py-12">
-          <div className="rounded-3xl border border-border/70 bg-card/88 p-8 text-center shadow-soft-lg">
-            <p className="text-sm text-muted-foreground">جاري تحميل صفحة البراند…</p>
-          </div>
-        </main>
-        <SiteFooter />
-      </div>
+      <BackendErrorState
+        title="تعذّر تحميل صفحة البراند"
+        description="ما گدرنا نوصل لبيانات البراند من السيرفر. جرّب إعادة المحاولة أو شوف باقي البراندات."
+        error={brandDetailQuery.error as Error | null}
+        onRetry={() => brandDetailQuery.refetch()}
+      />
     );
   }
 
@@ -67,31 +91,11 @@ const Brand = () => {
     );
   }
 
-  const related =
-    brandDetail?.products ??
-    products.filter(
-      (p) => p.brand?.toLowerCase() === brand.brandName.toLowerCase(),
-    );
   const branches = OFFICIAL_DEALER_BRANCHES.filter((b) => b.brandSlug === brand.slug);
   const isVerified = brand.verificationStatus === "verified";
   const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
   const logoClassName = brand.slug === "apple" ? "brightness-0" : "";
-  const storeNames = useMemo(
-    () => [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))],
-    [brandDetail?.stores],
-  );
-  const topCategories = useMemo(
-    () => [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4),
-    [related],
-  );
-  const pricedProducts = useMemo(
-    () =>
-      related
-        .map((product) => product.priceValue)
-        .filter((value): value is number => typeof value === "number" && Number.isFinite(value)),
-    [related],
-  );
   const insights = {
     storeNames,
     topCategories,

@@ -12,6 +12,8 @@ import { useDataStore } from "@/lib/dataStore";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { useStoreDetailQuery } from "@/lib/catalogQueries";
 import { relativeArabicTime } from "@/lib/search";
+import { ShopViewSkeleton } from "@/components/skeletons/PageSkeletons";
+import { BackendErrorState } from "@/components/BackendErrorState";
 import { SINAA_SHOP_PAGES } from "@/lib/sinaaShopPages";
 import { getLegacySinaaShopById } from "@/lib/legacyStreetShops";
 import { optimizeImageUrl } from "@/lib/imageUrl";
@@ -83,16 +85,17 @@ const ShopView = () => {
           : "ready";
 
   if (!shop && detailStatus === "loading") {
+    return <ShopViewSkeleton />;
+  }
+
+  if (!shop && storeDetailQuery.isError) {
     return (
-      <div className="min-h-screen flex flex-col bg-muted/30">
-        <TopNav />
-        <main className="flex-1 container py-12">
-          <div className="rounded-3xl border border-border/70 bg-card/88 p-8 text-center shadow-soft-lg">
-            <p className="text-sm text-muted-foreground">جاري تحميل تفاصيل المحل…</p>
-          </div>
-        </main>
-        <SiteFooter />
-      </div>
+      <BackendErrorState
+        title="تعذّر تحميل بيانات المحل"
+        description="ما گدرنا نجيب تفاصيل هذا المحل من السيرفر. تأكد من الإنترنت وجرّب مرة لخ."
+        error={storeDetailQuery.error as Error | null}
+        onRetry={() => storeDetailQuery.refetch()}
+      />
     );
   }
 
