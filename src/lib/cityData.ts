@@ -5,6 +5,8 @@ import cityIndex from "@/data/cities/index.json";
 import { ApiError } from "./api";
 import { getCityDetail, type CityFile, type CityIndexEntry, type CityShop } from "./catalogApi";
 
+export type { CityFile, CityIndexEntry, CityShop } from "./catalogApi";
+
 export const CITIES: CityIndexEntry[] = cityIndex as CityIndexEntry[];
 
 const cache = new Map<string, CityFile>();
