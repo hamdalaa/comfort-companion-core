@@ -54,13 +54,13 @@
        Crisp near-white paper, deep midnight ink, vibrant sky-blue
        primary with mint + violet supporting accents. Feels light,
        fresh, and technical without being cold. */
-    --background: 210 40% 99%;          /* near-white sky paper #FAFCFE */
+    --background: 210 38% 97%;          /* soft sky paper — has presence */
     --foreground: 222 47% 11%;          /* midnight ink #0F172A */
-    --surface: 210 40% 97%;             /* card hover surface */
-    --surface-2: 214 32% 94%;
+    --surface: 210 36% 95%;             /* card hover surface */
+    --surface-2: 214 30% 92%;
     --surface-elevated: 0 0% 100%;
-    --border: 214 28% 91%;              /* airy hairline */
-    --input: 214 28% 91%;
+    --border: 214 26% 88%;              /* visible hairline */
+    --input: 214 26% 88%;
     --ring: 199 89% 48%;                /* sky focus */
 
     --card: 0 0% 100%;
@@ -80,12 +80,12 @@
     --secondary: 222 47% 11%;           /* midnight ink */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 36% 96%;
-    --muted-foreground: 215 16% 42%;
+    --muted: 210 34% 94%;
+    --muted-foreground: 215 18% 38%;
 
     --accent: 222 47% 11%;              /* ink — never a competing hue */
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 210 36% 96%;
+    --accent-soft: 210 34% 94%;
 
     /* Multi-accent palette — semantic, used sparingly */
     --accent-violet: 258 90% 66%;       /* premium / brands */
@@ -129,9 +129,9 @@
     --shadow-panel: var(--shadow-md);
 
     --nav: 0 0% 100%;
-    --nav-2: 210 40% 99%;
+    --nav-2: 210 38% 97%;
     --nav-foreground: 222 47% 11%;
-    --nav-hover: 210 36% 96%;
+    --nav-hover: 210 34% 94%;
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 47% 11%;
@@ -143,10 +143,10 @@
     --sidebar-ring: 199 89% 48%;
 
     --gradient-hero:
-      radial-gradient(at 18% 0%, hsl(199 95% 62% / 0.14) 0px, transparent 55%),
-      radial-gradient(at 82% 8%, hsl(258 90% 70% / 0.10) 0px, transparent 55%),
-      radial-gradient(at 50% 100%, hsl(160 75% 60% / 0.06) 0px, transparent 50%),
-      linear-gradient(180deg, hsl(210 40% 99%) 0%, hsl(210 40% 97%) 100%);
+      radial-gradient(at 18% 0%, hsl(199 95% 62% / 0.16) 0px, transparent 55%),
+      radial-gradient(at 82% 8%, hsl(258 90% 70% / 0.12) 0px, transparent 55%),
+      radial-gradient(at 50% 100%, hsl(160 75% 60% / 0.07) 0px, transparent 50%),
+      linear-gradient(180deg, hsl(210 38% 97%) 0%, hsl(214 32% 94%) 100%);
     --gradient-primary: linear-gradient(135deg, hsl(199 95% 55%) 0%, hsl(217 91% 55%) 100%);
     --gradient-aurora:
       conic-gradient(from 180deg at 50% 50%,
