@@ -316,10 +316,10 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: hsl(var(--primary));
-    font-size: 0.7rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.68rem;
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
   }
 
@@ -327,9 +327,9 @@
   .eyebrow::before {
     content: "";
     display: inline-block;
-    width: 1.4rem;
-    height: 2px;
-    background: hsl(var(--primary));
+    width: 1.25rem;
+    height: 1px;
+    background: hsl(var(--foreground) / 0.4);
     border-radius: 2px;
   }
 
