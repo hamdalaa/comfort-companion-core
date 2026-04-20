@@ -41,7 +41,7 @@ export default function Index() {
 
     const idleHandle = "requestIdleCallback" in window
       ? window.requestIdleCallback(() => setShowDeferredSections(true), { timeout: 2500 })
-      : window.setTimeout(() => setShowDeferredSections(true), 2500);
+      : (window as Window).setTimeout(() => setShowDeferredSections(true), 2500);
 
     return () => {
       observer.disconnect();

@@ -3,11 +3,11 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-function serviceWorkerManifestPlugin() {
+function serviceWorkerManifestPlugin(): import("vite").Plugin {
   return {
     name: "service-worker-manifest",
-    generateBundle(_options: unknown, bundle: Record<string, { type: string; fileName: string }>) {
-      const assets = Object.values(bundle)
+    generateBundle(_options, bundle) {
+      const assets = Object.values(bundle as Record<string, { type: string; fileName: string }>)
         .filter((chunk) => chunk.type === "chunk" || chunk.type === "asset")
         .map((chunk) => `/${chunk.fileName}`)
         .filter((fileName) => !fileName.endsWith("sw-manifest.js"));

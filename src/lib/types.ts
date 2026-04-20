@@ -110,6 +110,7 @@ export interface ProductIndex {
   reviewCount?: number;
   inStock?: boolean;
   crawledAt: string;
+  canonicalProductId?: string;
 }
 
 export interface BrandDealer {

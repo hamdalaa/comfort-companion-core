@@ -26,7 +26,7 @@ import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useProductDetailQuery, useProductOffersQuery } from "@/lib/catalogQueries";
 import { cn } from "@/lib/utils";
-import { formatIQD } from "@/lib/unifiedSearch";
+import { formatIQD, type UnifiedOffer } from "@/lib/unifiedSearch";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { getFallbackProductImage, isRenderableProductImage } from "@/lib/productVisuals";
 import { decodeHtmlEntities } from "@/lib/textDisplay";

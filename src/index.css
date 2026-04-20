@@ -50,40 +50,41 @@
   :root {
     color-scheme: light;
 
-    /* ---- Surfaces — soft, clean, calming ----------------------- */
-    --background: 210 20% 99%;          /* near-white #FAFBFC */
-    --foreground: 215 28% 12%;          /* deep slate-ink */
-    --surface: 210 22% 97%;
-    --surface-2: 210 20% 94%;
+    /* ---- Apple-inspired premium surfaces ------------------------
+       Warm paper white background, deep ink text, brass accent.
+       Calm, minimal, museum-quality. */
+    --background: 48 22% 98%;           /* warm paper #FAFAF7 */
+    --foreground: 0 0% 4%;              /* deep ink #0A0A0A */
+    --surface: 45 18% 96%;              /* card hover surface */
+    --surface-2: 45 14% 93%;
     --surface-elevated: 0 0% 100%;
-    --border: 215 16% 90%;
-    --input: 215 16% 88%;
-    --ring: 178 72% 38%;
+    --border: 30 8% 88%;                /* hairline */
+    --input: 30 8% 88%;
+    --ring: 28 50% 48%;                 /* brass focus */
 
     --card: 0 0% 100%;
-    --card-foreground: 215 28% 12%;
+    --card-foreground: 0 0% 4%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 28% 12%;
+    --popover-foreground: 0 0% 4%;
 
-    /* ---- Brand — teal primary, amber accent --------------------
-       Teal: trust, focus, calm — encourages exploration.
-       Amber: warm CTA — motivates without aggression.
+    /* ---- Brand — single warm brass accent ---------------------
+       One accent color used sparingly, like Apple's restraint.
     */
-    --primary: 178 72% 36%;             /* calm teal #0EA5A4 */
+    --primary: 28 50% 48%;              /* warm brass #B8763E */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 178 80% 48%;
-    --primary-soft: 178 60% 95%;
+    --primary-glow: 28 60% 58%;
+    --primary-soft: 28 60% 95%;
 
-    --secondary: 215 28% 12%;
+    --secondary: 0 0% 4%;               /* graphite ink */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 215 18% 95%;
-    --muted-foreground: 215 14% 42%;
+    --muted: 45 14% 95%;
+    --muted-foreground: 30 6% 42%;
 
-    --accent: 215 28% 17%;              /* graphite — neutral, premium, Apple-like */
+    --accent: 0 0% 4%;                  /* ink — never a competing hue */
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 215 20% 95%;
+    --accent-soft: 45 14% 95%;
 
     /* Multi-accent palette — semantic, used sparingly */
     --accent-violet: 262 83% 58%;       /* premium / brands */
@@ -97,55 +98,54 @@
     --accent-amber: 14 88% 58%;
     --accent-amber-soft: 14 95% 95%;
 
-    --destructive: 0 72% 50%;
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 158 64% 38%;             /* calm green = safety */
-    --success-soft: 158 70% 94%;
-    --warning: 32 92% 48%;
+    --success: 150 50% 38%;             /* calm green */
+    --success-soft: 150 50% 94%;
+    --warning: 35 85% 50%;
 
     --radius: 0.875rem;                 /* rounded-xl base */
 
-    /* Apple-style soft layered shadows */
-    --shadow-xs: 0 1px 2px hsl(215 30% 12% / 0.04);
+    /* Apple-style ultra-soft layered shadows — barely-there */
+    --shadow-xs: 0 1px 2px rgba(10, 10, 10, 0.04);
     --shadow-sm:
-      0 1px 2px hsl(215 30% 12% / 0.05),
-      0 1px 3px hsl(215 30% 12% / 0.04);
+      0 1px 2px rgba(10, 10, 10, 0.04),
+      0 1px 3px rgba(10, 10, 10, 0.03);
     --shadow-md:
-      0 4px 6px -2px hsl(215 30% 12% / 0.05),
-      0 2px 4px -2px hsl(215 30% 12% / 0.04);
+      0 2px 4px rgba(10, 10, 10, 0.04),
+      0 4px 12px rgba(10, 10, 10, 0.04);
     --shadow-lg:
-      0 12px 24px -8px hsl(215 30% 12% / 0.08),
-      0 4px 8px -4px hsl(215 30% 12% / 0.05);
+      0 8px 24px rgba(10, 10, 10, 0.06),
+      0 2px 6px rgba(10, 10, 10, 0.04);
     --shadow-xl:
-      0 24px 48px -16px hsl(215 30% 12% / 0.12),
-      0 8px 16px -8px hsl(215 30% 12% / 0.06);
+      0 24px 64px rgba(10, 10, 10, 0.08),
+      0 6px 16px rgba(10, 10, 10, 0.05);
     --shadow-2xl:
-      0 40px 80px -24px hsl(215 30% 12% / 0.18),
-      0 12px 24px -12px hsl(215 30% 12% / 0.08);
-    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.35);
+      0 40px 96px rgba(10, 10, 10, 0.12),
+      0 12px 24px rgba(10, 10, 10, 0.06);
+    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.25);
     --shadow-panel: var(--shadow-md);
 
     --nav: 0 0% 100%;
-    --nav-2: 210 20% 99%;
-    --nav-foreground: 215 28% 12%;
-    --nav-hover: 210 22% 96%;
+    --nav-2: 48 22% 98%;
+    --nav-foreground: 0 0% 4%;
+    --nav-hover: 45 14% 95%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 215 28% 12%;
-    --sidebar-primary: 178 72% 36%;
+    --sidebar-foreground: 0 0% 4%;
+    --sidebar-primary: 28 50% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 18% 95%;
-    --sidebar-accent-foreground: 215 28% 12%;
-    --sidebar-border: 215 16% 90%;
-    --sidebar-ring: 178 72% 38%;
+    --sidebar-accent: 45 14% 95%;
+    --sidebar-accent-foreground: 0 0% 4%;
+    --sidebar-border: 30 8% 88%;
+    --sidebar-ring: 28 50% 48%;
 
     --gradient-hero:
-      radial-gradient(at 20% 0%, hsl(178 72% 36% / 0.10) 0px, transparent 50%),
-      radial-gradient(at 80% 0%, hsl(262 83% 58% / 0.08) 0px, transparent 50%),
-      radial-gradient(at 50% 100%, hsl(38 92% 50% / 0.06) 0px, transparent 60%),
-      linear-gradient(180deg, hsl(210 20% 99%) 0%, hsl(210 22% 97%) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(178 72% 42%) 0%, hsl(178 72% 32%) 100%);
+      radial-gradient(at 20% 0%, hsl(28 50% 48% / 0.06) 0px, transparent 50%),
+      radial-gradient(at 80% 10%, hsl(28 60% 58% / 0.05) 0px, transparent 55%),
+      linear-gradient(180deg, hsl(48 22% 98%) 0%, hsl(45 18% 96%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(28 55% 52%) 0%, hsl(28 50% 42%) 100%);
     --gradient-aurora:
       conic-gradient(from 180deg at 50% 50%,
         hsl(178 72% 50% / 0.18) 0deg,
