@@ -50,60 +50,61 @@
   :root {
     color-scheme: light;
 
-    /* ---- Soft Slate + Indigo — modern, eye-friendly premium ----
-       Cool neutral slate background, deep graphite ink, calm
-       indigo accent. Restful, modern, premium. */
-    --background: 220 20% 98%;          /* soft cool paper #F7F8FB */
-    --foreground: 222 25% 12%;          /* deep graphite #181C25 */
-    --surface: 220 18% 96%;             /* card hover surface */
-    --surface-2: 220 16% 93%;
+    /* ---- Sky Tech — airy, modern, eye-friendly -----------------
+       Crisp near-white paper, deep midnight ink, vibrant sky-blue
+       primary with mint + violet supporting accents. Feels light,
+       fresh, and technical without being cold. */
+    --background: 210 40% 99%;          /* near-white sky paper #FAFCFE */
+    --foreground: 222 47% 11%;          /* midnight ink #0F172A */
+    --surface: 210 40% 97%;             /* card hover surface */
+    --surface-2: 214 32% 94%;
     --surface-elevated: 0 0% 100%;
-    --border: 220 14% 90%;              /* cool hairline */
-    --input: 220 14% 90%;
-    --ring: 234 70% 58%;                /* indigo focus */
+    --border: 214 28% 91%;              /* airy hairline */
+    --input: 214 28% 91%;
+    --ring: 199 89% 48%;                /* sky focus */
 
     --card: 0 0% 100%;
-    --card-foreground: 222 25% 12%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 25% 12%;
+    --popover-foreground: 222 47% 11%;
 
-    /* ---- Brand — calm modern indigo accent --------------------
-       Single accent used sparingly. Restful, trustworthy, modern.
-    */
-    --primary: 234 70% 58%;             /* indigo #4F58E0 */
+    /* ---- Brand — vivid sky-blue, technical and friendly --------
+       Bright but balanced — pops on white, calm enough for long
+       reading sessions. */
+    --primary: 199 89% 48%;             /* sky #0EA5E9 */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 234 80% 68%;
-    --primary-soft: 234 90% 96%;
+    --primary-glow: 199 95% 62%;
+    --primary-soft: 199 95% 95%;
 
-    --secondary: 222 25% 12%;           /* graphite ink */
+    --secondary: 222 47% 11%;           /* midnight ink */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 16% 95%;
-    --muted-foreground: 220 10% 42%;
+    --muted: 210 36% 96%;
+    --muted-foreground: 215 16% 42%;
 
-    --accent: 222 25% 12%;              /* ink — never a competing hue */
+    --accent: 222 47% 11%;              /* ink — never a competing hue */
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 220 16% 95%;
+    --accent-soft: 210 36% 96%;
 
     /* Multi-accent palette — semantic, used sparingly */
-    --accent-violet: 262 83% 58%;       /* premium / brands */
-    --accent-violet-soft: 262 90% 96%;
-    --accent-rose: 340 82% 60%;         /* deals / hot */
-    --accent-rose-soft: 340 90% 96%;
-    --accent-emerald: 158 64% 45%;      /* verified / trust */
-    --accent-emerald-soft: 158 70% 94%;
-    --accent-cyan: 190 90% 45%;         /* tech / categories */
-    --accent-cyan-soft: 190 90% 95%;
-    --accent-amber: 14 88% 58%;
-    --accent-amber-soft: 14 95% 95%;
+    --accent-violet: 258 90% 66%;       /* premium / brands */
+    --accent-violet-soft: 258 95% 96%;
+    --accent-rose: 346 84% 61%;         /* deals / hot */
+    --accent-rose-soft: 346 95% 96%;
+    --accent-emerald: 160 70% 42%;      /* verified / trust */
+    --accent-emerald-soft: 160 75% 94%;
+    --accent-cyan: 187 92% 45%;         /* tech / categories */
+    --accent-cyan-soft: 187 95% 94%;
+    --accent-amber: 32 95% 55%;
+    --accent-amber-soft: 38 100% 94%;
 
-    --destructive: 354 70% 54%;
+    --destructive: 354 78% 56%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 158 60% 40%;             /* calm green */
-    --success-soft: 158 60% 94%;
-    --warning: 38 92% 52%;
+    --success: 160 70% 38%;             /* mint green */
+    --success-soft: 160 72% 94%;
+    --warning: 38 95% 54%;
 
     --radius: 0.875rem;                 /* rounded-xl base */
 
@@ -124,43 +125,44 @@
     --shadow-2xl:
       0 40px 96px rgba(15, 23, 42, 0.13),
       0 12px 24px rgba(15, 23, 42, 0.07);
-    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.30);
     --shadow-panel: var(--shadow-md);
 
     --nav: 0 0% 100%;
-    --nav-2: 220 20% 98%;
-    --nav-foreground: 222 25% 12%;
-    --nav-hover: 220 16% 95%;
+    --nav-2: 210 40% 99%;
+    --nav-foreground: 222 47% 11%;
+    --nav-hover: 210 36% 96%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 25% 12%;
-    --sidebar-primary: 234 70% 58%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 199 89% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 16% 95%;
-    --sidebar-accent-foreground: 222 25% 12%;
-    --sidebar-border: 220 14% 90%;
-    --sidebar-ring: 234 70% 58%;
+    --sidebar-accent: 210 36% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 28% 91%;
+    --sidebar-ring: 199 89% 48%;
 
     --gradient-hero:
-      radial-gradient(at 20% 0%, hsl(234 70% 58% / 0.08) 0px, transparent 50%),
-      radial-gradient(at 80% 10%, hsl(262 70% 65% / 0.06) 0px, transparent 55%),
-      linear-gradient(180deg, hsl(220 20% 98%) 0%, hsl(220 18% 96%) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(234 75% 60%) 0%, hsl(234 65% 50%) 100%);
+      radial-gradient(at 18% 0%, hsl(199 95% 62% / 0.14) 0px, transparent 55%),
+      radial-gradient(at 82% 8%, hsl(258 90% 70% / 0.10) 0px, transparent 55%),
+      radial-gradient(at 50% 100%, hsl(160 75% 60% / 0.06) 0px, transparent 50%),
+      linear-gradient(180deg, hsl(210 40% 99%) 0%, hsl(210 40% 97%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(199 95% 55%) 0%, hsl(217 91% 55%) 100%);
     --gradient-aurora:
       conic-gradient(from 180deg at 50% 50%,
-        hsl(178 72% 50% / 0.18) 0deg,
-        hsl(262 83% 65% / 0.18) 90deg,
-        hsl(340 82% 65% / 0.16) 180deg,
-        hsl(38 92% 60% / 0.16) 270deg,
-        hsl(178 72% 50% / 0.18) 360deg);
+        hsl(199 95% 60% / 0.20) 0deg,
+        hsl(258 90% 70% / 0.18) 90deg,
+        hsl(346 84% 65% / 0.14) 180deg,
+        hsl(160 75% 55% / 0.16) 270deg,
+        hsl(199 95% 60% / 0.20) 360deg);
     --gradient-rainbow: linear-gradient(135deg,
-      hsl(178 72% 42%) 0%,
-      hsl(190 90% 45%) 25%,
-      hsl(262 83% 58%) 60%,
-      hsl(340 82% 60%) 100%);
+      hsl(199 89% 48%) 0%,
+      hsl(187 92% 45%) 25%,
+      hsl(258 90% 66%) 60%,
+      hsl(346 84% 61%) 100%);
     --gradient-mesh:
-      radial-gradient(at 0% 0%, hsl(178 72% 36% / 0.06) 0px, transparent 40%),
-      radial-gradient(at 100% 100%, hsl(262 83% 58% / 0.05) 0px, transparent 40%);
+      radial-gradient(at 0% 0%, hsl(199 89% 48% / 0.07) 0px, transparent 45%),
+      radial-gradient(at 100% 100%, hsl(258 90% 66% / 0.06) 0px, transparent 45%);
 
     --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
