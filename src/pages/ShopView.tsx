@@ -679,18 +679,27 @@ function SummaryTile({
   icon: Icon,
   value,
   label,
+  accent = "primary",
 }: {
   icon: ComponentType<{ className?: string }>;
   value: string;
   label: string;
+  accent?: "primary" | "warning" | "success" | "accent" | "muted";
 }) {
+  const tones: Record<string, string> = {
+    primary: "bg-primary/10 text-primary",
+    warning: "bg-warning/15 text-warning",
+    success: "bg-success/15 text-success",
+    accent: "bg-accent/15 text-accent-foreground",
+    muted: "bg-muted text-muted-foreground",
+  };
   return (
-    <div className="rounded-2xl border border-border/60 bg-background/75 p-3">
+    <div className="group rounded-2xl border border-border/60 bg-background/75 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md">
       <div className="flex items-center gap-2 text-muted-foreground">
-        <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <div className={cn("flex h-9 w-9 items-center justify-center rounded-2xl transition-transform group-hover:scale-110", tones[accent])}>
           <Icon className="h-4 w-4" />
         </div>
-        <div className="font-display text-xl font-bold text-foreground">{value}</div>
+        <div className="font-display text-xl font-bold text-foreground tracking-tight">{value}</div>
       </div>
       <div className="mt-2 text-[11px] leading-5 text-muted-foreground">{label}</div>
     </div>
