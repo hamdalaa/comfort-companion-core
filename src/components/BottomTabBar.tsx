@@ -33,7 +33,7 @@ export function BottomTabBar() {
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="mx-auto max-w-md px-3 pb-2 pt-1">
-          <div className="ios-tabbar grid grid-cols-5 items-stretch gap-1 rounded-3xl border border-border/50 bg-background/80 px-2 py-1.5 shadow-[0_8px_32px_-8px_hsl(var(--foreground)/0.18),0_2px_8px_-2px_hsl(var(--foreground)/0.08)] backdrop-blur-xl">
+          <div className="ios-tabbar grid grid-cols-5 items-stretch gap-1 rounded-full border border-border/60 bg-card/80 px-2 py-1.5 shadow-soft-xl backdrop-blur-2xl">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -43,8 +43,8 @@ export function BottomTabBar() {
                   end={tab.exact}
                   className={({ isActive }) =>
                     cn(
-                      "ios-tap group relative flex flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5 text-[10px] font-semibold transition-colors",
-                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                      "ios-tap group relative flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-medium transition-colors",
+                      isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                     )
                   }
                 >
@@ -52,18 +52,15 @@ export function BottomTabBar() {
                     <>
                       <span
                         className={cn(
-                          "flex h-7 w-7 items-center justify-center rounded-xl transition-all duration-300 ios-spring",
+                          "flex h-7 w-7 items-center justify-center rounded-full transition-all duration-300 ios-spring",
                           isActive
-                            ? "scale-105 bg-primary-soft text-primary"
+                            ? "scale-105 bg-foreground text-background"
                             : "scale-100 bg-transparent",
                         )}
                       >
                         <Icon className="h-[18px] w-[18px]" strokeWidth={isActive ? 2.4 : 2} />
                       </span>
-                      <span className={cn("leading-none", isActive && "font-bold")}>{tab.label}</span>
-                      {isActive && (
-                        <span className="absolute -bottom-0.5 h-1 w-1 rounded-full bg-primary" />
-                      )}
+                      <span className={cn("leading-none", isActive && "font-semibold")}>{tab.label}</span>
                     </>
                   )}
                 </NavLink>
@@ -79,13 +76,13 @@ export function BottomTabBar() {
                 const evt = new CustomEvent("open-favorites");
                 window.dispatchEvent(evt);
               }}
-              className="ios-tap relative flex flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5 text-[10px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              className="ios-tap relative flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-medium text-muted-foreground transition-colors hover:text-foreground"
               aria-label={`المفضلة (${favCount})`}
             >
-              <span className="relative flex h-7 w-7 items-center justify-center rounded-xl transition-all duration-300 ios-spring">
+              <span className="relative flex h-7 w-7 items-center justify-center rounded-full transition-all duration-300 ios-spring">
                 <Heart className="h-[18px] w-[18px]" strokeWidth={2} />
                 {favCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-accent-foreground shadow-soft-md">
+                  <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 text-[9px] font-semibold text-background shadow-soft-md">
                     {favCount > 9 ? "9+" : favCount}
                   </span>
                 )}

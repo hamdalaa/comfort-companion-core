@@ -316,10 +316,10 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: hsl(var(--primary));
-    font-size: 0.7rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.68rem;
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
   }
 
@@ -327,9 +327,9 @@
   .eyebrow::before {
     content: "";
     display: inline-block;
-    width: 1.4rem;
-    height: 2px;
-    background: hsl(var(--primary));
+    width: 1.25rem;
+    height: 1px;
+    background: hsl(var(--foreground) / 0.4);
     border-radius: 2px;
   }
 
@@ -691,10 +691,10 @@
     transform: translateY(-1px);
   }
   .filter-pill[data-active="true"] {
-    background: var(--gradient-primary);
-    color: hsl(var(--primary-foreground));
-    border-color: transparent;
-    box-shadow: var(--shadow-glow);
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+    box-shadow: var(--shadow-sm);
   }
 
   /* Compare drawer slide-up */

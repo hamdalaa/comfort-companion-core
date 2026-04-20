@@ -45,18 +45,18 @@ export function MetricsStrip() {
         return (
           <div
             key={it.label}
-            className="group flex items-baseline justify-between gap-4 px-5 py-4 text-right transition-colors hover:bg-primary-soft/40"
+            className="group flex items-baseline justify-between gap-4 px-5 py-5 text-right transition-colors hover:bg-muted/50"
           >
             <div className="flex min-w-0 items-center gap-3">
-              <span className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${it.color} transition-transform group-hover:scale-110`}>
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-transform group-hover:scale-105">
                 <Icon className="h-4 w-4" />
               </span>
               <div className="min-w-0">
-                <div className="text-sm font-semibold text-foreground">{it.label}</div>
+                <div className="text-sm font-medium text-foreground">{it.label}</div>
                 <div className="mt-1 text-[11px] text-muted-foreground">{it.sub}</div>
               </div>
             </div>
-            <div className="font-numeric text-2xl sm:text-3xl font-semibold leading-none text-rainbow">
+            <div className="font-numeric text-2xl sm:text-3xl font-semibold leading-none tabular-stable text-foreground">
               {it.animated && typeof it.value === "number" ? <CountUp value={it.value} /> : it.value}
             </div>
           </div>
