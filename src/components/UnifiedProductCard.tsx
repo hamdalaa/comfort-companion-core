@@ -5,13 +5,11 @@ import {
   TrendingDown,
   Package,
   ShieldCheck,
-  Star,
   Award,
   ArrowLeft,
   Tag,
   CircleDot,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { formatIQD, type UnifiedProduct } from "@/lib/unifiedSearch";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { getFallbackProductImage, isRenderableProductImage } from "@/lib/productVisuals";
@@ -38,19 +36,26 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
     product.offerCount > 0 ? Math.round((product.inStockCount / product.offerCount) * 100) : 0;
   const fallbackImage = getFallbackProductImage(product.category);
   const primaryImage =
-    product.images.find((image) => isRenderableProductImage(image)) ??
-    fallbackImage;
+    product.images.find((image) => isRenderableProductImage(image)) ?? fallbackImage;
   const displayImage = optimizeImageUrl(primaryImage, { width: 720, height: 576 }) ?? primaryImage;
 
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border/70 bg-card/96 shadow-soft-md transition-[transform,border-color,box-shadow,background-color] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-card hover:shadow-soft-xl"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-soft-sm ring-1 ring-transparent transition-[transform,border-color,box-shadow,ring-color] duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-soft-xl hover:ring-primary/10"
     >
       {/* ===== Image area ===== */}
-      <div className="relative aspect-[5/4] overflow-hidden border-b border-border/60 bg-white">
-        <div className="img-frame absolute inset-3 rounded-[1.5rem] bg-white" />
-        <div className="relative z-[1] flex h-full items-center justify-center px-3 pb-3 pt-8 sm:px-4 sm:pb-4 sm:pt-9">
+      <div className="relative aspect-[5/4] overflow-hidden bg-gradient-to-br from-surface via-white to-surface/60">
+        {/* Subtle radial glow on hover */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, hsl(var(--primary) / 0.08) 0%, transparent 60%)",
+          }}
+        />
+        <div className="relative z-[1] flex h-full items-center justify-center px-4 pb-4 pt-10 sm:px-5 sm:pb-5 sm:pt-11">
           <img
             src={displayImage}
             alt={title}
@@ -63,34 +68,37 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
                 event.currentTarget.src = fallbackImage;
               }
             }}
-            className="relative z-[2] max-h-[88%] w-auto max-w-[92%] object-contain object-center transition-transform duration-500 group-hover:scale-[1.04] sm:max-h-[90%] sm:max-w-[94%]"
+            className="relative z-[2] max-h-[90%] w-auto max-w-[92%] object-contain object-center drop-shadow-[0_8px_16px_rgba(15,23,42,0.08)] transition-transform duration-500 ease-out group-hover:scale-[1.06] sm:max-h-[92%] sm:max-w-[94%]"
           />
         </div>
 
         {/* Top-left: discount badge */}
         {savings > 5 && (
-          <div className="absolute start-2 top-2 flex items-center gap-0.5 rounded-full bg-accent-rose px-2 py-0.5 text-[10px] font-bold text-white shadow-soft-md sm:start-3 sm:top-3 sm:gap-1 sm:px-2.5 sm:py-1 sm:text-[11px]">
+          <div className="absolute start-2.5 top-2.5 flex items-center gap-1 rounded-full bg-accent-rose/95 px-2 py-0.5 text-[10px] font-bold text-white shadow-[0_4px_12px_-2px_hsl(var(--accent-rose)/0.5)] backdrop-blur-sm sm:start-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[11px]">
             <TrendingDown className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             <span className="tabular-nums">-{savings}%</span>
           </div>
         )}
 
         {/* Top-right: offer count chip */}
-        <div className="absolute end-2 top-2 flex items-center gap-0.5 rounded-full bg-card/95 px-1.5 py-0.5 text-[10px] font-semibold text-foreground shadow-soft-sm backdrop-blur-sm sm:end-3 sm:top-3 sm:gap-1 sm:px-2 sm:py-1 sm:text-[11px]">
+        <div className="absolute end-2.5 top-2.5 flex items-center gap-1 rounded-full border border-border/50 bg-card/90 px-1.5 py-0.5 text-[10px] font-semibold text-foreground shadow-soft-sm backdrop-blur-md sm:end-3 sm:top-3 sm:px-2 sm:py-1 sm:text-[11px]">
           <Store className="h-2.5 w-2.5 text-primary sm:h-3 sm:w-3" />
           <span className="tabular-nums">{product.offerCount}</span>
         </div>
 
         {/* Bottom-left: stock pill */}
-        <div className="absolute bottom-2 start-2 sm:bottom-3 sm:start-3">
+        <div className="absolute bottom-2.5 start-2.5 sm:bottom-3 sm:start-3">
           {product.inStockCount > 0 ? (
-            <div className="flex items-center gap-1 rounded-full bg-card/95 px-1.5 py-0.5 text-[10px] font-medium text-accent-emerald shadow-soft-sm backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[11px]">
-              <CircleDot className="h-2.5 w-2.5 fill-accent-emerald text-accent-emerald sm:h-3 sm:w-3" />
+            <div className="flex items-center gap-1.5 rounded-full border border-accent-emerald/20 bg-card/90 px-2 py-0.5 text-[10px] font-semibold text-accent-emerald shadow-soft-sm backdrop-blur-md sm:px-2.5 sm:py-1 sm:text-[11px]">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-emerald opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-emerald" />
+              </span>
               <span className="tabular-nums sm:hidden">{product.inStockCount} متوفر</span>
               <span className="hidden tabular-nums sm:inline">متوفر بـ {product.inStockCount} محل</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1 rounded-full bg-card/95 px-1.5 py-0.5 text-[10px] font-medium text-destructive shadow-soft-sm backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[11px]">
+            <div className="flex items-center gap-1.5 rounded-full border border-destructive/20 bg-card/90 px-2 py-0.5 text-[10px] font-semibold text-destructive shadow-soft-sm backdrop-blur-md sm:px-2.5 sm:py-1 sm:text-[11px]">
               <CircleDot className="h-2.5 w-2.5 fill-destructive text-destructive sm:h-3 sm:w-3" />
               نفد
             </div>
@@ -99,47 +107,44 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
       </div>
 
       {/* ===== Body ===== */}
-      <div className="flex flex-1 flex-col gap-2 p-2.5 sm:gap-3 sm:p-4">
-        <div className="flex items-center justify-between gap-2">
-          {product.brand ? (
-            <Badge
-              variant="outline"
-              className="rounded-full border-border bg-surface px-1.5 py-0 text-[9px] font-bold uppercase tracking-wide text-foreground sm:px-2 sm:text-[10px]"
-            >
-              {brand}
-            </Badge>
-          ) : <span />}
-          {product.category && (
-            <span className="hidden text-[11px] font-medium text-muted-foreground sm:inline">
-              {product.category}
-            </span>
+      <div className="flex flex-1 flex-col gap-2.5 border-t border-border/50 p-3 sm:gap-3 sm:p-4">
+        {/* Brand + category — dot-separated */}
+        <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground sm:text-[11px]">
+          {product.brand && (
+            <span className="font-bold uppercase tracking-wider text-primary/90">{brand}</span>
           )}
+          {product.brand && product.category && (
+            <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" aria-hidden />
+          )}
+          {product.category && <span className="truncate">{product.category}</span>}
         </div>
 
+        {/* Title */}
         <h3 className="line-clamp-2 min-h-[2.6em] text-balance text-[13px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:text-[15px]">
           {title}
         </h3>
 
-        <div className="flex items-end justify-between gap-3 rounded-xl bg-surface/60 px-2.5 py-2.5 sm:px-3 sm:py-3">
+        {/* Price */}
+        <div className="flex items-end justify-between gap-3">
           <div className="flex flex-col">
-            <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground sm:text-[10px]">
+            <span className="text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground/80 sm:text-[10px]">
               يبدأ من
             </span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="tabular-nums text-base font-extrabold leading-none text-foreground sm:text-xl">
-                {formatIQD(product.lowestPrice ?? 0)}
-              </span>
-            </div>
+            <span className="font-outfit tabular-nums text-lg font-extrabold leading-none text-foreground sm:text-xl">
+              {formatIQD(product.lowestPrice ?? 0)}
+            </span>
           </div>
+          {priceSpread > 0 && product.highestPrice && (
+            <span className="tabular-nums text-[9px] text-muted-foreground/70 line-through sm:text-[10px]">
+              {formatIQD(product.highestPrice)}
+            </span>
+          )}
         </div>
 
         {topOffers && topOffers.length > 0 && (
-          <ul className="flex flex-col gap-1.5 rounded-xl border border-border bg-card px-2.5 py-2">
+          <ul className="flex flex-col gap-1.5 rounded-xl border border-border/60 bg-surface/40 px-2.5 py-2">
             {topOffers.slice(0, 3).map((o, idx) => (
-              <li
-                key={idx}
-                className="flex items-center justify-between gap-2 text-[12px]"
-              >
+              <li key={idx} className="flex items-center justify-between gap-2 text-[12px]">
                 <div className="flex min-w-0 items-center gap-1.5">
                   {o.officialDealer ? (
                     <Award className="h-3 w-3 shrink-0 text-primary" />
@@ -164,33 +169,37 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
           </ul>
         )}
 
-        <div className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-muted-foreground sm:gap-x-3 sm:text-[11px]">
+        {/* Meta — dot-separated */}
+        <div className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-1 text-[10px] text-muted-foreground sm:text-[11px]">
           {inStockRatio > 0 && (
-            <span className="flex items-center gap-1">
-              <Package className="h-3 w-3 text-accent-emerald" />
-              <span className="tabular-nums">{inStockRatio}%</span>
-              <span>توفر</span>
-            </span>
+            <>
+              <span className="flex items-center gap-1">
+                <Package className="h-3 w-3 text-accent-emerald" />
+                <span className="tabular-nums font-semibold text-foreground/80">{inStockRatio}%</span>
+                <span>توفر</span>
+              </span>
+              <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" aria-hidden />
+            </>
           )}
           <span className="flex items-center gap-1">
             <Tag className="h-3 w-3 text-primary" />
-            <span className="tabular-nums">{product.offerCount}</span>
+            <span className="tabular-nums font-semibold text-foreground/80">{product.offerCount}</span>
             <span>عرض</span>
           </span>
           <span className="hidden items-center gap-1 sm:flex">
+            <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" aria-hidden />
             <ShieldCheck className="h-3 w-3 text-accent-emerald" />
-            تحقّقت من المصدر
+            <span>موثّق</span>
           </span>
         </div>
       </div>
 
-      <div className="border-t border-border/70 bg-gradient-to-l from-primary/6 via-white to-white/90 px-3 py-3 sm:px-4">
-        <div className="rounded-[1.25rem] bg-surface/80 p-1 shadow-[inset_0_1px_0_hsl(0_0%_100%/0.85),0_8px_18px_-14px_hsl(178_72%_36%/0.32)] backdrop-blur-sm">
-          <span className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-[1rem] bg-primary px-3.5 text-[11px] font-bold text-primary-foreground shadow-[0_10px_20px_-12px_rgba(14,165,164,0.85)] transition-[transform,background-color,box-shadow] duration-300 group-hover:-translate-x-0.5 group-hover:bg-primary/95 group-hover:shadow-[0_14px_26px_-14px_rgba(14,165,164,0.95)] active:scale-[0.96] sm:text-[12px]">
-            عرض التفاصيل
-            <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" />
-          </span>
-        </div>
+      {/* ===== CTA — refined ghost-elevated, fills with primary on hover ===== */}
+      <div className="border-t border-border/50 bg-surface/30 px-3 py-2.5 sm:px-4 sm:py-3">
+        <span className="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-border/60 bg-card px-3.5 py-2.5 text-[12px] font-bold text-foreground shadow-soft-sm transition-all duration-300 group-hover:border-primary/40 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_8px_20px_-10px_hsl(var(--primary)/0.5)] sm:text-[13px]">
+          <span>عرض التفاصيل</span>
+          <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" />
+        </span>
       </div>
     </Link>
   );
