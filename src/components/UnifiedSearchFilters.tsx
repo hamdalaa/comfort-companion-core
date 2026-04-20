@@ -211,7 +211,7 @@ export function UnifiedSearchFilters(props: Props) {
     <>
       {/* Desktop sidebar */}
       <aside className={cn("hidden lg:block", className)}>
-        <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-card p-4 shadow-soft-sm">
+        <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-3xl bg-card p-5 shadow-[0_1px_2px_hsl(220_40%_20%/0.04),0_8px_24px_-12px_hsl(220_40%_20%/0.08)]">
           <FilterBody {...props} />
         </div>
       </aside>
