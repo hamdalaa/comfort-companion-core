@@ -1,9 +1,10 @@
 import { type ReactNode, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, Home, MapPin, ShieldCheck, Store } from "lucide-react";
+import { ChevronLeft, Home, MapPin, Sparkles, ShieldCheck, Store } from "lucide-react";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { BrandShowcaseCard } from "@/components/BrandShowcaseCard";
+import { BrandLogoTile } from "@/components/BrandLogoTile";
 import { useDataStore } from "@/lib/dataStore";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import type { BrandDealer } from "@/lib/types";
@@ -245,54 +246,81 @@ export default function Brands() {
         </div>
       </div>
 
-      <section className="relative overflow-hidden border-y border-cyan/25 bg-gradient-to-bl from-emerald/14 via-background to-cyan/12">
-        <div aria-hidden className="pointer-events-none absolute -top-20 -left-16 h-72 w-72 rounded-full bg-emerald/20 blur-3xl" />
-        <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-cyan/20 blur-3xl" />
+      {/* ===== HERO ===== */}
+      <section className="relative overflow-hidden border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]"
+        />
+        <div aria-hidden className="pointer-events-none absolute -top-24 -left-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-accent-cyan/10 blur-3xl" />
 
-        <div className="container relative py-8 sm:py-12 md:py-16">
-          <div className="border-b border-border/70 pb-5 sm:pb-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-3xl text-right">
-                <span className="atlas-kicker">الوكلاء الرسميون</span>
-                <h1 className="font-display mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl">
-                  اشترِ من المصدر الموثوق
-                </h1>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
-                  وكلاء معتمدون رسمياً في العراق، مع تغطية واضحة للفروع والمدن حتى توصل مباشرة إلى المصدر.
-                </p>
-              </div>
+        <div className="container relative py-10 sm:py-14 md:py-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-[11px] font-semibold text-primary">
+              <Sparkles className="h-3 w-3" />
+              الوكلاء الرسميون في العراق
+            </span>
+            <h1 className="font-display mt-4 text-balance text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              اشترِ من <span className="text-primary">المصدر الموثوق</span>
+            </h1>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
+              وكلاء معتمدون رسمياً مع تغطية واضحة للفروع والمدن. شعارات البراندات من
+              {" "}
+              <a
+                href="https://thesvg.org"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="font-semibold text-foreground underline-offset-4 hover:underline"
+              >
+                theSVG
+              </a>
+              {" "}— مكتبة مفتوحة المصدر.
+            </p>
+          </div>
 
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                <HeroStat value={formatCount(enrichedBrands.length)} label="براند" icon={<ShieldCheck className="h-3.5 w-3.5 text-primary" />} />
-                <HeroStat value={formatCount(totalBranches)} label="فرع" icon={<Store className="h-3.5 w-3.5 text-primary" />} />
-                <HeroStat value={formatCount(totalCities)} label="مدن" icon={<MapPin className="h-3.5 w-3.5 text-primary" />} />
-              </div>
-            </div>
+          <div className="mx-auto mt-8 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3">
+            <HeroStat value={formatCount(enrichedBrands.length)} label="براند" icon={<ShieldCheck className="h-3.5 w-3.5 text-primary" />} />
+            <HeroStat value={formatCount(totalBranches)} label="فرع رسمي" icon={<Store className="h-3.5 w-3.5 text-primary" />} />
+            <HeroStat value={formatCount(totalCities)} label="مدن" icon={<MapPin className="h-3.5 w-3.5 text-primary" />} />
           </div>
         </div>
       </section>
 
       <main className="container flex-1 py-6 md:py-10">
-        {curatedBrands.length > 0 && (
-          <section className="mb-12">
-            <div className="mb-5 flex flex-col gap-3 border-b border-border/70 pb-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-foreground">براندات قطع الحاسبات</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  اختيار سريع لأبرز براندات الهاردوير وملحقات البيسي بنفس لغة العرض المستخدمة في الواجهة الرئيسية.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground">
-                <span>{formatCount(curatedBrands.length)} براند</span>
-                <span>•</span>
-                <span>{formatCount(totalProducts)} منتج</span>
-                <span>•</span>
-                <span>{formatCount(totalStores)} متجر</span>
-                <span>•</span>
-                <span>{formatCount(totalOfficialBranches)} فرع رسمي</span>
-              </div>
+        {/* ===== ALL BRANDS — logo-first dense grid (theSVG) ===== */}
+        {enrichedBrands.length === 0 ? (
+          <div className="rounded-3xl border border-dashed border-border bg-card/85 p-10 text-center shadow-soft-sm">
+            <p className="text-sm text-muted-foreground">ماكو براندات حالياً.</p>
+          </div>
+        ) : (
+          <>
+            <SectionHeader
+              title="كل البراندات"
+              subtitle="شعارات أصلية من theSVG — اضغط على أي براند لشوف الفروع والمنتجات."
+              count={topGlobalBrands.length}
+            />
+            <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8">
+              {topGlobalBrands.map((brand, idx) => (
+                <BrandLogoTile
+                  key={brand.slug}
+                  brand={brand}
+                  branchCount={brand.branchCount}
+                  eager={idx < 12}
+                />
+              ))}
             </div>
+          </>
+        )}
 
+        {/* ===== FEATURED — image-led showcase cards ===== */}
+        {curatedBrands.length > 0 && (
+          <section className="mt-12 sm:mt-16">
+            <SectionHeader
+              title="براندات قطع الحاسبات"
+              subtitle="اختيار سريع لأبرز براندات الهاردوير وملحقات البيسي."
+              meta={`${formatCount(totalProducts)} منتج · ${formatCount(totalStores)} متجر · ${formatCount(totalOfficialBranches)} فرع رسمي`}
+            />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
               {curatedBrands.map((brand, idx) => (
                 <BrandShowcaseCard key={`pc-${brand.slug}`} brand={brand} index={idx} />
@@ -301,35 +329,47 @@ export default function Brands() {
           </section>
         )}
 
-        {enrichedBrands.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-border bg-card/85 p-10 text-center shadow-soft-lg">
-            <p className="text-sm text-muted-foreground">ماكو براندات حالياً.</p>
-          </div>
-        ) : (
-          <section>
-            <div className="mb-5 flex flex-col gap-3 border-b border-border pb-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-foreground">كل البراندات</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  أشهر 40 براند فقط، لكن بنفس كروت العرض المصوّرة حتى يبقى شكل الصفحة متزامن مع قسم `/brands` الرئيسي.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-              {topGlobalBrands.map((brand, idx) => (
-                <BrandShowcaseCard key={brand.slug} brand={brand} index={idx} />
-              ))}
-            </div>
-          </section>
-        )}
-
         <p className="mt-10 text-center text-xs text-muted-foreground">
-          * قسم "كل البراندات" يعرض أشهر 40 براند لتخفيف الحمل، بينما بقي قسم قطع الحاسبات موجهاً للترشيحات الأسرع.
+          * نعرض أشهر 40 براند لتخفيف الحمل. الشعارات مقدّمة عبر CDN من{" "}
+          <a href="https://thesvg.org" target="_blank" rel="noreferrer noopener" className="font-medium text-foreground hover:text-primary">
+            theSVG
+          </a>
+          .
         </p>
       </main>
 
       <SiteFooter />
+    </div>
+  );
+}
+
+function SectionHeader({
+  title,
+  subtitle,
+  meta,
+  count,
+}: {
+  title: string;
+  subtitle?: string;
+  meta?: string;
+  count?: number;
+}) {
+  return (
+    <div className="mb-5 flex flex-col gap-2 border-b border-border/60 pb-3 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h2 className="flex items-center gap-2 text-xl font-bold text-foreground">
+          {title}
+          {typeof count === "number" && (
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold tabular-nums text-primary">
+              {formatCount(count)}
+            </span>
+          )}
+        </h2>
+        {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
+      </div>
+      {meta && (
+        <div className="text-xs font-medium text-muted-foreground">{meta}</div>
+      )}
     </div>
   );
 }
