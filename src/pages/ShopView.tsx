@@ -325,7 +325,7 @@ const ShopView = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 border-t border-border/60 bg-gradient-to-br from-muted/20 to-transparent p-4 md:grid-cols-4 md:p-5">
+          <div className="grid grid-cols-2 gap-2 border-t border-border/60 bg-gradient-to-br from-muted/20 to-transparent p-3 sm:gap-3 sm:p-4 md:grid-cols-4 md:p-5">
             <SummaryTile
               icon={googleRating ? Star : ShieldCheck}
               value={googleRating ? googleRating.rating.toFixed(1) : shop.verified ? "موثّق" : "عام"}
