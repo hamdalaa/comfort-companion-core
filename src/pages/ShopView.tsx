@@ -216,10 +216,10 @@ const ShopView = () => {
         </div>
       </div>
 
-      <main className="flex-1 container py-6 space-y-6 md:py-8">
+      <main className="flex-1 container py-4 space-y-5 pb-24 md:py-8 md:pb-8 md:space-y-6">
         {/* ============ 1. HERO ============ */}
         <header className="overflow-hidden rounded-3xl border border-border/70 bg-card/88 shadow-soft-xl backdrop-blur-sm reveal-init reveal-on">
-          <div className="group relative h-56 sm:h-72 md:h-96 bg-muted overflow-hidden">
+          <div className="group relative h-44 sm:h-72 md:h-96 bg-muted overflow-hidden">
             <img
               src={optimizeImageUrl(heroImg, { width: 1600, height: 600 }) ?? heroImg}
               alt={shop.name}
@@ -230,19 +230,19 @@ const ShopView = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-l from-black/30 via-transparent to-black/50" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-            <div className="absolute bottom-0 right-0 left-0 p-4 md:p-7 text-white">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2.5 py-1 text-[11px] font-semibold">
+            <div className="absolute bottom-0 right-0 left-0 p-3 sm:p-4 md:p-7 text-white">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="inline-flex items-center gap-1 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2 py-0.5 text-[10px] font-semibold sm:px-2.5 sm:py-1 sm:text-[11px]">
                   <MapPin className="h-3 w-3" /> {shop.area}
                 </span>
-                <span className="rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2.5 py-1 text-[11px] font-semibold">{shop.category}</span>
+                <span className="rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/25 px-2 py-0.5 text-[10px] font-semibold sm:px-2.5 sm:py-1 sm:text-[11px]">{shop.category}</span>
                 {shop.verified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold shadow-[0_4px_18px_-4px_hsl(var(--success)/0.55)]">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2 py-0.5 text-[10px] font-bold shadow-[0_4px_18px_-4px_hsl(var(--success)/0.55)] sm:px-2.5 sm:py-1 sm:text-[11px]">
                     <ShieldCheck className="h-3 w-3" /> محل موثّق
                   </span>
                 )}
                 {pageData?.businessStatus === "OPERATIONAL" && pageData?.openNow === true && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success/90 ring-1 ring-white/30 px-2 py-0.5 text-[10px] font-bold sm:px-2.5 sm:py-1 sm:text-[11px]">
                     <span className="relative flex h-1.5 w-1.5">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
                       <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
@@ -251,16 +251,16 @@ const ShopView = () => {
                   </span>
                 )}
                 {pageData?.openNow === false && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/90 ring-1 ring-white/30 px-2.5 py-1 text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-destructive/90 ring-1 ring-white/30 px-2 py-0.5 text-[10px] font-bold sm:px-2.5 sm:py-1 sm:text-[11px]">
                     <XCircle className="h-3 w-3" /> مغلق حالياً
                   </span>
                 )}
               </div>
-              <h1 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+              <h1 className="mt-2 font-display text-xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] line-clamp-2 sm:line-clamp-none">
                 {shop.name}
               </h1>
               {googleRating && (
-                <div className="mt-2.5 inline-flex items-center gap-1 rounded-full bg-black/45 ring-1 ring-white/15 px-3 py-1.5 backdrop-blur-md">
+                <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-black/45 ring-1 ring-white/15 px-2.5 py-1 backdrop-blur-md sm:mt-2.5 sm:px-3 sm:py-1.5">
                   <StarRating rating={googleRating.rating} reviews={googleRating.userRatingCount} size="sm" className="[&_*]:!text-white [&_svg.fill-warning]:!fill-warning [&_svg.fill-warning]:!text-warning" />
                 </div>
               )}
