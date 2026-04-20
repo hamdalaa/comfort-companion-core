@@ -584,15 +584,18 @@ const ShopView = () => {
           {/* ============ SIDE COLUMN ============ */}
           <aside className="space-y-6">
             {/* ============ 7. DETAILS & TRUST ============ */}
-            <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
-              <h2 className="mb-3 inline-flex items-center gap-2 text-base font-bold">
-                <ShieldCheck className="h-4 w-4 text-primary" /> التفاصيل والثقة
+            <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5 lg:sticky lg:top-[140px]">
+              <h2 className="mb-3 inline-flex items-center gap-2 text-base font-bold tracking-tight">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                </span>
+                التفاصيل والثقة
               </h2>
 
               {shop.address && (
-                <div className="mb-3 flex gap-2 text-xs">
-                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground mt-0.5" />
-                  <span className="text-muted-foreground">{shop.address}</span>
+                <div className="mb-3 flex gap-2 rounded-xl border border-border/50 bg-background/50 p-2.5 text-xs">
+                  <MapPin className="h-4 w-4 shrink-0 text-primary mt-0.5" />
+                  <span className="text-foreground/80">{shop.address}</span>
                 </div>
               )}
 
@@ -601,9 +604,9 @@ const ShopView = () => {
                   <div className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold">
                     <Clock className="h-3.5 w-3.5 text-primary" /> ساعات العمل
                   </div>
-                  <ul className="space-y-1 text-[11px] text-muted-foreground">
+                  <ul className="space-y-0.5 text-[11px] text-muted-foreground rounded-xl border border-border/50 bg-background/40 px-3">
                     {pageData.workingHours.map((h, i) => (
-                      <li key={i} className="flex justify-between gap-2 border-b border-border/50 last:border-0 py-1">
+                      <li key={i} className="flex justify-between gap-2 border-b border-border/30 last:border-0 py-1.5">
                         <span>{formatHours(h)}</span>
                       </li>
                     ))}
