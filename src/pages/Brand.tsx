@@ -36,6 +36,27 @@ const Brand = () => {
   const brand = fallbackBrand ?? brandDetail?.brand;
   const logoSrc = useBrandLogo(brand?.slug, brand?.brandName, "default");
 
+  const related =
+    brandDetail?.products ??
+    (brand
+      ? products.filter((p) => p.brand?.toLowerCase() === brand.brandName.toLowerCase())
+      : []);
+  const storeNames = useMemo(
+    () => [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))],
+    [brandDetail?.stores],
+  );
+  const topCategories = useMemo(
+    () => [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4),
+    [related],
+  );
+  const pricedProducts = useMemo(
+    () =>
+      related
+        .map((product) => product.priceValue)
+        .filter((value): value is number => typeof value === "number" && Number.isFinite(value)),
+    [related],
+  );
+
   if (brandDetailQuery.isLoading && !brand) {
     return <BrandPageSkeleton />;
   }
@@ -70,31 +91,11 @@ const Brand = () => {
     );
   }
 
-  const related =
-    brandDetail?.products ??
-    products.filter(
-      (p) => p.brand?.toLowerCase() === brand.brandName.toLowerCase(),
-    );
   const branches = OFFICIAL_DEALER_BRANCHES.filter((b) => b.brandSlug === brand.slug);
   const isVerified = brand.verificationStatus === "verified";
   const background = getBrandBackground(brand.slug);
   const initial = brand.brandName.slice(0, 1);
   const logoClassName = brand.slug === "apple" ? "brightness-0" : "";
-  const storeNames = useMemo(
-    () => [...new Set((brandDetail?.stores ?? []).map((store) => store.name).filter(Boolean))],
-    [brandDetail?.stores],
-  );
-  const topCategories = useMemo(
-    () => [...new Set(related.map((product) => product.category).filter(Boolean))].slice(0, 4),
-    [related],
-  );
-  const pricedProducts = useMemo(
-    () =>
-      related
-        .map((product) => product.priceValue)
-        .filter((value): value is number => typeof value === "number" && Number.isFinite(value)),
-    [related],
-  );
   const insights = {
     storeNames,
     topCategories,
