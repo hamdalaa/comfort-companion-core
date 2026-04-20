@@ -37,7 +37,7 @@ export function PriceBlock({
           {priceText ?? (priceValue ? fmt(priceValue) : "")}
         </span>
         {savings > 0 && (
-          <span className="rounded-full bg-success-soft px-2 py-0.5 text-[10px] font-semibold text-success">
+          <span className="glow-emerald rounded-full bg-success-soft px-2 py-0.5 text-[10px] font-semibold text-success">
             −{savings}%
           </span>
         )}
