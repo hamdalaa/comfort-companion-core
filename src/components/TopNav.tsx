@@ -301,6 +301,15 @@ export function TopNav() {
                 <span className="icon-secondary"><X className="h-4 w-4" /></span>
               </span>
             </button>
+
+            {/* Mobile theme toggle (visible <md, where the desktop toggle is hidden) */}
+            <button
+              onClick={toggleTheme}
+              className="ios-tap flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-[background-color,color] hover:bg-surface md:hidden"
+              aria-label={theme === "dark" ? "تبديل للوضع الفاتح" : "تبديل للوضع الداكن"}
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
           </div>
         </div>
 
