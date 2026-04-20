@@ -433,9 +433,9 @@ const ShopView = () => {
 
                 <div className="space-y-4 p-4 md:p-6">
                   {/* Rating summary */}
-                  <div className="flex items-stretch gap-4 rounded-2xl border border-border/60 bg-gradient-to-br from-background to-muted/30 p-4">
-                    <div className="flex flex-col items-center justify-center border-l border-border/60 pl-4 text-center">
-                      <div className="font-display text-4xl font-bold leading-none text-foreground">
+                  <div className="flex items-stretch gap-3 rounded-2xl border border-border/60 bg-gradient-to-br from-background to-muted/30 p-3 sm:gap-4 sm:p-4">
+                    <div className="flex flex-col items-center justify-center border-l border-border/60 pl-3 text-center sm:pl-4">
+                      <div className="font-display text-3xl font-bold leading-none text-foreground sm:text-4xl">
                         {googleRating.rating.toFixed(1)}
                       </div>
                       <StarRating rating={googleRating.rating} size="xs" className="mt-1.5" />
@@ -444,11 +444,11 @@ const ShopView = () => {
                       </div>
                     </div>
                     {googleRating.reviewSummary ? (
-                      <p className="flex-1 self-center text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                      <p className="flex-1 self-center text-[11px] leading-relaxed text-muted-foreground line-clamp-5 sm:text-sm sm:line-clamp-none">
                         {googleRating.reviewSummary}
                       </p>
                     ) : (
-                      <p className="flex-1 self-center text-xs leading-relaxed text-muted-foreground/70">
+                      <p className="flex-1 self-center text-[11px] leading-relaxed text-muted-foreground/70 sm:text-xs">
                         تقييمات الزبائن من Google Maps
                       </p>
                     )}
