@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Compass, MapPin, Tag, Building2 } from "lucide-react";
 
 const columns = [
   {
     title: "استكشاف",
+    icon: Compass,
     links: [
       { to: "/", label: "الرئيسية" },
       { to: "/results", label: "كل المنتجات" },
@@ -13,6 +14,7 @@ const columns = [
   },
   {
     title: "الشوارع",
+    icon: MapPin,
     links: [
       { to: "/sinaa", label: "شارع الصناعة" },
       { to: "/rubaie", label: "شارع الربيعي" },
@@ -21,12 +23,23 @@ const columns = [
     ],
   },
   {
-    title: "المنصة",
+    title: "الفئات",
+    icon: Tag,
     links: [
-      { to: "/dashboard", label: "لوحة الإدارة" },
       { to: "/results?category=Phones", label: "الهواتف" },
       { to: "/results?category=Chargers", label: "الشواحن" },
+      { to: "/results?category=Gaming", label: "الألعاب" },
+      { to: "/results?category=Cameras", label: "الكاميرات" },
+    ],
+  },
+  {
+    title: "المنصة",
+    icon: Building2,
+    links: [
+      { to: "/about", label: "عن حاير" },
+      { to: "/dashboard", label: "لوحة الإدارة" },
       { to: "/brand/apple", label: "Apple" },
+      { to: "/brand/samsung", label: "Samsung" },
     ],
   },
 ];
