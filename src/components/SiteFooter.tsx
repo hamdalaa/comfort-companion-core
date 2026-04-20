@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-import { ArrowUp, Compass, MapPin, Tag, Building2 } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 const columns = [
   {
     title: "استكشاف",
-    icon: Compass,
     links: [
       { to: "/", label: "الرئيسية" },
       { to: "/results", label: "كل المنتجات" },
@@ -14,7 +13,6 @@ const columns = [
   },
   {
     title: "الشوارع",
-    icon: MapPin,
     links: [
       { to: "/sinaa", label: "شارع الصناعة" },
       { to: "/rubaie", label: "شارع الربيعي" },
@@ -24,7 +22,6 @@ const columns = [
   },
   {
     title: "الفئات",
-    icon: Tag,
     links: [
       { to: "/results?category=Phones", label: "الهواتف" },
       { to: "/results?category=Chargers", label: "الشواحن" },
@@ -34,7 +31,6 @@ const columns = [
   },
   {
     title: "المنصة",
-    icon: Building2,
     links: [
       { to: "/about", label: "عن حاير" },
       { to: "/dashboard", label: "لوحة الإدارة" },
