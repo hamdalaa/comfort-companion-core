@@ -8,6 +8,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { useDataStore } from "@/lib/dataStore";
 import { useBrandDetailQuery } from "@/lib/catalogQueries";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
+import type { BrandDealer } from "@/lib/types";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import { useBrandLogo } from "@/hooks/useBrandLogo";
 import {

@@ -1,4 +1,4 @@
-import { useRef, useState, type ComponentType } from "react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -423,9 +423,9 @@ const ShopView = () => {
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex min-w-0 items-center gap-2.5">
-                              {r.author_photo_url ? (
+                              {r.authorPhotoUrl ? (
                                 <img
-                                  src={r.author_photo_url}
+                                  src={r.authorPhotoUrl}
                                   alt=""
                                   referrerPolicy="no-referrer"
                                   loading="lazy"
@@ -433,14 +433,14 @@ const ShopView = () => {
                                 />
                               ) : (
                                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">
-                                  {r.author_name?.[0] ?? "?"}
+                                  {r.authorName?.[0] ?? "?"}
                                 </div>
                               )}
                               <div className="min-w-0">
-                                <div className="truncate text-xs font-bold text-foreground sm:text-sm">{r.author_name}</div>
-                                {r.relative_publish_time && (
+                                <div className="truncate text-xs font-bold text-foreground sm:text-sm">{r.authorName}</div>
+                                {r.relativePublishTime && (
                                   <div className="text-[10px] text-muted-foreground/70">
-                                    {r.relative_publish_time}
+                                    {r.relativePublishTime}
                                   </div>
                                 )}
                               </div>

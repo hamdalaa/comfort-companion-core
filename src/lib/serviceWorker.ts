@@ -14,5 +14,5 @@ export function registerServiceWorkerOnIdle() {
     return;
   }
 
-  window.setTimeout(register, 2500);
+  (window as Window).setTimeout(register, 2500);
 }

@@ -21,8 +21,8 @@ function scheduleIdle(callback: () => void, timeout = 2500) {
     return () => window.cancelIdleCallback?.(handle);
   }
 
-  const handle = window.setTimeout(callback, timeout);
-  return () => window.clearTimeout(handle);
+  const handle = (window as Window).setTimeout(callback, timeout);
+  return () => (window as Window).clearTimeout(handle);
 }
 
 export function DeferredRootChrome() {
