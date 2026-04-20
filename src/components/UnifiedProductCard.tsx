@@ -186,10 +186,10 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
       </div>
 
       {/* ===== CTA — refined ghost-elevated, fills with primary on hover ===== */}
-      <div className="border-t border-border/50 bg-surface/30 px-3 py-2.5 sm:px-4 sm:py-3">
-        <span className="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-border/60 bg-card px-3.5 py-2.5 text-[12px] font-bold text-foreground shadow-soft-sm transition-all duration-300 group-hover:border-primary/40 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_8px_20px_-10px_hsl(var(--primary)/0.5)] sm:text-[13px]">
+      <div className="px-3 pb-3 pt-1 sm:px-4 sm:pb-4">
+        <span className="inline-flex items-center gap-1 text-[12px] font-medium text-primary opacity-0 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:opacity-100 sm:text-[13px]">
           <span>عرض التفاصيل</span>
-          <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" />
+          <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-x-1" />
         </span>
       </div>
     </Link>
