@@ -844,3 +844,125 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   Premium polish add-ons — scroll reveals, soft glows, animated
+   gradient borders, refined skeleton shimmer.
+   ============================================================ */
+@layer utilities {
+  /* Scroll-reveal pair — start hidden, reveal when visible */
+  .reveal-init {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+    transition:
+      opacity 0.7s var(--ease-out-expo),
+      transform 0.7s var(--ease-out-expo);
+    will-change: transform, opacity;
+  }
+  .reveal-on {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Soft glow — for primary accents (price, CTA, badges) */
+  .glow-primary {
+    box-shadow:
+      0 0 0 1px hsl(var(--primary) / 0.08),
+      0 6px 20px -8px hsl(var(--primary) / 0.35);
+  }
+  .glow-emerald {
+    box-shadow:
+      0 0 0 1px hsl(var(--accent-emerald) / 0.08),
+      0 6px 20px -8px hsl(var(--accent-emerald) / 0.35);
+  }
+
+  /* Animated gradient border — slow rotating conic for premium cards */
+  .border-gradient-anim {
+    position: relative;
+    isolation: isolate;
+  }
+  .border-gradient-anim::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from 0deg,
+      hsl(var(--primary) / 0.55),
+      hsl(var(--accent-violet) / 0.45),
+      hsl(var(--accent-cyan) / 0.45),
+      hsl(var(--primary) / 0.55)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: gradient-spin 6s linear infinite;
+    pointer-events: none;
+    opacity: 0.85;
+  }
+
+  @keyframes gradient-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Improved skeleton shimmer — subtler, premium */
+  .skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+    background: hsl(var(--muted));
+  }
+  .skeleton-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(0 0% 100% / 0.55),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: skeleton-sweep 1.6s var(--ease-out-expo) infinite;
+  }
+  @keyframes skeleton-sweep {
+    to { transform: translateX(100%); }
+  }
+
+  /* Active dot indicator — for rails / carousels */
+  .rail-dots {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .rail-dot {
+    height: 4px;
+    width: 14px;
+    border-radius: 999px;
+    background: hsl(var(--border));
+    transition: width 0.3s var(--ease-premium), background-color 0.3s var(--ease-premium);
+  }
+  .rail-dot[data-active="true"] {
+    width: 26px;
+    background: hsl(var(--primary));
+  }
+
+  /* Lift on hover — gentler than .hover-lift, for grids */
+  .lift-soft {
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 0.28s var(--ease-premium),
+      box-shadow 0.28s var(--ease-premium);
+  }
+  .lift-soft:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Glow pulse — for new/important badges */
+  .glow-pulse {
+    animation: pulse-glow 2.6s ease-in-out infinite;
+  }
+}
