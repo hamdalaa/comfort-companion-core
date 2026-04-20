@@ -24,16 +24,16 @@ interface Props {
 function Section({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border-b border-border py-4 last:border-b-0">
+    <div className="border-b border-border/40 py-5 last:border-b-0">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between text-start text-sm font-semibold text-foreground"
+        className="group flex w-full items-center justify-between text-start text-[13px] font-semibold uppercase tracking-wider text-foreground/80 transition-colors hover:text-foreground"
       >
         {title}
-        <ChevronDown className={cn("h-4 w-4 transition-transform", open && "rotate-180")} />
+        <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:text-foreground", open && "rotate-180")} />
       </button>
-      {open && <div className="mt-3 space-y-2">{children}</div>}
+      {open && <div className="mt-4 space-y-1 animate-fade-in">{children}</div>}
     </div>
   );
 }
@@ -53,27 +53,27 @@ function FacetList({
   const visible = showAll ? items : items.slice(0, max);
   if (!items.length) return <p className="text-xs text-muted-foreground">لا توجد خيارات</p>;
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-0.5">
       {visible.map((item) => (
         <label
           key={item.key}
-          className="flex cursor-pointer items-center justify-between rounded-lg px-2 py-1.5 transition-colors hover:bg-surface"
+          className="group/item flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 transition-colors duration-200 hover:bg-surface/60"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <Checkbox
               checked={selected.includes(item.key)}
               onCheckedChange={() => onToggle(item.key)}
             />
-            <span className="text-sm text-foreground">{item.label}</span>
+            <span className="text-[13px] font-medium text-foreground/85 transition-colors group-hover/item:text-foreground">{item.label}</span>
           </div>
-          <span className="text-xs text-muted-foreground">{formatCompact(item.count)}</span>
+          <span className="tabular-nums text-[11px] font-medium text-muted-foreground/70">{formatCompact(item.count)}</span>
         </label>
       ))}
       {items.length > max && (
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
-          className="text-xs font-medium text-primary hover:underline"
+          className="ms-2 mt-1 text-[12px] font-semibold text-primary transition-opacity hover:opacity-70"
         >
           {showAll ? "عرض أقل" : `+${items.length - max} المزيد`}
         </button>
@@ -96,12 +96,16 @@ function FilterBody({ facets, value, onChange, onReset }: Omit<Props, "className
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between pb-3">
-        <h3 className="text-base font-bold text-foreground">الفلاتر</h3>
-        <Button variant="ghost" size="sm" onClick={onReset} className="h-8 text-xs">
-          <X className="me-1 h-3 w-3" />
+      <div className="flex items-center justify-between pb-4">
+        <h3 className="text-[15px] font-bold tracking-tight text-foreground">الفلاتر</h3>
+        <button
+          type="button"
+          onClick={onReset}
+          className="inline-flex items-center gap-1 text-[12px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <X className="h-3 w-3" />
           مسح الكل
-        </Button>
+        </button>
       </div>
 
       <Section title="السعر (د.ع)">
@@ -112,41 +116,42 @@ function FilterBody({ facets, value, onChange, onReset }: Omit<Props, "className
           value={priceLocal}
           onValueChange={(v) => setPriceLocal(v as [number, number])}
           onValueCommit={(v) => onChange({ ...value, priceMin: v[0], priceMax: v[1] })}
-          className="mt-2"
+          className="mt-3"
         />
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>{formatIQD(priceLocal[0])}</span>
-          <span>{formatIQD(priceLocal[1])}</span>
+        <div className="mt-3 flex items-center justify-between gap-2">
+          <span className="rounded-md bg-surface/60 px-2 py-1 tabular-nums text-[11px] font-semibold text-foreground/80">{formatIQD(priceLocal[0])}</span>
+          <span className="h-px flex-1 bg-border/60" aria-hidden />
+          <span className="rounded-md bg-surface/60 px-2 py-1 tabular-nums text-[11px] font-semibold text-foreground/80">{formatIQD(priceLocal[1])}</span>
         </div>
       </Section>
 
       <Section title="التوفر والحالة">
-        <div className="flex items-center justify-between rounded-lg px-2 py-1.5">
-          <Label htmlFor="f-instock" className="text-sm">متوفر فقط</Label>
+        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
+          <Label htmlFor="f-instock" className="cursor-pointer text-[13px] font-medium text-foreground/85">متوفر فقط</Label>
           <Switch
             id="f-instock"
             checked={!!value.inStockOnly}
             onCheckedChange={(v) => onChange({ ...value, inStockOnly: v })}
           />
         </div>
-        <div className="flex items-center justify-between rounded-lg px-2 py-1.5">
-          <Label htmlFor="f-onsale" className="text-sm">عليه تخفيض</Label>
+        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
+          <Label htmlFor="f-onsale" className="cursor-pointer text-[13px] font-medium text-foreground/85">عليه تخفيض</Label>
           <Switch
             id="f-onsale"
             checked={!!value.onSaleOnly}
             onCheckedChange={(v) => onChange({ ...value, onSaleOnly: v })}
           />
         </div>
-        <div className="flex items-center justify-between rounded-lg px-2 py-1.5">
-          <Label htmlFor="f-verified" className="text-sm">محل موثّق</Label>
+        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
+          <Label htmlFor="f-verified" className="cursor-pointer text-[13px] font-medium text-foreground/85">محل موثّق</Label>
           <Switch
             id="f-verified"
             checked={!!value.verifiedOnly}
             onCheckedChange={(v) => onChange({ ...value, verifiedOnly: v })}
           />
         </div>
-        <div className="flex items-center justify-between rounded-lg px-2 py-1.5">
-          <Label htmlFor="f-official" className="text-sm">وكيل رسمي</Label>
+        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
+          <Label htmlFor="f-official" className="cursor-pointer text-[13px] font-medium text-foreground/85">وكيل رسمي</Label>
           <Switch
             id="f-official"
             checked={!!value.officialDealerOnly}
