@@ -74,6 +74,7 @@ export function TopNav() {
   const [selectedCity, setSelectedCity] = useState(() => loadSelectedCity());
   const { favorites, openTour } = useUserPrefs();
   const { products } = useDataStore();
+  const { theme, toggleTheme } = useTheme();
 
   const favItems = products.filter((product) => favorites.has(product.id));
 
@@ -265,6 +266,19 @@ export function TopNav() {
               aria-label="دليل الاستخدام"
             >
               <HelpCircle className="h-4 w-4" />
+            </button>
+
+            {/* Theme toggle — light/dark Sky Tech palette */}
+            <button
+              onClick={toggleTheme}
+              className="ios-tap relative hidden h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-[background-color,color] hover:bg-surface hover:text-foreground md:flex"
+              aria-label={theme === "dark" ? "تبديل للوضع الفاتح" : "تبديل للوضع الداكن"}
+              title={theme === "dark" ? "الوضع الفاتح" : "الوضع الداكن"}
+            >
+              <span className="icon-swap relative h-4 w-4" data-active={theme === "dark" ? "true" : "false"}>
+                <span className="icon-primary"><Sun className="h-4 w-4" /></span>
+                <span className="icon-secondary"><Moon className="h-4 w-4" /></span>
+              </span>
             </button>
 
 
