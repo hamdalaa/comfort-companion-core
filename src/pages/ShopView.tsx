@@ -632,11 +632,14 @@ const ShopView = () => {
 
         {/* ============ 10. SIMILAR STORES ============ */}
         {pageData?.similarStores && pageData.similarStores.length > 0 && (
-          <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
-            <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-bold">
-              <Store className="h-5 w-5 text-primary" /> محلات مشابهة
+          <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+            <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-bold tracking-tight">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Store className="h-4 w-4" />
+              </span>
+              محلات مشابهة
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
               {pageData.similarStores.map((s, i) => {
                 // Try to find the matching shop in our store
                 const target = shops.find((x) => x.slug === s.slug);
@@ -648,18 +651,18 @@ const ShopView = () => {
                   <Link
                     key={i}
                     to={href}
-                    className="group rounded-lg border border-border bg-background overflow-hidden hover:border-primary hover:shadow-md transition-all"
+                    className="group rounded-xl border border-border bg-background overflow-hidden transition-all duration-300 hover:border-primary/60 hover:shadow-soft-md hover:-translate-y-1"
                   >
                     <div className="aspect-square bg-muted overflow-hidden">
                       <img
                         src={optimizeImageUrl(img, { width: 300, height: 300 }) ?? img}
                         alt={s.name}
                         loading="lazy"
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
-                    <div className="p-2">
-                      <div className="line-clamp-2 text-[11px] font-bold leading-tight">{s.name}</div>
+                    <div className="p-2.5">
+                      <div className="line-clamp-2 text-[11px] font-bold leading-tight transition-colors group-hover:text-primary">{s.name}</div>
                       {s.hasWebsite && (
                         <div className="mt-1 inline-flex items-center gap-0.5 text-[10px] text-success">
                           <Globe className="h-2.5 w-2.5" /> موقع
