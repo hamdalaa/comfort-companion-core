@@ -22,15 +22,15 @@ export function CategoryCircles() {
   return (
     <>
       {/* Mobile */}
-      <div className="md:hidden -mx-3 px-3 overflow-x-auto">
+      <div className="md:hidden -mx-3 px-3 overflow-x-auto reveal-init reveal-on">
         <div className="flex gap-4 pb-2 w-max">
           {ALL_CATEGORIES.map((c) => (
             <Link
               key={c}
               to={`/results?category=${encodeURIComponent(c)}`}
-              className="group press flex w-[68px] flex-col items-center gap-2 text-center shrink-0"
+              className="group press ios-tap flex w-[68px] flex-col items-center gap-2 text-center shrink-0"
             >
-              <div className="relative h-[68px] w-[68px] overflow-hidden rounded-full ring-1 ring-border group-hover:ring-2 group-hover:ring-primary transition-all duration-500 ease-out shadow-soft group-hover:shadow-soft-lg">
+              <div className="relative h-[68px] w-[68px] overflow-hidden rounded-full ring-1 ring-border group-hover:ring-2 group-hover:ring-primary transition-all duration-500 ease-out shadow-soft group-hover:shadow-soft-lg group-hover:glow-primary">
                 <img
                   src={CATEGORY_REAL_IMAGES[c]}
                   alt={LABELS[c]}
@@ -47,14 +47,14 @@ export function CategoryCircles() {
       </div>
 
       {/* Desktop */}
-      <div className="hidden md:grid gap-4 grid-cols-6 lg:grid-cols-11">
+      <div className="hidden md:grid gap-4 grid-cols-6 lg:grid-cols-11 reveal-init reveal-on">
         {ALL_CATEGORIES.map((c) => (
           <Link
             key={c}
             to={`/results?category=${encodeURIComponent(c)}`}
-            className="group press flex flex-col items-center gap-2.5 text-center"
+            className="group press ios-tap flex flex-col items-center gap-2.5 text-center"
           >
-            <div className="relative h-16 w-16 lg:h-[88px] lg:w-[88px] overflow-hidden rounded-full ring-1 ring-border group-hover:ring-2 group-hover:ring-primary transition-all duration-500 ease-out shadow-soft group-hover:shadow-soft-lg">
+            <div className="relative h-16 w-16 lg:h-[88px] lg:w-[88px] overflow-hidden rounded-full ring-1 ring-border group-hover:ring-2 group-hover:ring-primary transition-all duration-500 ease-out shadow-soft group-hover:shadow-soft-lg group-hover:glow-primary">
               <img
                 src={CATEGORY_REAL_IMAGES[c]}
                 alt={LABELS[c]}

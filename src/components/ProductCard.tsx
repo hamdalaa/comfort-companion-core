@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { getFallbackProductImage, isRenderableProductImage } from "@/lib/productVisuals";
 import { decodeHtmlEntities } from "@/lib/textDisplay";
+import { trackRecentlyViewed } from "@/hooks/useRecentlyViewed";
 
 export function ProductCard({
   product,
@@ -64,7 +65,11 @@ export function ProductCard({
           inCompare && "ring-1 ring-primary/60",
         )}
       >
-        <Link to={`/shop-view/${product.shopId}`} className="img-frame relative block overflow-hidden rounded-2xl bg-surface-2">
+        <Link
+          to={`/shop-view/${product.shopId}`}
+          onClick={() => trackRecentlyViewed(product.id)}
+          className="img-frame relative block overflow-hidden rounded-2xl bg-surface-2"
+        >
           <img
             src={img}
             alt={productName}
@@ -172,7 +177,11 @@ export function ProductCard({
         </span>
       )}
 
-      <Link to={`/shop-view/${product.shopId}`} className="img-frame relative block aspect-[1/1.02] overflow-hidden bg-surface-2 sm:aspect-[1/1.06]">
+      <Link
+        to={`/shop-view/${product.shopId}`}
+        onClick={() => trackRecentlyViewed(product.id)}
+        className="img-frame relative block aspect-[1/1.02] overflow-hidden bg-surface-2 sm:aspect-[1/1.06]"
+      >
         <img
             src={img}
             alt={productName}
@@ -227,7 +236,11 @@ export function ProductCard({
 
       <div className="space-y-3 p-3.5 text-right sm:p-4">
         <div className="flex items-center justify-between gap-3">
-          <Link to={`/shop-view/${product.shopId}`} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground">
+          <Link
+            to={`/shop-view/${product.shopId}`}
+            onClick={() => trackRecentlyViewed(product.id)}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+          >
             <Store className="h-3.5 w-3.5 text-accent" />
             <span className="truncate">{shopName}</span>
           </Link>

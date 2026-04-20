@@ -13,6 +13,9 @@ const LazyCompareBar = lazy(() =>
 const LazySmoothScroll = lazy(() =>
   import("./SmoothScroll").then((module) => ({ default: module.SmoothScroll })),
 );
+const LazyRecentlyViewedStrip = lazy(() =>
+  import("./RecentlyViewedStrip").then((module) => ({ default: module.RecentlyViewedStrip })),
+);
 
 function scheduleIdle(callback: () => void, timeout = 2500) {
   if (typeof window === "undefined") return () => undefined;
@@ -80,6 +83,10 @@ export function DeferredRootChrome() {
           <LazyCompareBar />
         </Suspense>
       )}
+
+      <Suspense fallback={null}>
+        <LazyRecentlyViewedStrip />
+      </Suspense>
     </>
   );
 }
