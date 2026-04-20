@@ -42,19 +42,10 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-soft-sm ring-1 ring-transparent transition-[transform,border-color,box-shadow,ring-color] duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-soft-xl hover:ring-primary/10"
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-transform hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-20px_hsl(220_40%_20%/0.15),0_8px_16px_-12px_hsl(220_40%_20%/0.1)]"
     >
       {/* ===== Image area ===== */}
       <div className="relative aspect-[5/4] overflow-hidden bg-card">
-        {/* Subtle radial glow on hover */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, hsl(var(--primary) / 0.08) 0%, transparent 60%)",
-          }}
-        />
         <div className="relative z-[1] flex h-full items-center justify-center px-4 pb-4 pt-10 sm:px-5 sm:pb-5 sm:pt-11">
           <img
             src={displayImage}
@@ -68,7 +59,7 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
                 event.currentTarget.src = fallbackImage;
               }
             }}
-            className="relative z-[2] max-h-[90%] w-auto max-w-[92%] object-contain object-center drop-shadow-[0_8px_16px_rgba(15,23,42,0.08)] transition-transform duration-500 ease-out group-hover:scale-[1.06] sm:max-h-[92%] sm:max-w-[94%]"
+            className="relative z-[2] max-h-[90%] w-auto max-w-[92%] object-contain object-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.04] sm:max-h-[92%] sm:max-w-[94%]"
           />
         </div>
 
@@ -107,11 +98,11 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
       </div>
 
       {/* ===== Body ===== */}
-      <div className="flex flex-1 flex-col gap-2.5 border-t border-border/50 p-3 sm:gap-3 sm:p-4">
+      <div className="flex flex-1 flex-col gap-2.5 p-3 sm:gap-3 sm:p-4">
         {/* Brand + category — dot-separated */}
         <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground sm:text-[11px]">
           {product.brand && (
-            <span className="font-bold uppercase tracking-wider text-primary/90">{brand}</span>
+            <span className="font-bold uppercase tracking-wider text-foreground/70">{brand}</span>
           )}
           {product.brand && product.category && (
             <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" aria-hidden />
@@ -120,7 +111,7 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
         </div>
 
         {/* Title */}
-        <h3 className="line-clamp-2 min-h-[2.6em] text-balance text-[13px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:text-[15px]">
+        <h3 className="line-clamp-2 min-h-[2.6em] text-balance text-[13px] font-semibold leading-snug text-foreground sm:text-[15px]">
           {title}
         </h3>
 
