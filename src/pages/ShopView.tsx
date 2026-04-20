@@ -18,6 +18,7 @@ import { optimizeImageUrl } from "@/lib/imageUrl";
 import { CATEGORY_IMAGES } from "@/lib/categoryImages";
 import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import { StarRating } from "@/components/StarRating";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
 import type { Shop } from "@/lib/types";
 import {
