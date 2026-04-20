@@ -33,17 +33,17 @@ export function CompareBar() {
   return (
     <>
       {/* Sticky bottom bar — drawer-slide animation + glass */}
-      <div className="drawer-slide fixed inset-x-0 z-40 border-t border-border/80 bg-card/95 backdrop-blur-xl shadow-[0_-12px_40px_-12px_hsl(220_30%_20%/0.18)] bottom-[88px] lg:bottom-0">
+      <div className="drawer-slide fixed inset-x-0 z-40 border-t border-border bg-card/85 backdrop-blur-2xl shadow-soft-xl bottom-[88px] lg:bottom-0">
         <div className="container flex items-center gap-3 py-2.5">
-          <div className="inline-flex items-center gap-2 text-sm font-bold">
-            <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-violet text-primary-foreground shadow-soft-md">
+          <div className="inline-flex items-center gap-2 text-sm font-semibold">
+            <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-foreground text-background shadow-soft">
               <Scale className="h-4 w-4" />
               {items.length >= 2 && (
-                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-rose ring-2 ring-card animate-pulse" />
+                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-card animate-pulse" />
               )}
             </span>
             <span className="hidden sm:inline">سلة المقارنة</span>
-            <span className="rounded-full bg-gradient-primary px-2 py-0.5 text-[11px] text-primary-foreground shadow-soft">
+            <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground tabular-stable">
               {items.length}/4
             </span>
           </div>
@@ -86,7 +86,7 @@ export function CompareBar() {
               size="sm"
               onClick={() => setOpen(true)}
               disabled={items.length < 2}
-              className={`btn-ripple h-8 gap-1 bg-gradient-primary text-primary-foreground hover:opacity-95 shadow-glow ${items.length >= 2 ? "animate-pulse-glow" : ""}`}
+              className="ios-tap h-8 gap-1 bg-foreground text-background hover:bg-foreground/90 shadow-soft"
             >
               <Eye className="h-3.5 w-3.5" />
               قارن الآن

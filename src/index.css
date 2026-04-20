@@ -691,10 +691,10 @@
     transform: translateY(-1px);
   }
   .filter-pill[data-active="true"] {
-    background: var(--gradient-primary);
-    color: hsl(var(--primary-foreground));
-    border-color: transparent;
-    box-shadow: var(--shadow-glow);
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+    box-shadow: var(--shadow-sm);
   }
 
   /* Compare drawer slide-up */

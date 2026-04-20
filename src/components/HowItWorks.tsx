@@ -28,16 +28,21 @@ export function HowItWorks() {
 
       <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {steps.map((s, i) => (
-          <article key={s.title} className="rounded-xl border border-border bg-surface p-4 text-right transition-all hover:border-primary/30 hover:bg-primary-soft/40">
+          <article
+            key={s.title}
+            className="rounded-2xl border border-border bg-card p-5 text-right transition-all hover:border-foreground/15 hover:shadow-soft-md"
+          >
             <div className="flex items-center justify-between">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                <s.icon className="h-4 w-4" strokeWidth={2} />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-foreground">
+                <s.icon className="h-4 w-4" strokeWidth={1.75} />
               </div>
-              <div className="font-numeric text-xl font-semibold leading-none text-muted-foreground/40">
+              <div className="font-numeric text-2xl font-semibold leading-none tabular-stable text-muted-foreground/40">
                 0{i + 1}
               </div>
             </div>
-            <h3 className="mt-4 font-display text-base font-semibold text-foreground">{s.title}</h3>
+            <h3 className="mt-4 font-display text-base font-semibold tracking-tight text-foreground">
+              {s.title}
+            </h3>
             <p className="mt-1.5 text-xs leading-6 text-muted-foreground">{s.desc}</p>
           </article>
         ))}
