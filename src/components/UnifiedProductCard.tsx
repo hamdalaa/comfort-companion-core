@@ -46,7 +46,7 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
     >
       {/* ===== Image area ===== */}
       <div className="relative aspect-[5/4] overflow-hidden bg-card">
-        <div className="relative z-[1] flex h-full items-center justify-center px-4 pb-4 pt-10 sm:px-5 sm:pb-5 sm:pt-11">
+        <div className="relative z-[1] flex h-full items-center justify-center">
           <img
             src={displayImage}
             alt={title}
@@ -59,7 +59,7 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
                 event.currentTarget.src = fallbackImage;
               }
             }}
-            className="relative z-[2] max-h-[90%] w-auto max-w-[92%] object-contain object-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.04] sm:max-h-[92%] sm:max-w-[94%]"
+            className="relative z-[2] h-full w-full object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.04]"
           />
         </div>
 
