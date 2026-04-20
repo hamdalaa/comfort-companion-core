@@ -317,9 +317,9 @@ export default function UnifiedSearch() {
               onSubmit={(e) => { e.preventDefault(); commitSearch(query); }}
               className="relative z-40 mx-auto mt-6 max-w-2xl"
             >
-              <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-1.5 shadow-soft-xl transition-all focus-within:border-primary/50 focus-within:shadow-glow">
-                <div className="flex flex-1 items-center gap-2 rounded-xl bg-background/60 px-3">
-                  <Search className="h-4 w-4 text-muted-foreground" />
+              <div className="flex items-center gap-1 rounded-full border border-border bg-card p-1 shadow-soft-lg transition-all focus-within:border-primary/40 focus-within:shadow-soft-xl sm:gap-1.5 sm:p-1.5">
+                <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full px-4">
+                  <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <input
                     ref={inputRef}
                     value={query}
@@ -333,7 +333,7 @@ export default function UnifiedSearch() {
                     onBlur={() => setTimeout(() => setAcOpen(false), 150)}
                     onKeyDown={onInputKeyDown}
                     placeholder="iPhone 15، PlayStation، اسم محل…  (اضغط / للتركيز)"
-                    className="h-12 w-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground/70"
+                    className="h-11 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/60 sm:h-12 sm:text-base"
                     autoComplete="off"
                   />
                   {query && (
@@ -341,15 +341,19 @@ export default function UnifiedSearch() {
                       type="button"
                       onClick={clearQuery}
                       aria-label="مسح"
-                      className="rounded-full p-1 text-muted-foreground hover:bg-surface"
+                      className="shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
                     >
                       <X className="h-4 w-4" />
                     </button>
                   )}
                 </div>
-                <Button type="submit" className="h-12 rounded-xl bg-gradient-primary px-6 text-primary-foreground shadow-glow">
-                  ابحث
-                  <ArrowLeft className="ms-2 h-4 w-4" />
+                <Button
+                  type="submit"
+                  className="h-11 shrink-0 gap-1.5 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-none transition-all hover:bg-primary/90 hover:shadow-soft-md sm:h-12 sm:px-6"
+                >
+                  <Search className="h-4 w-4 sm:hidden" />
+                  <span>ابحث</span>
+                  <ArrowLeft className="hidden h-4 w-4 sm:block" />
                 </Button>
               </div>
 
