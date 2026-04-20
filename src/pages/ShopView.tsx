@@ -712,14 +712,14 @@ function SummaryTile({
     muted: "bg-muted text-muted-foreground",
   };
   return (
-    <div className="group rounded-2xl border border-border/60 bg-background/75 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <div className={cn("flex h-9 w-9 items-center justify-center rounded-2xl transition-transform group-hover:scale-110", tones[accent])}>
-          <Icon className="h-4 w-4" />
+    <div className="group rounded-2xl border border-border/60 bg-background/75 p-2.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md sm:p-3">
+      <div className="flex items-center gap-2 text-muted-foreground min-w-0">
+        <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110 sm:h-9 sm:w-9 sm:rounded-2xl", tones[accent])}>
+          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </div>
-        <div className="font-display text-xl font-bold text-foreground tracking-tight">{value}</div>
+        <div className="font-display text-base font-bold text-foreground tracking-tight truncate sm:text-xl">{value}</div>
       </div>
-      <div className="mt-2 text-[11px] leading-5 text-muted-foreground">{label}</div>
+      <div className="mt-1.5 text-[10px] leading-4 text-muted-foreground sm:mt-2 sm:text-[11px] sm:leading-5">{label}</div>
     </div>
   );
 }
