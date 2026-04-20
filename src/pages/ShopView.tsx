@@ -376,25 +376,32 @@ const ShopView = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* ============ 4. GALLERY ============ */}
             {gallery.length > 0 && (
-              <section className="rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
-                <h2 className="mb-3 inline-flex items-center gap-2 text-lg font-bold">
-                  <Camera className="h-5 w-5 text-primary" /> الصور
+              <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-6">
+                <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-bold tracking-tight">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Camera className="h-4 w-4" />
+                  </span>
+                  الصور
                   <span className="text-xs font-normal text-muted-foreground">({pageData?.photosCount ?? gallery.length})</span>
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                   {gallery.slice(0, 8).map((g, i) => (
                     <button
                       key={i}
                       onClick={() => setLightboxIdx(i)}
-                      className="group relative aspect-square overflow-hidden rounded-lg bg-muted ring-1 ring-border hover:ring-primary transition-all"
+                      className="group relative aspect-square overflow-hidden rounded-xl bg-muted ring-1 ring-border transition-all duration-300 hover:ring-2 hover:ring-primary hover:shadow-soft-md hover:-translate-y-0.5"
                     >
                       <img
                         src={optimizeImageUrl(g, { width: 400, height: 400 }) ?? g}
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <div className="absolute bottom-2 right-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-foreground opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
+                        <ImageIcon className="h-3.5 w-3.5" />
+                      </div>
                     </button>
                   ))}
                 </div>
