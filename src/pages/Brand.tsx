@@ -11,6 +11,8 @@ import { OFFICIAL_DEALER_BRANCHES } from "@/lib/officialDealers";
 import type { BrandDealer } from "@/lib/types";
 import { getBrandBackground } from "@/lib/brandBackgrounds";
 import { useBrandLogo } from "@/hooks/useBrandLogo";
+import { BrandPageSkeleton } from "@/components/skeletons/PageSkeletons";
+import { BackendErrorState } from "@/components/BackendErrorState";
 import {
   ChevronLeft,
   ExternalLink,
@@ -35,16 +37,17 @@ const Brand = () => {
   const logoSrc = useBrandLogo(brand?.slug, brand?.brandName, "default");
 
   if (brandDetailQuery.isLoading && !brand) {
+    return <BrandPageSkeleton />;
+  }
+
+  if (!brand && brandDetailQuery.isError) {
     return (
-      <div className="min-h-screen flex flex-col bg-muted/30">
-        <TopNav />
-        <main className="flex-1 container py-12">
-          <div className="rounded-3xl border border-border/70 bg-card/88 p-8 text-center shadow-soft-lg">
-            <p className="text-sm text-muted-foreground">جاري تحميل صفحة البراند…</p>
-          </div>
-        </main>
-        <SiteFooter />
-      </div>
+      <BackendErrorState
+        title="تعذّر تحميل صفحة البراند"
+        description="ما گدرنا نوصل لبيانات البراند من السيرفر. جرّب إعادة المحاولة أو شوف باقي البراندات."
+        error={brandDetailQuery.error as Error | null}
+        onRetry={() => brandDetailQuery.refetch()}
+      />
     );
   }
 

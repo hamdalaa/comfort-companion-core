@@ -30,6 +30,8 @@ import { formatIQD, type UnifiedOffer } from "@/lib/unifiedSearch";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { getFallbackProductImage, isRenderableProductImage } from "@/lib/productVisuals";
 import { decodeHtmlEntities } from "@/lib/textDisplay";
+import { ProductDetailSkeleton } from "@/components/skeletons/PageSkeletons";
+import { BackendErrorState } from "@/components/BackendErrorState";
 
 const arabicNumber = new Intl.NumberFormat("ar");
 const formatCount = (value: number) => arabicNumber.format(value);
@@ -75,23 +77,20 @@ export default function ProductDetail() {
   }, [product]);
 
   if (loading) {
+    return <ProductDetailSkeleton />;
+  }
+
+  if (!product && (productQuery.isError || offersQuery.isError)) {
     return (
-      <div className="min-h-screen atlas-shell">
-        <TopNav />
-        <div className="container space-y-6 py-8">
-          <Skeleton className="h-6 w-48 rounded-full" />
-          <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
-            <div className="space-y-4">
-              <Skeleton className="h-5 w-24 rounded-full" />
-              <Skeleton className="h-16 w-full rounded-3xl" />
-              <Skeleton className="h-24 w-full rounded-3xl" />
-              <Skeleton className="h-44 w-full rounded-3xl" />
-            </div>
-            <Skeleton className="aspect-[5/4] w-full rounded-3xl" />
-          </div>
-          <Skeleton className="h-80 w-full rounded-3xl" />
-        </div>
-      </div>
+      <BackendErrorState
+        title="تعذّر تحميل تفاصيل المنتج"
+        description="ما گدرنا نوصل لمعلومات هذا المنتج من السيرفر. جرّب إعادة المحاولة أو ارجع للبحث."
+        error={(productQuery.error ?? offersQuery.error) as Error | null}
+        onRetry={() => {
+          productQuery.refetch();
+          offersQuery.refetch();
+        }}
+      />
     );
   }
 
