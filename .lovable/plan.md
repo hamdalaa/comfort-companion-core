@@ -1,117 +1,104 @@
 
 
-# إعادة بناء واجهة الموقع — Clean • Premium • Apple-inspired UX
+# خطة تطوير الـUI الحالي — مودرن، تفاعلي، ومرتّب
 
-## الهدف
-إعادة تصميم كامل للواجهة (UI/UX فقط) بأسلوب Apple — هادئ، فخم، منظّم، ومرتّب — مع **عدم المساس بأي منطق باكند، API، repositories، routes، أو data layer**.
-
----
-
-## مبادئ التصميم الجديد
-
-1. **Whitespace أولاً** — مسافات سخية، لا ازدحام، تنفّس بين العناصر.
-2. **Typography كبطل بصري** — هرمية واضحة جداً (تباين أحجام كبير بين العناوين والنص).
-3. **لون محدود ومنضبط** — خلفية ناعمة (off-white)، حبر داكن، لون تمييز واحد فقط (Brass/Amber دافئ)، رمادي للنصوص الثانوية.
-4. **Glass + Soft Shadows** — بطاقات بظلال ناعمة جداً، بدون حدود قوية، blur خفيف عند الـ overlays.
-5. **حركات Apple-like** — easing هادئ (`cubic-bezier(0.32, 0.72, 0, 1)`)، مدد 300–500ms، fade + subtle scale، لا bounces مزعجة.
-6. **صور كبطل** — منتجات/محلات بصور كبيرة، نسب ثابتة، object-cover، corners ناعمة (rounded-2xl/3xl).
-7. **RTL محكم** — كل alignment ومسافات مراجعة للعربي.
-8. **موبايل أولاً** — كل breakpoint مدروس بعناية.
+نخلي التصميم الحالي كأساس، ونضيف عليه طبقات Polish + تفاعلية + مميزات صغيرة ذكية. بدون كسر هوية الموقع أو تغيير الألوان الأساسية.
 
 ---
 
-## نظام التصميم (Design Tokens)
+## 🎨 المرحلة 1: Polish بصري (Design System)
 
-تحديث `src/index.css` و `tailwind.config.ts`:
+**الهدف**: نعطي الموقع إحساس "premium" بدون تغيير الهوية.
 
-| Token | القيمة |
-|---|---|
-| `--background` | `#FAFAF7` (paper warm white) |
-| `--foreground` | `#0A0A0A` (deep ink) |
-| `--muted` | `#F2F2EE` |
-| `--muted-foreground` | `#6B6B66` |
-| `--border` | `rgba(10,10,10,0.08)` |
-| `--accent` | `#B8763E` (warm brass) |
-| `--card` | `#FFFFFF` |
-| Radius scale | 12 / 20 / 28 px |
-| Shadow scale | `0 1px 2px rgba(0,0,0,.04)`, `0 8px 24px rgba(0,0,0,.06)`, `0 24px 64px rgba(0,0,0,.08)` |
-| Font display | SF Pro Display (system) → fallback Inter |
-| Font Arabic | IBM Plex Arabic / Noto Kufi Arabic |
-| Easing | `cubic-bezier(0.32, 0.72, 0, 1)` |
+- **Typography hierarchy محسّن**: عناوين أكبر مع `letter-spacing` أدق، نصوص ثانوية أهدأ بـ`leading` أوسع
+- **Spacing rhythm**: مسافات أكثر تنفساً بين الأقسام (`mt-32` بدل `mt-20` على الديسكتوب)
+- **Gradient borders ناعمة** على البطاقات المميزة (Brand cards, Featured shops)
+- **Glow effects خفيفة** على الأسعار، الأزرار الرئيسية، والـbadges المهمة
+- **Shadows متدرّجة**: نظام `shadow-soft` → `shadow-soft-md` → `shadow-soft-xl` مطبّق بانسجام
+- **Rounded corners موحّدة**: 16px للبطاقات، 24px للحاويات الكبيرة، 999px للـpills
 
----
+## ⚡ المرحلة 2: Micro-interactions & Animations
 
-## المراحل (Phases)
+**الهدف**: كل عنصر يحس "حي" عند التفاعل.
 
-### Phase 1 — Foundation (نظام التصميم)
-- إعادة كتابة `src/index.css`: tokens, base typography, scrollbar, selection, focus rings
-- تحديث `tailwind.config.ts`: shadows, radii, fonts, easings, animations
-- تحديث `src/components/ui/button.tsx`, `card.tsx`, `input.tsx`, `badge.tsx` بالأسلوب الجديد (Apple-style: minimal borders, soft shadows, refined hover states)
+- **Press feedback**: زر/بطاقة ينضغط بسلاسة (`scale-[0.98]`) عند الضغط
+- **Hover lift**: البطاقات ترتفع 2px مع shadow أعمق عند المرور
+- **Scroll-triggered reveals**: الأقسام تظهر تدريجياً مع `IntersectionObserver` (fade + slide-up خفيف)
+- **Parallax خفيف** على صور الـHero والـbanners (محدود حتى لا يشوّش)
+- **Skeleton shimmer**: استبدال الـpulse الحالي بـshimmer effect أنعم
+- **Number count-up** للمؤشرات في `MetricsStrip` (موجود `CountUp` — نفعّله)
+- **Smooth scroll** بين أقسام الصفحة الواحدة
+- **Icon nudges**: السهم في "عرض الكل" يتحرك يميناً عند hover (موجود جزئياً — نوسّعه)
 
-### Phase 2 — Navigation & Chrome
-- إعادة بناء `TopNav.tsx`: شريط رفيع، شفاف مع blur عند scroll، شعار يسار، روابط مركزية، بحث + أيقونات يمين
-- إعادة بناء `BottomTabBar.tsx` (موبايل): glass-morphism floating bar
-- تحديث `SiteFooter.tsx`: minimal، 3 أعمدة، نص رمادي ناعم
-- `BreadcrumbBar` جديد بسيط
+## ✨ المرحلة 3: مميزات تفاعلية جديدة
 
-### Phase 3 — Home (`Index.tsx` + الأقسام)
-- **HeroBanner / HeroSearch** جديد: عنوان ضخم (60–80px display)، sub-copy مهدّب، حقل بحث كبير وسطي بـ glass
-- **CategoryCircles / CategoryGrid**: بطاقات أكبر، صور تملأ، تسميات تحت
-- **ProductRail / ShopCarousel**: scroll أفقي ناعم، بطاقات بمسافات أكبر
-- **MetricsStrip**: أرقام كبيرة مع labels صغيرة (Apple keynote style)
-- **HowItWorks**: 3 خطوات بأيقونات outline ناعمة
-- **BrandShowcase**: شبكة شعارات على خلفية بيضاء نقية
+**الهدف**: نضيف قيمة وظيفية بدون تعقيد الـUI.
 
-### Phase 4 — بطاقات المنتج والمحل
-- `ProductCard.tsx` و `UnifiedProductCard.tsx`: تصميم جديد — صورة مربعة كبيرة، عنوان أسفلها، سعر بارز، actions تظهر بـ hover ناعم، badge أفضل سعر minimal
-- `ShopCard.tsx` / `CityShopCard.tsx` / `ShopResultCard.tsx`: layout مرتّب، صورة + اسم + verification + rating + مسافة، CTA واحد واضح
-- `PriceBlock.tsx`: tabular numerals، تباين قوي للسعر الحالي، شطب ناعم للأصلي
-- `StarRating.tsx`: نجوم أنحف وألطف
+- **Quick View modal** على بطاقة المنتج: أيقونة 👁️ تفتح dialog سريع بصور + سعر + زر "فتح الصفحة" بدون مغادرة المكان
+- **Sticky filters ذكية**: في `/search` و`/results`، الفلاتر تختفي عند النزول وترجع عند الصعود (scroll direction detect)
+- **Recently viewed strip**: شريط أسفل الصفحات يعرض آخر 6 منتجات شفتها (محفوظة في `localStorage`)
+- **Compare bar محسّن**: bar سفلي ثابت يظهر عند اختيار منتجين+، مع زر "قارن الآن"
+- **Keyboard shortcuts**: `⌘K` / `Ctrl+K` يفتح `CommandPalette` (موجود — نربطه)، `/` للتركيز على البحث، `Esc` للإغلاق
+- **Hover preview على بطاقات المحلات**: tooltip سريع يعرض ساعات العمل + عدد المنتجات + رابط الخريطة
+- **Wishlist ❤️**: زر قلب على بطاقة المنتج، محفوظ في `localStorage`، صفحة `/wishlist` بسيطة
 
-### Phase 5 — صفحات الـ Listing
-- `Results.tsx` / `UnifiedSearch.tsx`: sidebar فلاتر يمين (RTL)، grid منتجات، sticky toolbar، empty state أنيق
-- `Brands.tsx` / `Brand.tsx`: hero للبراند، grid وكلاء
-- `IraqCities.tsx` / `CityPage.tsx`: hero للمدينة، أقسام محلات
-- `StreetPage.tsx`: تصميم محرر-magazine
-- `UnifiedSearchFilters.tsx` / `ShopFilters.tsx` / `QuickFilterPills.tsx`: pills نظيفة، حالات active واضحة
+## 📐 المرحلة 4: تحسينات Layout & UX
 
-### Phase 6 — صفحات التفاصيل
-- `ProductDetail.tsx`: gallery يسار/أعلى، تفاصيل يمين، sticky CTA، sections منظّمة
-- `ShopView.tsx` / `CityShopView.tsx`: hero بصورة المحل، tabs (منتجات/تقييمات/معلومات)، بطاقات مراجعات، خريطة مدمجة
-- `About.tsx` / `Dashboard.tsx`: editorial layout
+**الهدف**: الموقع يحس "مرتّب" أكثر.
 
-### Phase 7 — Overlays & Micro-interactions
-- `CommandPalette.tsx`: Spotlight-style، blur backdrop قوي، قائمة نتائج أنيقة
-- `LightboxViewer.tsx`: full-screen أسود مع تحكم minimal
-- `CompareBar.tsx`: floating bar بـ glass
-- `WelcomeTour.tsx`: cards منعشة
-- Skeletons: shimmer ناعم بدل النبض الحاد
-- Toast/Sonner: تحديث الأسلوب
-- Page transitions: fade + 4px translate
+- **TopNav محسّن**: blur background عند scroll، إخفاء جزئي عند النزول
+- **HeroBanner**: تحسين البحث الرئيسي مع suggestions تظهر فورياً تحت الـinput
+- **CategoryCircles**: استبدال بـbento grid mini على الديسكتوب (3×2 بدل circles فقط)
+- **ProductRail**: أسهم scroll أوضح + dots indicator + snap scrolling أنعم
+- **BottomTabBar (موبايل)**: تأثير "active pill" متحرّك بين التابات
+- **SiteFooter**: إعادة ترتيب لـ4 أعمدة منظّمة مع روابط أوضح
+- **Empty states**: تصاميم أحلى للنتائج الفارغة (illustration + CTA)
+
+## 🚀 المرحلة 5: Performance & Polish نهائي
+
+- **Image optimization**: تطبيق `loading="lazy"` + `decoding="async"` على كل الصور (جزئي حالياً)
+- **Reduced motion**: احترام `prefers-reduced-motion` في كل الأنيميشنات
+- **Focus states محسّنة**: ring واضح ومتسق لكل العناصر التفاعلية (keyboard accessibility)
+- **Toast notifications محسّنة**: تصميم أنعم مع icons ملوّنة حسب النوع
 
 ---
 
-## ما لن يتغيّر (مضمون)
+## 📋 الملفات المتأثّرة (تقريباً)
 
-- ❌ مجلد `backend/` بالكامل
-- ❌ `src/lib/api.ts`, `catalogApi.ts`, `catalogQueries.ts`, `dataStore.tsx`, `shopsRepository.ts`, `unifiedSearch.ts`, `search.ts`, `routeLoaders.ts`, `routePrefetch.ts`
-- ❌ `src/lib/types.ts` (شكل البيانات)
-- ❌ `src/App.tsx` routes (المسارات نفسها)
-- ❌ React Query keys / fetching logic
-- ❌ Service worker و caching
-- ❌ Tests الموجودة
-
-التغيير حصراً في: components UI، pages markup/layout، CSS/Tailwind tokens، animations.
+```text
+src/index.css              → keyframes + utility classes جديدة (shimmer, lift, glow)
+tailwind.config.ts         → animations + shadows جديدة
+src/components/ui/skeleton.tsx → shimmer effect
+src/components/TopNav.tsx  → blur on scroll + hide on scroll down
+src/components/HeroBanner.tsx → search suggestions inline
+src/components/ProductCard.tsx → Quick View + Wishlist buttons + hover lift
+src/components/UnifiedProductCard.tsx → نفس التحسينات
+src/components/ShopCard.tsx → hover preview tooltip
+src/components/ProductRail.tsx → scroll arrows + dots + snap
+src/components/BottomTabBar.tsx → animated active pill
+src/components/SiteFooter.tsx → 4-col layout
+src/components/CategoryCircles.tsx → bento variant للديسكتوب
+src/components/CommandPalette.tsx → ⌘K binding
+src/components/MetricsStrip.tsx → تفعيل CountUp
+src/components/CompareBar.tsx → sticky bottom bar محسّن
+src/components/EmptyState.tsx → illustrations + CTA
+src/hooks/useScrollDirection.ts (جديد) → لـsticky filters و TopNav
+src/hooks/useScrollReveal.ts (جديد) → IntersectionObserver wrapper
+src/hooks/useRecentlyViewed.ts (جديد) → localStorage
+src/hooks/useWishlist.ts (جديد) → localStorage
+src/components/QuickViewDialog.tsx (جديد)
+src/components/RecentlyViewedStrip.tsx (جديد)
+src/pages/Wishlist.tsx (جديد) + route في App.tsx
+```
 
 ---
 
-## ملاحظة مهمّة
-يوجد حالياً **20 خطأ TypeScript** بالبناء (مذكورة سابقاً). هذي الأخطاء غير متعلّقة بإعادة التصميم لكن لازم نصلّحها بنفس المرحلة الأولى حتى المشروع يكمبايل ويعرض التصميم الجديد. سأصلّحها كأول خطوة في Phase 1 (إصلاحات سطحية: imports ناقصة، types، lib references).
+## ⏱️ ترتيب التنفيذ المقترح
 
----
+1. **المرحلة 1 + 2** (Polish + Micro-interactions) — أساس بصري قوي، تأثير فوري
+2. **المرحلة 4** (Layout & UX) — ترتيب وتحسين المكوّنات الموجودة
+3. **المرحلة 3** (مميزات جديدة) — Quick View, Wishlist, Recently Viewed, ⌘K
+4. **المرحلة 5** (Performance & A11y) — لمسات نهائية
 
-## التنفيذ
-سأنفّذ المراحل بالترتيب أعلاه على دفعات. كل phase = دفعة تعديلات. بعد كل phase تقدر تختبر وتعطي ملاحظات قبل ما أكمل للي بعدها.
-
-**نقطة البداية بعد الموافقة:** Phase 1 (Foundation + إصلاح أخطاء البناء).
+ممكن نسوي الكل دفعة واحدة، أو نقسّمها على مراحل ونشوف النتيجة بين كل مرحلة.
 
