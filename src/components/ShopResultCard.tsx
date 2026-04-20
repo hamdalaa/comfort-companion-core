@@ -175,10 +175,10 @@ export const ShopResultCard = memo(function ShopResultCard({
           {/* CTA — Apple-style ghost text link, fills opacity on hover */}
           <Link
             to={`/shop-view/${shop.id}`}
-            className="ms-auto inline-flex items-center gap-1 text-[12px] font-medium text-primary opacity-70 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:opacity-100 sm:text-[13px]"
+            className="ms-auto inline-flex items-center gap-1 text-[12px] font-medium text-primary opacity-70 transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:opacity-100 sm:text-[13px]"
           >
             <span>فتح المحل</span>
-            <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-x-1" />
+            <ArrowLeft className="h-3.5 w-3.5 -translate-x-0.5 scale-90 opacity-0 blur-[2px] transition-[transform,opacity,filter] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100 group-hover:blur-0" />
           </Link>
         </div>
       </div>
