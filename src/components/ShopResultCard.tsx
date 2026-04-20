@@ -36,9 +36,11 @@ const CAT_LABELS: Partial<Record<Category, string>> = {
 export const ShopResultCard = memo(function ShopResultCard({
   shop,
   previewImageUrl,
+  index = 0,
 }: {
   shop: Shop;
   previewImageUrl?: string;
+  index?: number;
 }) {
   const categories = shop.categories?.length ? shop.categories : [shop.category];
   const fallback = CATEGORY_IMAGES[categories[0]];
@@ -50,11 +52,14 @@ export const ShopResultCard = memo(function ShopResultCard({
   const location = shop.address ?? shop.area;
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-transform hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-20px_hsl(220_40%_20%/0.15),0_8px_16px_-12px_hsl(220_40%_20%/0.1)]">
+    <article
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card animate-enter shadow-[0_0_0_1px_hsl(var(--foreground)/0.05),0_1px_2px_-1px_hsl(var(--foreground)/0.06),0_2px_4px_0_hsl(var(--foreground)/0.04)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-transform hover:-translate-y-1.5 hover:shadow-[0_0_0_1px_hsl(var(--foreground)/0.08),0_20px_40px_-20px_hsl(var(--foreground)/0.18),0_8px_16px_-12px_hsl(var(--foreground)/0.12)]"
+      style={{ ["--stagger" as never]: Math.min(index, 12) }}
+    >
       {/* ===== Image area ===== */}
       <Link
         to={`/shop-view/${shop.id}`}
-        className="relative block aspect-[4/3] overflow-hidden bg-surface"
+        className="img-outline relative block aspect-[4/3] overflow-hidden bg-surface"
       >
         <img
           src={img}
@@ -170,10 +175,10 @@ export const ShopResultCard = memo(function ShopResultCard({
           {/* CTA — Apple-style ghost text link, fills opacity on hover */}
           <Link
             to={`/shop-view/${shop.id}`}
-            className="ms-auto inline-flex items-center gap-1 text-[12px] font-medium text-primary opacity-70 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:opacity-100 sm:text-[13px]"
+            className="ms-auto inline-flex items-center gap-1 text-[12px] font-medium text-primary opacity-70 transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:opacity-100 sm:text-[13px]"
           >
             <span>فتح المحل</span>
-            <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-x-1" />
+            <ArrowLeft className="h-3.5 w-3.5 -translate-x-0.5 scale-90 opacity-0 blur-[2px] transition-[transform,opacity,filter] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100 group-hover:blur-0" />
           </Link>
         </div>
       </div>

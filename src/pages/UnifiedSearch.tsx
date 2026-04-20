@@ -759,8 +759,8 @@ const ShopsView = memo(function ShopsView({
           />
         ) : (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 2xl:grid-cols-4">
-            {shopResult.shops.map((s) => (
-              <ShopResultCard key={s.id} shop={s} previewImageUrl={getShopImage(s)} />
+            {shopResult.shops.map((s, i) => (
+              <ShopResultCard key={s.id} shop={s} previewImageUrl={getShopImage(s)} index={i} />
             ))}
           </div>
         )}
