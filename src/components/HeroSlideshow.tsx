@@ -51,58 +51,69 @@ export function HeroSlideshow() {
     return () => window.clearInterval(id);
   }, []);
 
+  const slide = SLIDES[active];
+
   return (
     <div className="relative mx-auto mt-8 w-full max-w-5xl sm:mt-12">
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border/60 bg-card shadow-soft-xl sm:aspect-[21/9]">
-        {SLIDES.map((slide, i) => (
-          <Link
-            key={slide.to}
-            to={slide.to}
-            aria-hidden={i !== active}
-            tabIndex={i !== active ? -1 : 0}
-            className={`group absolute inset-0 transition-opacity duration-700 ease-out ${
-              i === active ? "opacity-100" : "pointer-events-none opacity-0"
-            }`}
-          >
-            <img
-              src={slide.img}
-              alt={slide.title}
-              loading={i === 0 ? "eager" : "lazy"}
-              decoding="async"
-              className={`h-full w-full object-cover transition-transform duration-[8000ms] ease-out ${
-                i === active ? "scale-105" : "scale-100"
-              }`}
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-foreground/85 via-foreground/40 to-transparent" />
+      <Link
+        to={slide.to}
+        className="group block overflow-hidden rounded-3xl border border-border/60 bg-card shadow-soft-lg transition-[transform,box-shadow,border-color] duration-500 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-soft-xl"
+        aria-label={slide.title}
+      >
+        <div className="grid items-stretch gap-0 sm:grid-cols-[1fr_1.1fr]">
+          {/* Content */}
+          <div className="order-2 flex flex-col justify-center px-6 py-8 text-right sm:order-1 sm:px-10 sm:py-12 md:px-12">
+            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border/60 bg-surface px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground self-end">
+              {slide.kicker}
+            </span>
 
-            <div className="absolute inset-0 flex items-center">
-              <div className="container">
-                <div className="max-w-md text-right text-white sm:max-w-lg md:max-w-xl">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] backdrop-blur-md">
-                    {slide.kicker}
-                  </span>
-                  <h3 className="font-display mt-3 text-balance text-2xl font-semibold leading-tight tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:mt-4 sm:text-4xl md:text-5xl">
-                    {slide.title}
-                  </h3>
-                  <p className="mt-2 text-pretty text-xs leading-6 text-white/90 sm:mt-3 sm:text-sm sm:leading-7 md:text-base">
-                    {slide.subtitle}
-                  </p>
-                  <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-soft-lg transition-transform duration-300 group-hover:scale-105 sm:mt-5 sm:px-5 sm:py-2.5 sm:text-sm">
-                    <span>{slide.cta}</span>
-                    <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" />
-                  </div>
-                </div>
-              </div>
+            <h3
+              key={`title-${active}`}
+              className="font-display mt-4 text-balance text-2xl font-semibold leading-tight tracking-tight text-foreground animate-fade-in-up sm:mt-5 sm:text-3xl md:text-4xl"
+            >
+              {slide.title}
+            </h3>
+
+            <p
+              key={`sub-${active}`}
+              className="mt-3 text-pretty text-sm leading-7 text-muted-foreground animate-fade-in-up sm:mt-4 sm:text-base sm:leading-8"
+              style={{ animationDelay: "60ms", animationFillMode: "backwards" }}
+            >
+              {slide.subtitle}
+            </p>
+
+            <div className="mt-6 flex items-center justify-end gap-3 sm:mt-8">
+              <span className="link-underline inline-flex items-center text-sm font-semibold text-primary">
+                {slide.cta}
+              </span>
+              <ArrowLeft className="h-4 w-4 text-primary transition-transform duration-300 group-hover:-translate-x-1" />
             </div>
-          </Link>
-        ))}
-      </div>
+          </div>
+
+          {/* Image */}
+          <div className="relative order-1 aspect-[16/10] overflow-hidden bg-muted sm:order-2 sm:aspect-auto">
+            {SLIDES.map((s, i) => (
+              <img
+                key={s.to}
+                src={s.img}
+                alt={s.title}
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out ${
+                  i === active ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+            <div aria-hidden className="absolute inset-y-0 right-0 hidden w-24 bg-gradient-to-l from-card to-transparent sm:block" />
+          </div>
+        </div>
+      </Link>
 
       {/* Dots */}
-      <div className="mt-3 flex items-center justify-center gap-2 sm:mt-4">
-        {SLIDES.map((slide, i) => (
+      <div className="mt-5 flex items-center justify-center gap-2">
+        {SLIDES.map((s, i) => (
           <button
-            key={slide.to}
+            key={s.to}
             type="button"
             aria-label={`عرض الشريحة ${i + 1}`}
             onClick={() => setActive(i)}
