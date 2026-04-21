@@ -1076,6 +1076,22 @@
     to { transform: translateX(100%); }
   }
 
+  /* Floating gradient blob keyframes — slow, organic drift for hero backgrounds */
+  @keyframes blob-drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    33%      { transform: translate3d(40px, -30px, 0) scale(1.08); }
+    66%      { transform: translate3d(-25px, 25px, 0) scale(0.95); }
+  }
+  @keyframes blob-drift-2 {
+    0%, 100% { transform: translate3d(-50%, 0, 0) scale(1); }
+    50%      { transform: translate3d(-50%, 30px, 0) scale(1.1); }
+  }
+  @keyframes blob-drift-3 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    33%      { transform: translate3d(-35px, -20px, 0) scale(1.06); }
+    66%      { transform: translate3d(20px, 30px, 0) scale(0.94); }
+  }
+
   /* Active dot indicator — for rails / carousels */
   .rail-dots {
     display: inline-flex;
