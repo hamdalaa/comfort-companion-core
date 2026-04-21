@@ -19,28 +19,29 @@ export function HeroBanner() {
 
   return (
     <section className="relative isolate bg-background">
-      {/* Modern clean backdrop — soft mesh + minimal grid */}
+      {/* Refined backdrop — layered aurora + ultra-fine dot grid */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        {/* Two soft, well-placed glows — calm, not busy */}
-        <div className="absolute -top-48 right-[-10%] h-[620px] w-[620px] rounded-full bg-primary/15 blur-[160px]" />
-        <div className="absolute top-40 left-[-12%] h-[520px] w-[520px] rounded-full bg-violet/12 blur-[170px]" />
+        {/* Aurora glows — three points of color, soft and intentional */}
+        <div className="absolute -top-56 right-[-8%] h-[680px] w-[680px] rounded-full bg-primary/20 blur-[180px]" />
+        <div className="absolute top-32 left-[-14%] h-[560px] w-[560px] rounded-full bg-violet/15 blur-[180px]" />
+        <div className="absolute top-[28rem] left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-cyan/10 blur-[160px]" />
 
-        {/* Crisp minimal grid — fades into center */}
+        {/* Ultra-fine dot grid — premium, subtle */}
         <div
-          className="absolute inset-0 opacity-[0.5]"
+          className="absolute inset-0 opacity-[0.55]"
           style={{
             backgroundImage:
-              "linear-gradient(to right, hsl(var(--border) / 0.6) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border) / 0.6) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
+              "radial-gradient(hsl(var(--foreground) / 0.09) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
             maskImage:
-              "radial-gradient(ellipse 80% 70% at 50% 30%, black 30%, transparent 75%)",
+              "radial-gradient(ellipse 75% 65% at 50% 30%, black 35%, transparent 80%)",
             WebkitMaskImage:
-              "radial-gradient(ellipse 80% 70% at 50% 30%, black 30%, transparent 75%)",
+              "radial-gradient(ellipse 75% 65% at 50% 30%, black 35%, transparent 80%)",
           }}
         />
 
         {/* Fine top hairline accent */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
         {/* Smooth bottom fade */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
@@ -84,7 +85,7 @@ export function HeroBanner() {
             <HeroSearch />
           </div>
 
-          {/* Inline stats row — compact, refined, no cards */}
+          {/* Inline stats row — bold gradient numerals */}
           <div className="mt-10 flex items-center justify-center divide-x divide-border/60 sm:mt-12 [direction:ltr]">
             {stats.map((stat, index) => (
               <div
@@ -95,9 +96,9 @@ export function HeroBanner() {
                 <CountUp
                   value={stat.value}
                   suffix={stat.suffix}
-                  className="font-numeric text-xl font-semibold leading-none text-foreground sm:text-2xl md:text-3xl"
+                  className="font-numeric bg-gradient-to-br from-primary via-violet to-cyan bg-clip-text text-2xl font-extrabold leading-none tracking-tight text-transparent sm:text-3xl md:text-4xl"
                 />
-                <div className="mt-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px]">
+                <div className="mt-2 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px]">
                   {stat.label}
                 </div>
               </div>
