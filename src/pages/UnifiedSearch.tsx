@@ -110,6 +110,7 @@ export default function UnifiedSearch() {
   const [shopSort, setShopSort] = useState<ShopSortKey>("relevance");
   const [data, setData] = useState<UnifiedSearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [recent, setRecent] = useState<string[]>(getRecent());
   const [visibleProductCount, setVisibleProductCount] = useState(INITIAL_VISIBLE_PRODUCT_COUNT);
 
@@ -132,9 +133,18 @@ export default function UnifiedSearch() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    searchUnified({ ...filters, q: activeQuery, sort }).then((res) => {
-      if (!cancelled) { setData(res); setLoading(false); }
-    });
+    setError(null);
+    searchUnified({ ...filters, q: activeQuery, sort })
+      .then((res) => {
+        if (!cancelled) { setData(res); setLoading(false); }
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error("[UnifiedSearch] fetch failed", err);
+        setError(err instanceof Error ? err.message : "تعذّر الاتصال بالخادم");
+        setData(null);
+        setLoading(false);
+      });
     return () => { cancelled = true; };
   }, [activeQuery, filters, sort]);
 
