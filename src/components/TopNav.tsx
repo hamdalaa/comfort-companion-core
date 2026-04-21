@@ -486,45 +486,7 @@ export function TopNav() {
       </div>
 
       {/* Favorites sheet */}
-      <Sheet open={favOpen} onOpenChange={setFavOpen}>
-        <SheetContent side="left" className="w-full overflow-y-auto sm:max-w-md">
-          <SheetHeader>
-            <SheetTitle className="inline-flex items-center gap-2 text-right">
-              <Heart className="h-5 w-5 fill-primary text-primary" />
-              المفضلة ({favItems.length})
-            </SheetTitle>
-            <SheetDescription className="text-right">
-              العناصر المحفوظة تبقى بهذا المتصفح حتى لو سكّرت الصفحة.
-            </SheetDescription>
-          </SheetHeader>
-
-          {favItems.length === 0 ? (
-            <div className="mt-12 rounded-2xl border border-dashed border-border bg-surface px-6 py-12 text-center">
-              <Heart className="mx-auto h-12 w-12 text-muted-foreground/35" />
-              <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                ما عندك عناصر محفوظة بعد. احفظ أي منتج من النتائج حتى يظهر هنا.
-              </p>
-            </div>
-          ) : (
-            <ul className="mt-6 space-y-3">
-              {favItems.map((p) => (
-                <li key={p.id} className="flex items-start gap-3 rounded-xl border border-border bg-card p-3 text-right shadow-soft">
-                  <div className="flex-1">
-                    <div className="text-sm font-semibold text-foreground">{p.name}</div>
-                    <div className="mt-1 text-xs text-muted-foreground">{p.shopName}</div>
-                  </div>
-                  <button
-                    aria-label="إزالة"
-                    className="ios-tap hit-target inline-flex items-center justify-center rounded-full text-muted-foreground transition-[background-color,color,transform] hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </SheetContent>
-      </Sheet>
+      <WishlistDrawer open={favOpen} onOpenChange={setFavOpen} />
     </header>
   );
 }
