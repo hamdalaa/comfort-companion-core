@@ -28,6 +28,9 @@ import { getFallbackProductImage, isRenderableProductImage } from "@/lib/product
 import { decodeHtmlEntities } from "@/lib/textDisplay";
 import { ProductDetailSkeleton } from "@/components/skeletons/PageSkeletons";
 import { BackendErrorState } from "@/components/BackendErrorState";
+import { StickyBuyBar } from "@/components/product/StickyBuyBar";
+import { TrustBadges } from "@/components/product/TrustBadges";
+import { ReviewsBlock } from "@/components/product/ReviewsBlock";
 
 const arabicNumber = new Intl.NumberFormat("ar");
 const formatCount = (value: number) => arabicNumber.format(value);
@@ -275,6 +278,9 @@ export default function ProductDetail() {
                 </div>
               </div>
 
+              {/* Trust badges — warranty, shipping, returns, COD */}
+              <TrustBadges />
+
               {/* Quick metrics */}
               <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
                 <MiniStat value={formatCount(offers.length)} label="متجر" />
@@ -289,7 +295,7 @@ export default function ProductDetail() {
 
       <main className="container space-y-12 py-10 md:space-y-16 md:py-14">
         {/* Offers */}
-        <section>
+        <section id="all-offers" className="scroll-mt-24">
           <SectionHeader
             kicker="العروض"
             title="جميع المتاجر اللي يبيعون هذا المنتج"
@@ -306,6 +312,23 @@ export default function ProductDetail() {
             <EmptyPanel>لا توجد عروض شراء مباشرة لهذا المنتج حالياً.</EmptyPanel>
           )}
         </section>
+
+        {/* Reviews */}
+        {product.rating != null && product.rating > 0 && (
+          <section>
+            <SectionHeader
+              kicker="التقييمات"
+              title="آراء العملاء وتوزيع النجوم"
+              subtitle="فلتر بالنجوم لتشوف رأي مَن جرّبه قبلك."
+            />
+            <div className="mt-6">
+              <ReviewsBlock
+                rating={product.rating}
+                reviewCount={product.reviewCount}
+              />
+            </div>
+          </section>
+        )}
 
         {/* Details tabs */}
         <section>
@@ -366,6 +389,7 @@ export default function ProductDetail() {
       </main>
 
       <SiteFooter />
+      <StickyBuyBar product={product} bestOffer={bestOffer} offersAnchorId="all-offers" />
     </div>
   );
 }
