@@ -19,32 +19,31 @@ export function HeroBanner() {
 
   return (
     <section className="relative isolate bg-background">
-      {/* Creative premium backdrop — layered mesh, grid, and aurora glows */}
+      {/* Modern clean backdrop — soft mesh + minimal grid */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        {/* Soft aurora blobs */}
-        <div className="absolute -top-40 -right-32 h-[560px] w-[560px] rounded-full bg-primary/25 blur-[140px]" />
-        <div className="absolute top-32 -left-40 h-[480px] w-[480px] rounded-full bg-violet/20 blur-[150px]" />
-        <div className="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full bg-cyan/20 blur-[140px]" />
+        {/* Two soft, well-placed glows — calm, not busy */}
+        <div className="absolute -top-48 right-[-10%] h-[620px] w-[620px] rounded-full bg-primary/15 blur-[160px]" />
+        <div className="absolute top-40 left-[-12%] h-[520px] w-[520px] rounded-full bg-violet/12 blur-[170px]" />
 
-        {/* Subtle dotted grid */}
+        {/* Crisp minimal grid — fades into center */}
         <div
-          className="absolute inset-0 opacity-[0.35]"
+          className="absolute inset-0 opacity-[0.5]"
           style={{
             backgroundImage:
-              "radial-gradient(hsl(var(--foreground) / 0.08) 1px, transparent 1px)",
-            backgroundSize: "22px 22px",
+              "linear-gradient(to right, hsl(var(--border) / 0.6) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border) / 0.6) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
             maskImage:
-              "radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 80%)",
+              "radial-gradient(ellipse 80% 70% at 50% 30%, black 30%, transparent 75%)",
             WebkitMaskImage:
-              "radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 80%)",
+              "radial-gradient(ellipse 80% 70% at 50% 30%, black 30%, transparent 75%)",
           }}
         />
 
-        {/* Diagonal sheen */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        {/* Fine top hairline accent */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-        {/* Bottom fade into page */}
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
+        {/* Smooth bottom fade */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
 
       <div className="container relative pt-12 pb-16 sm:pt-20 sm:pb-24 md:pt-28">
