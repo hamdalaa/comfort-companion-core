@@ -599,6 +599,36 @@ const ProductsView = memo(function ProductsView({
   activeChips: { label: string; clear: () => void }[];
   onResetFilters: () => void;
 }) {
+  if (error && !loading) {
+    return (
+      <div className="flex min-h-[60vh] w-full items-center justify-center">
+        <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-5 text-center">
+          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
+            <span className="absolute inset-0 animate-ping rounded-2xl bg-destructive/10" aria-hidden />
+            <AlertTriangle className="relative h-6 w-6" strokeWidth={2.2} />
+          </div>
+          <div className="space-y-1.5">
+            <h3 className="text-lg font-semibold tracking-tight text-foreground">
+              اكو مشكلة بالاتصال حالياً
+            </h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              ما گدرنا نوصل لخادم المنتجات. جرّب تعيد المحاولة بعد لحظة.
+            </p>
+          </div>
+          <Button
+            onClick={() => window.location.reload()}
+            className="rounded-full px-6"
+          >
+            إعادة المحاولة
+          </Button>
+          <code className="block max-w-full truncate text-[10px] text-muted-foreground/60">
+            {error}
+          </code>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
       {data && (
