@@ -41,7 +41,7 @@ export function HeroBanner() {
             style={{ animationDelay: "80ms", animationFillMode: "backwards" }}
           >
             كل محلات الإلكترونيات
-            <br className="hidden sm:inline" />
+            <br />
             <span className="text-primary">بمكان واحد</span>
           </h1>
 
