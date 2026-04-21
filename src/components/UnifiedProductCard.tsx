@@ -42,10 +42,10 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-transform hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-20px_hsl(220_40%_20%/0.15),0_8px_16px_-12px_hsl(220_40%_20%/0.1)]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-card transition-[transform,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-transform hover:-translate-y-1 hover:border-border hover:shadow-[0_12px_32px_-16px_hsl(220_40%_20%/0.12)]"
     >
       {/* ===== Image area ===== */}
-      <div className="relative aspect-[5/4] overflow-hidden bg-card">
+      <div className="relative aspect-[5/4] overflow-hidden bg-muted/30">
         <div className="relative z-[1] flex h-full items-center justify-center">
           <img
             src={displayImage}
@@ -59,38 +59,34 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
                 event.currentTarget.src = fallbackImage;
               }
             }}
-            className="relative z-[2] h-full w-full object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.04]"
+            className="relative z-[2] h-full w-full object-contain object-center p-4 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.05]"
           />
         </div>
 
         {/* Top-left: discount badge */}
         {savings > 5 && (
-          <div className="absolute start-2.5 top-2.5 flex items-center gap-1 rounded-full bg-accent-rose/95 px-2 py-0.5 text-[10px] font-bold text-white shadow-[0_4px_12px_-2px_hsl(var(--accent-rose)/0.5)] backdrop-blur-sm sm:start-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[11px]">
-            <TrendingDown className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+          <div className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold text-background sm:text-[11px]">
+            <TrendingDown className="h-2.5 w-2.5" />
             <span className="tabular-nums">-{savings}%</span>
           </div>
         )}
 
         {/* Top-right: offer count chip */}
-        <div className="absolute end-2.5 top-2.5 flex items-center gap-1 rounded-full border border-border/50 bg-card/90 px-1.5 py-0.5 text-[10px] font-semibold text-foreground shadow-soft-sm backdrop-blur-md sm:end-3 sm:top-3 sm:px-2 sm:py-1 sm:text-[11px]">
-          <Store className="h-2.5 w-2.5 text-primary sm:h-3 sm:w-3" />
+        <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-card/85 px-2 py-0.5 text-[10px] font-semibold text-foreground/80 backdrop-blur-md sm:text-[11px]">
+          <Store className="h-2.5 w-2.5" />
           <span className="tabular-nums">{product.offerCount}</span>
         </div>
 
         {/* Bottom-left: stock pill */}
-        <div className="absolute bottom-2.5 start-2.5 sm:bottom-3 sm:start-3">
+        <div className="absolute bottom-3 start-3">
           {product.inStockCount > 0 ? (
-            <div className="flex items-center gap-1.5 rounded-full border border-accent-emerald/20 bg-card/90 px-2 py-0.5 text-[10px] font-semibold text-accent-emerald shadow-soft-sm backdrop-blur-md sm:px-2.5 sm:py-1 sm:text-[11px]">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-emerald opacity-60" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-emerald" />
-              </span>
-              <span className="tabular-nums sm:hidden">{product.inStockCount} متوفر</span>
-              <span className="hidden tabular-nums sm:inline">متوفر بـ {product.inStockCount} محل</span>
+            <div className="flex items-center gap-1.5 rounded-full bg-card/85 px-2 py-0.5 text-[10px] font-semibold text-accent-emerald backdrop-blur-md sm:text-[11px]">
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-emerald" />
+              <span className="tabular-nums">متوفر</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 rounded-full border border-destructive/20 bg-card/90 px-2 py-0.5 text-[10px] font-semibold text-destructive shadow-soft-sm backdrop-blur-md sm:px-2.5 sm:py-1 sm:text-[11px]">
-              <CircleDot className="h-2.5 w-2.5 fill-destructive text-destructive sm:h-3 sm:w-3" />
+            <div className="flex items-center gap-1.5 rounded-full bg-card/85 px-2 py-0.5 text-[10px] font-semibold text-muted-foreground backdrop-blur-md sm:text-[11px]">
+              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
               نفد
             </div>
           )}
@@ -98,42 +94,40 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
       </div>
 
       {/* ===== Body ===== */}
-      <div className="flex flex-1 flex-col gap-2.5 p-3 sm:gap-3 sm:p-4">
+      <div className="flex flex-1 flex-col gap-2 p-4 sm:gap-2.5 sm:p-5">
         {/* Brand + category — dot-separated */}
-        <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground sm:text-[11px]">
+        <div className="flex items-center gap-1.5 text-[10px] font-medium text-muted-foreground sm:text-[11px]">
           {product.brand && (
-            <span className="font-bold uppercase tracking-wider text-foreground/70">{brand}</span>
+            <span className="font-semibold tracking-wide text-foreground/75">{brand}</span>
           )}
           {product.brand && product.category && (
-            <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" aria-hidden />
+            <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/30" aria-hidden />
           )}
-          {product.category && <span className="truncate">{product.category}</span>}
+          {product.category && <span className="truncate text-muted-foreground/80">{product.category}</span>}
         </div>
 
         {/* Title */}
-        <h3 className="line-clamp-2 min-h-[2.6em] text-balance text-[13px] font-semibold leading-snug text-foreground sm:text-[15px]">
+        <h3 className="line-clamp-2 min-h-[2.6em] text-balance text-[13px] font-medium leading-snug tracking-tight text-foreground sm:text-[14.5px]">
           {title}
         </h3>
 
         {/* Price */}
-        <div className="flex items-end justify-between gap-3">
+        <div className="flex items-baseline justify-between gap-3 pt-0.5">
           <div className="flex flex-col">
-            <span className="text-[9px] font-medium uppercase tracking-[0.14em] text-muted-foreground/80 sm:text-[10px]">
-              يبدأ من
-            </span>
-            <span className="font-outfit tabular-nums text-lg font-extrabold leading-none text-foreground sm:text-xl">
+            <span className="text-[10px] font-medium text-muted-foreground/70">يبدأ من</span>
+            <span className="font-outfit tabular-nums text-[18px] font-semibold leading-tight tracking-tight text-foreground sm:text-[20px]">
               {formatIQD(product.lowestPrice ?? 0)}
             </span>
           </div>
           {priceSpread > 0 && product.highestPrice && (
-            <span className="tabular-nums text-[9px] text-muted-foreground/70 line-through sm:text-[10px]">
+            <span className="tabular-nums text-[10px] text-muted-foreground/60 line-through sm:text-[11px]">
               {formatIQD(product.highestPrice)}
             </span>
           )}
         </div>
 
         {topOffers && topOffers.length > 0 && (
-          <ul className="flex flex-col gap-1.5 rounded-xl border border-border/60 bg-surface/40 px-2.5 py-2">
+          <ul className="flex flex-col gap-1.5 rounded-xl bg-muted/30 px-2.5 py-2">
             {topOffers.slice(0, 3).map((o, idx) => (
               <li key={idx} className="flex items-center justify-between gap-2 text-[12px]">
                 <div className="flex min-w-0 items-center gap-1.5">
@@ -161,37 +155,28 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
         )}
 
         {/* Meta — dot-separated */}
-        <div className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-1 text-[10px] text-muted-foreground sm:text-[11px]">
+        <div className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-border/40 pt-2.5 text-[10px] text-muted-foreground sm:text-[11px]">
           {inStockRatio > 0 && (
             <>
               <span className="flex items-center gap-1">
-                <Package className="h-3 w-3 text-accent-emerald" />
-                <span className="tabular-nums font-semibold text-foreground/80">{inStockRatio}%</span>
-                <span>توفر</span>
+                <span className="tabular-nums font-semibold text-foreground/75">{inStockRatio}%</span>
+                <span className="text-muted-foreground/80">توفر</span>
               </span>
-              <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" aria-hidden />
+              <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/30" aria-hidden />
             </>
           )}
           <span className="flex items-center gap-1">
-            <Tag className="h-3 w-3 text-primary" />
-            <span className="tabular-nums font-semibold text-foreground/80">{product.offerCount}</span>
-            <span>عرض</span>
+            <span className="tabular-nums font-semibold text-foreground/75">{product.offerCount}</span>
+            <span className="text-muted-foreground/80">عرض</span>
           </span>
           <span className="hidden items-center gap-1 sm:flex">
-            <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" aria-hidden />
+            <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground/30" aria-hidden />
             <ShieldCheck className="h-3 w-3 text-accent-emerald" />
-            <span>موثّق</span>
+            <span className="text-muted-foreground/80">موثّق</span>
           </span>
         </div>
       </div>
 
-      {/* ===== CTA — refined ghost-elevated, fills with primary on hover ===== */}
-      <div className="px-3 pb-3 pt-1 sm:px-4 sm:pb-4">
-        <span className="inline-flex items-center gap-1 text-[12px] font-medium text-primary opacity-0 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:opacity-100 sm:text-[13px]">
-          <span>عرض التفاصيل</span>
-          <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-x-1" />
-        </span>
-      </div>
     </Link>
   );
 });
