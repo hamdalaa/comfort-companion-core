@@ -488,7 +488,7 @@ export default function UnifiedSearch() {
       </section>
 
       {/* TABS BAR */}
-      <div className="z-30 border-b border-border bg-background md:sticky md:top-[56px] md:bg-background/95 md:backdrop-blur-md">
+      <div className="relative z-30 border-b border-border bg-background">
         <div className="container mx-auto flex items-center justify-between gap-4 px-4">
           <div className="flex">
             <TabButton
