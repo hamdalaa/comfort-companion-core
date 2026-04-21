@@ -95,6 +95,7 @@ export function HeroBanner() {
               >
                 <CountUp
                   value={stat.value}
+                  suffix={stat.suffix}
                   className="font-numeric text-xl font-semibold leading-none text-foreground sm:text-2xl md:text-3xl"
                 />
                 <div className="mt-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground sm:text-[11px]">
