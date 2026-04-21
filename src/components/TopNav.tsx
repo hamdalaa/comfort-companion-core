@@ -33,6 +33,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { WishlistDrawer } from "@/components/WishlistDrawer";
 import { ALL_CATEGORIES, type Category } from "@/lib/types";
 import { useUserPrefs } from "@/lib/userPrefs";
 import { useDataStore } from "@/lib/dataStore";
