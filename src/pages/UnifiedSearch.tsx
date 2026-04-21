@@ -40,6 +40,7 @@ import { ShopFilters } from "@/components/ShopFilters";
 import { ShopResultCard } from "@/components/ShopResultCard";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { EmptyState } from "@/components/EmptyState";
+import { SortPillsBar } from "@/components/SortPillsBar";
 
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicProductCount, getPublicStoreCount } from "@/lib/catalogCounts";
@@ -661,28 +662,16 @@ const ProductsView = memo(function ProductsView({
           </Select>
         </div>
 
-        {activeChips.length > 0 && (
-          <div className="mb-4 flex flex-wrap gap-1.5">
-            {activeChips.map((chip, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={chip.clear}
-                className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary-soft px-3 py-1 text-xs text-primary transition-colors hover:bg-primary/10"
-              >
-                {chip.label}
-                <X className="h-3 w-3" />
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={onResetFilters}
-              className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
-            >
-              مسح الكل
-            </button>
-          </div>
-        )}
+        {/* Quick sort pills + active filter chips */}
+        <div className="mb-4">
+          <SortPillsBar
+            sort={sort}
+            onSortChange={setSort}
+            totalResults={data?.totalProducts}
+            activeChips={activeChips}
+            onClearAll={activeChips.length > 0 ? onResetFilters : undefined}
+          />
+        </div>
 
         {loading && visibleProducts.length > 0 && (
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
