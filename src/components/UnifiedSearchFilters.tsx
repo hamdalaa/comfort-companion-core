@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, Filter, X } from "lucide-react";
+import { Check, ChevronDown, Filter, PackageCheck, ShieldCheck, Sparkles, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
