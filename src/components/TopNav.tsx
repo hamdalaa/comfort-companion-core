@@ -126,9 +126,9 @@ export function TopNav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300",
+        "sticky top-0 z-40 transition-[background-color,border-color,box-shadow] duration-300",
         scrolled
-          ? "border-b border-border/60 bg-background/75 shadow-soft backdrop-blur-2xl backdrop-saturate-150"
+          ? "border-b border-border/60 bg-background/95 shadow-soft"
           : "border-b border-transparent bg-background",
       )}
     >
