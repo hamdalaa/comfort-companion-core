@@ -168,6 +168,55 @@ export function TopNav() {
 
           {/* Primary nav — premium minimal */}
           <nav className="hidden items-center gap-0.5 lg:flex ms-3">
+            {/* Streets dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className={cn(
+                  "group/streets relative inline-flex min-h-10 items-center gap-1 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-[color,transform] duration-200",
+                  loc.pathname === "/sinaa" || loc.pathname === "/rubaie"
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                الشوارع
+                <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-data-[state=open]/streets:rotate-180" />
+                {(loc.pathname === "/sinaa" || loc.pathname === "/rubaie") && (
+                  <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-primary" />
+                )}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                sideOffset={8}
+                className="w-64 overflow-hidden rounded-2xl border-border/60 bg-card/95 p-2 shadow-soft-xl backdrop-blur-xl"
+              >
+                <DropdownMenuLabel className="px-2 pb-1 pt-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+                  بغداد · شوارع التقنية
+                </DropdownMenuLabel>
+                {streetLinks.map((street) => {
+                  const active = loc.pathname === street.to;
+                  return (
+                    <DropdownMenuItem
+                      key={street.to}
+                      onSelect={() => nav(street.to)}
+                      className={cn(
+                        "flex cursor-pointer items-start gap-3 rounded-xl px-3 py-2.5 transition-colors",
+                        active && "bg-primary-soft",
+                      )}
+                    >
+                      <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <Store className="h-4 w-4" />
+                      </span>
+                      <div className="min-w-0 flex-1 text-right">
+                        <div className="text-sm font-semibold text-foreground">{street.label}</div>
+                        <div className="mt-0.5 text-[11px] text-muted-foreground">{street.description}</div>
+                      </div>
+                      {active && <Check className="mt-1 h-4 w-4 shrink-0 text-primary" />}
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {primaryLinks.map((link) => (
               <NavLink
                 key={link.to}
