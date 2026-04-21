@@ -71,6 +71,7 @@ export function TopNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [favOpen, setFavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [selectedCity, setSelectedCity] = useState(() => loadSelectedCity());
   const { favorites, openTour } = useUserPrefs();
   const { products } = useDataStore();
@@ -86,7 +87,21 @@ export function TopNav() {
   }
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    let lastY = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        setScrolled(y > 8);
+        // Hide on scroll down past threshold; show on scroll up
+        if (y > 80 && y > lastY + 4) setHidden(true);
+        else if (y < lastY - 4 || y < 80) setHidden(false);
+        lastY = y;
+        ticking = false;
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -126,7 +141,8 @@ export function TopNav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-[background-color,border-color,box-shadow] duration-300",
+        "sticky top-0 z-40 transition-[transform,background-color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
+        hidden ? "-translate-y-full" : "translate-y-0",
         scrolled
           ? "border-b border-border/60 bg-background/95 shadow-soft"
           : "border-b border-transparent bg-background",
