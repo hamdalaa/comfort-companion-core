@@ -1,6 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { HeroSearch } from "@/components/HeroSearch";
-import { HeroSlideshow } from "@/components/HeroSlideshow";
+import { HeroDestinations } from "@/components/HeroDestinations";
 import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicStoreCount } from "@/lib/catalogCounts";
@@ -96,8 +96,8 @@ export function HeroBanner() {
           </div>
         </div>
 
-        {/* Hero slideshow — replaces the 3 static destination tiles */}
-        <HeroSlideshow />
+        {/* Destination tiles — clean & elegant */}
+        <HeroDestinations />
 
         {/* Stats — premium light cards */}
         <div className="mx-auto mt-8 grid max-w-5xl grid-cols-3 gap-2 sm:gap-4 md:mt-12">
