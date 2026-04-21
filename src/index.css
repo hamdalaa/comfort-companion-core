@@ -466,9 +466,9 @@
   }
 
   .atlas-card:hover {
-    border-color: hsl(var(--primary) / 0.3);
-    box-shadow: var(--shadow-lg);
-    transform: translate3d(0, -2px, 0);
+    border-color: hsl(var(--foreground) / 0.18);
+    box-shadow: var(--shadow-md);
+    transform: translate3d(0, -1px, 0);
   }
 
   .atlas-chip {
