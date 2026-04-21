@@ -245,8 +245,7 @@ function QuickViewBody({
             size="sm"
             className="rounded-full"
           >
-            <Heart className={cn("me-1 h-3.5 w-3.5", fav && "fill-current text-rose-500")} />
-
+            <Heart className={cn("me-1 h-3.5 w-3.5", fav && "fill-current text-rose")} />
             {fav ? "بالمفضلة" : "حفظ"}
           </Button>
           <Button
