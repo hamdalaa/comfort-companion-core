@@ -54,14 +54,15 @@
        Crisp near-white paper, deep midnight ink, vibrant sky-blue
        primary with mint + violet supporting accents. Feels light,
        fresh, and technical without being cold. */
-    --background: 210 38% 97%;          /* soft sky paper — has presence */
-    --foreground: 222 47% 11%;          /* midnight ink #0F172A */
-    --surface: 210 36% 95%;             /* card hover surface */
-    --surface-2: 214 30% 92%;
+    /* Calmer paper — slightly cooler off-white reads as premium / Apple-clean */
+    --background: 210 25% 98%;
+    --foreground: 222 47% 11%;
+    --surface: 210 22% 96%;
+    --surface-2: 214 20% 93%;
     --surface-elevated: 0 0% 100%;
-    --border: 214 26% 88%;              /* visible hairline */
-    --input: 214 26% 88%;
-    --ring: 199 89% 48%;                /* sky focus */
+    --border: 214 18% 90%;              /* softer hairline */
+    --input: 214 18% 90%;
+    --ring: 199 89% 48%;
 
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
@@ -80,8 +81,8 @@
     --secondary: 222 47% 11%;           /* midnight ink */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 34% 94%;
-    --muted-foreground: 215 18% 38%;
+    --muted: 210 24% 95%;
+    --muted-foreground: 215 16% 42%;
 
     --accent: 222 47% 11%;              /* ink — never a competing hue */
     --accent-foreground: 0 0% 100%;
@@ -106,27 +107,28 @@
     --success-soft: 160 72% 94%;
     --warning: 38 95% 54%;
 
-    --radius: 0.875rem;                 /* rounded-xl base */
+    --radius: 0.875rem;
 
-    /* Apple-style ultra-soft layered shadows — barely-there */
-    --shadow-xs: 0 1px 2px rgba(10, 10, 10, 0.04);
+    /* Refined depth — barely-there, layered like Apple/Shopify Polaris.
+       Two layers each: a tight contact shadow + a soft ambient one. */
+    --shadow-xs: 0 1px 1.5px rgba(15, 23, 42, 0.04);
     --shadow-sm:
-      0 1px 2px rgba(15, 23, 42, 0.05),
-      0 1px 3px rgba(15, 23, 42, 0.04);
+      0 0 0 1px rgba(15, 23, 42, 0.02),
+      0 1px 2px rgba(15, 23, 42, 0.04);
     --shadow-md:
-      0 2px 4px rgba(15, 23, 42, 0.05),
-      0 4px 12px rgba(15, 23, 42, 0.05);
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 4px 10px rgba(15, 23, 42, 0.04);
     --shadow-lg:
-      0 8px 24px rgba(15, 23, 42, 0.07),
-      0 2px 6px rgba(15, 23, 42, 0.05);
+      0 4px 12px rgba(15, 23, 42, 0.05),
+      0 12px 32px rgba(15, 23, 42, 0.06);
     --shadow-xl:
-      0 24px 64px rgba(15, 23, 42, 0.09),
-      0 6px 16px rgba(15, 23, 42, 0.06);
+      0 12px 28px rgba(15, 23, 42, 0.07),
+      0 24px 56px rgba(15, 23, 42, 0.07);
     --shadow-2xl:
-      0 40px 96px rgba(15, 23, 42, 0.13),
-      0 12px 24px rgba(15, 23, 42, 0.07);
-    --shadow-glow: 0 8px 32px -8px hsl(var(--primary) / 0.30);
-    --shadow-panel: var(--shadow-md);
+      0 20px 48px rgba(15, 23, 42, 0.09),
+      0 40px 80px rgba(15, 23, 42, 0.10);
+    --shadow-glow: 0 6px 24px -8px hsl(var(--primary) / 0.22);
+    --shadow-panel: var(--shadow-sm);
 
     --nav: 0 0% 100%;
     --nav-2: 210 38% 97%;
