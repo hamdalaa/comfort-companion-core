@@ -295,8 +295,12 @@ const ShopView = () => {
             )}
             {shop.phone && (
               <Button asChild variant="outline" size="sm" className="h-9 shrink-0 gap-1.5 rounded-full px-3 text-xs transition-all hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98] sm:h-10 sm:px-4 sm:text-sm">
-                <a href={pageData?.callUrl ?? `tel:${shop.phone.replace(/\s/g, "")}`}>
-                  <Phone className="h-4 w-4" /> <bdi dir="ltr">{shop.phone}</bdi>
+                <a
+                  href={`https://wa.me/${shop.phone.replace(/\D/g, "").replace(/^0/, "964")}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <MessageCircle className="h-4 w-4" /> <bdi dir="ltr">{shop.phone}</bdi>
                 </a>
               </Button>
             )}
