@@ -589,7 +589,7 @@ const ShopView = () => {
           {/* ============ SIDE COLUMN ============ */}
           <aside className="space-y-6">
             {/* ============ 7. DETAILS & TRUST ============ */}
-            <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5 lg:sticky lg:top-[140px]">
+            <section className="reveal-init reveal-on rounded-3xl border border-border/70 bg-card/82 p-4 shadow-soft-lg backdrop-blur-sm md:p-5">
               <h2 className="mb-3 inline-flex items-center gap-2 text-base font-bold tracking-tight">
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <ShieldCheck className="h-3.5 w-3.5" />
