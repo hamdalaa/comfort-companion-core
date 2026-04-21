@@ -187,10 +187,10 @@ export function TopNav() {
               <DropdownMenuContent
                 align="start"
                 sideOffset={8}
-                className="w-64 overflow-hidden rounded-2xl border-border/60 bg-card/95 p-2 shadow-soft-xl backdrop-blur-xl"
+                className="w-72 overflow-hidden rounded-xl border border-border/70 bg-card p-1.5 shadow-soft-lg"
               >
-                <DropdownMenuLabel className="px-2 pb-1 pt-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-                  بغداد · شوارع التقنية
+                <DropdownMenuLabel className="px-3 pb-1.5 pt-1 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                  بغداد
                 </DropdownMenuLabel>
                 {streetLinks.map((street) => {
                   const active = loc.pathname === street.to;
@@ -199,18 +199,25 @@ export function TopNav() {
                       key={street.to}
                       onSelect={() => nav(street.to)}
                       className={cn(
-                        "flex cursor-pointer items-start gap-3 rounded-xl px-3 py-2.5 transition-colors",
-                        active && "bg-primary-soft",
+                        "group/street flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 transition-colors focus:bg-muted/60 data-[highlighted]:bg-muted/60",
+                        active && "bg-muted/40",
                       )}
                     >
-                      <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <Store className="h-4 w-4" />
+                      <span
+                        className={cn(
+                          "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-colors",
+                          active
+                            ? "border-primary/30 bg-primary/10 text-primary"
+                            : "border-border/60 bg-muted/40 text-muted-foreground group-hover/street:border-primary/20 group-hover/street:text-primary",
+                        )}
+                      >
+                        <Store className="h-3.5 w-3.5" />
                       </span>
                       <div className="min-w-0 flex-1 text-right">
-                        <div className="text-sm font-semibold text-foreground">{street.label}</div>
-                        <div className="mt-0.5 text-[11px] text-muted-foreground">{street.description}</div>
+                        <div className="text-[13px] font-semibold leading-tight text-foreground">{street.label}</div>
+                        <div className="mt-0.5 text-[11px] leading-tight text-muted-foreground">{street.description}</div>
                       </div>
-                      {active && <Check className="mt-1 h-4 w-4 shrink-0 text-primary" />}
+                      {active && <Check className="h-3.5 w-3.5 shrink-0 text-primary" />}
                     </DropdownMenuItem>
                   );
                 })}
