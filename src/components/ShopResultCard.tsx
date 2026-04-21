@@ -158,10 +158,10 @@ export const ShopResultCard = memo(function ShopResultCard({
 
           <Link
             to={`/shop-view/${shop.id}`}
-            className="ms-auto inline-flex items-center gap-1 rounded-full px-2 py-1 text-[12.5px] font-medium text-foreground/80 transition-colors group-hover:text-primary"
+            className="ms-auto inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[12.5px] font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md"
           >
             <span>فتح المحل</span>
-            <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-x-0.5" />
+            <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-x-1" />
           </Link>
         </div>
       </div>
