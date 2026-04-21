@@ -1,6 +1,6 @@
 export const CATALOG_BASELINE_COUNTS = {
   stores: 3108,
-  products: 83208,
+  products: 120450,
 } as const;
 
 export function getPublicStoreCount(...counts: Array<number | null | undefined>) {
