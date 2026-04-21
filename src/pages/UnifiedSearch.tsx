@@ -662,18 +662,30 @@ const ProductsView = memo(function ProductsView({
         )}
 
         {error && !loading ? (
-          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-destructive/30 bg-destructive/5 px-6 py-12 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-              <AlertTriangle className="h-6 w-6" />
+          <div className="flex min-h-[60vh] w-full items-center justify-center px-4">
+            <div className="mx-auto flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-border/50 bg-surface/40 px-8 py-10 text-center shadow-soft backdrop-blur-sm">
+              <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
+                <span className="absolute inset-0 animate-ping rounded-2xl bg-destructive/10" aria-hidden />
+                <AlertTriangle className="relative h-7 w-7" strokeWidth={2.2} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold tracking-tight text-foreground">
+                  اكو مشكلة بالاتصال حالياً
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  ما گدرنا نوصل لخادم المنتجات. جرّب تعيد المحاولة بعد لحظة.
+                </p>
+              </div>
+              <code className="block w-full truncate rounded-lg border border-border/40 bg-muted/40 px-3 py-1.5 text-[11px] text-muted-foreground/80">
+                {error}
+              </code>
+              <Button
+                onClick={() => window.location.reload()}
+                className="rounded-full px-6 shadow-soft"
+              >
+                إعادة المحاولة
+              </Button>
             </div>
-            <div className="space-y-1">
-              <h3 className="text-lg font-semibold text-foreground">اكو مشكلة بالاتصال حالياً</h3>
-              <p className="text-sm text-muted-foreground">ما گدرنا نوصل لخادم المنتجات. جرّب تعيد المحاولة بعد لحظة.</p>
-              <p className="text-xs text-muted-foreground/70 font-mono pt-1">{error}</p>
-            </div>
-            <Button onClick={() => window.location.reload()} variant="outline" className="rounded-full">
-              إعادة المحاولة
-            </Button>
           </div>
         ) : loading && visibleProducts.length === 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
