@@ -12,13 +12,9 @@ import { ShopCardSkeletonGrid } from "@/components/ShopCardSkeleton";
 import { BrandShowcaseCard } from "@/components/BrandShowcaseCard";
 import { BrandCarousel } from "@/components/BrandCarousel";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ProductRail } from "@/components/ProductRail";
 import { StreetShopsSection } from "@/components/StreetShopsSection";
-import { PromoBanner } from "@/components/PromoBanner";
 import { BrandStrip } from "@/components/BrandStrip";
 import { ContactStrip } from "@/components/ContactStrip";
-import promoAccessoriesImg from "@/assets/cat-accessories.jpg";
-import promoSinaaImg from "@/assets/street-sinaa.jpg";
 import { useDataStore } from "@/lib/dataStore";
 import { useFakeLoading } from "@/hooks/useFakeLoading";
 import { compareCatalogShopsByPriority } from "@/lib/shopRanking";
@@ -57,7 +53,7 @@ function SectionHeader({ kicker, title, description, seeAll }: SectionHeaderProp
 }
 
 export default function IndexDeferredSections() {
-  const { shops, brands, products, home } = useDataStore();
+  const { shops, brands } = useDataStore();
   const loading = useFakeLoading(700);
 
   const featured = [...shops]
@@ -65,27 +61,6 @@ export default function IndexDeferredSections() {
     .filter((shop) => (shop.productCount ?? 0) > 0 || Boolean(shop.website) || Boolean(shop.featured))
     .sort(compareCatalogShopsByPriority)
     .slice(0, 6);
-
-  const trendingSource = home.trending.length > 0
-    ? home.trending
-    : [...products].sort((a, b) => (b.reviewCount ?? 0) - (a.reviewCount ?? 0)).slice(0, 12);
-  const dealsSource = home.deals.length > 0
-    ? home.deals
-    : [...products]
-        .filter((product) => product.originalPriceValue && product.priceValue && product.originalPriceValue > product.priceValue)
-        .sort(
-          (a, b) =>
-            (b.originalPriceValue! - b.priceValue!) / b.originalPriceValue! -
-            (a.originalPriceValue! - a.priceValue!) / a.originalPriceValue!,
-        )
-        .slice(0, 12);
-  const latestSource = home.latest.length > 0
-    ? home.latest
-    : [...products].sort((a, b) => new Date(b.crawledAt).getTime() - new Date(a.crawledAt).getTime()).slice(0, 12);
-
-  const trending = trendingSource.map((product) => ({ ...product, score: 0 }));
-  const deals = dealsSource.map((product) => ({ ...product, score: 0 }));
-  const newArrivals = latestSource.map((product) => ({ ...product, score: 0 }));
 
   return (
     <>
@@ -215,34 +190,6 @@ export default function IndexDeferredSections() {
               </div>
             </div>
           </Link>
-        </section>
-
-        <section className="container mt-10 space-y-5 sm:mt-20 sm:space-y-10 md:mt-28">
-          <ProductRail title="أفضل التخفيضات" seeAllTo="/results" products={deals} />
-
-          <PromoBanner
-            to="/results?category=Accessories"
-            kicker="عروض الإكسسوارات"
-            title="صفقات السماعات والشواحن"
-            description="خصومات تصل لـ 40% على أفضل البراندات — Anker, Ugreen, Sony وغيرها."
-            cta="تصفّح العروض"
-            image={promoAccessoriesImg}
-            tone="emerald"
-          />
-
-          <ProductRail title="الأكثر تقييماً" seeAllTo="/results" products={trending} />
-
-          <PromoBanner
-            to="/sinaa"
-            kicker="بغداد · شارع الصناعة"
-            title="كل محلات الحاسبات على خارطة وحدة"
-            description="حاسبات، قطع، شبكات وطابعات — قارن قبل ما تنزل للسوق."
-            cta="افتح الشارع"
-            image={promoSinaaImg}
-            tone="primary"
-          />
-
-          <ProductRail title="إضافات حديثة" seeAllTo="/results" products={newArrivals} />
         </section>
 
         {/* Brand strip — partner logos */}
