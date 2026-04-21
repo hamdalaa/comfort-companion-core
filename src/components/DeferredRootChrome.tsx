@@ -10,9 +10,6 @@ const LazyWelcomeTour = lazy(() =>
 const LazyCompareBar = lazy(() =>
   import("./CompareBar").then((module) => ({ default: module.CompareBar })),
 );
-const LazySmoothScroll = lazy(() =>
-  import("./SmoothScroll").then((module) => ({ default: module.SmoothScroll })),
-);
 const LazyRecentlyViewedStrip = lazy(() =>
   import("./RecentlyViewedStrip").then((module) => ({ default: module.RecentlyViewedStrip })),
 );
@@ -32,11 +29,9 @@ export function DeferredRootChrome() {
   const { compare, onboarded, tourTrigger } = useUserPrefs();
   const [commandEnabled, setCommandEnabled] = useState(false);
   const [welcomeEnabled, setWelcomeEnabled] = useState(false);
-  const [smoothEnabled, setSmoothEnabled] = useState(false);
   const [forceCommandOpenToken, setForceCommandOpenToken] = useState(0);
 
   useEffect(() => {
-    const cancelSmooth = scheduleIdle(() => setSmoothEnabled(true), 1200);
     const cancelCommand = scheduleIdle(() => setCommandEnabled(true), 2200);
     const cancelWelcome = !onboarded || tourTrigger > 0
       ? scheduleIdle(() => setWelcomeEnabled(true), tourTrigger > 0 ? 0 : 1800)
@@ -51,7 +46,6 @@ export function DeferredRootChrome() {
 
     window.addEventListener("keydown", onKeyDown, { capture: true });
     return () => {
-      cancelSmooth();
       cancelCommand();
       cancelWelcome();
       window.removeEventListener("keydown", onKeyDown, true);
@@ -60,12 +54,6 @@ export function DeferredRootChrome() {
 
   return (
     <>
-      {smoothEnabled && (
-        <Suspense fallback={null}>
-          <LazySmoothScroll />
-        </Suspense>
-      )}
-
       {commandEnabled && (
         <Suspense fallback={null}>
           <LazyCommandPalette forceOpenToken={forceCommandOpenToken} />
