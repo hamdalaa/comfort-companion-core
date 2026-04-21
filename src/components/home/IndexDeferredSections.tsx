@@ -217,34 +217,6 @@ export default function IndexDeferredSections() {
           </Link>
         </section>
 
-        <section className="container mt-10 space-y-5 sm:mt-20 sm:space-y-10 md:mt-28">
-          <ProductRail title="أفضل التخفيضات" seeAllTo="/results" products={deals} />
-
-          <PromoBanner
-            to="/results?category=Accessories"
-            kicker="عروض الإكسسوارات"
-            title="صفقات السماعات والشواحن"
-            description="خصومات تصل لـ 40% على أفضل البراندات — Anker, Ugreen, Sony وغيرها."
-            cta="تصفّح العروض"
-            image={promoAccessoriesImg}
-            tone="emerald"
-          />
-
-          <ProductRail title="الأكثر تقييماً" seeAllTo="/results" products={trending} />
-
-          <PromoBanner
-            to="/sinaa"
-            kicker="بغداد · شارع الصناعة"
-            title="كل محلات الحاسبات على خارطة وحدة"
-            description="حاسبات، قطع، شبكات وطابعات — قارن قبل ما تنزل للسوق."
-            cta="افتح الشارع"
-            image={promoSinaaImg}
-            tone="primary"
-          />
-
-          <ProductRail title="إضافات حديثة" seeAllTo="/results" products={newArrivals} />
-        </section>
-
         {/* Brand strip — partner logos */}
         <BrandStrip />
 
