@@ -456,6 +456,36 @@ export function TopNav() {
                 التصفّح
               </div>
               <ul className="space-y-1">
+                {streetLinks.map((street) => {
+                  const active = loc.pathname === street.to;
+                  return (
+                    <li key={street.to}>
+                      <Link
+                        to={street.to}
+                        onClick={() => setMobileOpen(false)}
+                        className={cn(
+                          "ios-tap flex min-h-10 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-[background-color,color,transform]",
+                          active
+                            ? "bg-primary-soft text-primary"
+                            : "text-foreground hover:bg-surface",
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
+                            active
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted text-muted-foreground",
+                          )}
+                        >
+                          <Store className="h-4 w-4" />
+                        </span>
+                        <span className="flex-1 text-right">{street.label}</span>
+                        <ChevronLeft className="h-3.5 w-3.5 text-muted-foreground/60" />
+                      </Link>
+                    </li>
+                  );
+                })}
                 {primaryLinks.map((link) => {
                   const Icon = link.icon;
                   const active = loc.pathname === link.to;
