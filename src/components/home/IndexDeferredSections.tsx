@@ -14,6 +14,12 @@ import { BrandCarousel } from "@/components/BrandCarousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductRail } from "@/components/ProductRail";
 import { StreetShopsSection } from "@/components/StreetShopsSection";
+import { HeroCategoryTiles } from "@/components/HeroCategoryTiles";
+import { PromoBanner } from "@/components/PromoBanner";
+import { BrandStrip } from "@/components/BrandStrip";
+import { ContactStrip } from "@/components/ContactStrip";
+import promoAccessoriesImg from "@/assets/cat-accessories.jpg";
+import promoSinaaImg from "@/assets/street-sinaa.jpg";
 import { useDataStore } from "@/lib/dataStore";
 import { useFakeLoading } from "@/hooks/useFakeLoading";
 import { compareCatalogShopsByPriority } from "@/lib/shopRanking";
@@ -85,6 +91,9 @@ export default function IndexDeferredSections() {
   return (
     <>
       <main className="pb-12 sm:pb-20">
+        {/* Big visual category tiles — Alnabaa-style */}
+        <HeroCategoryTiles />
+
         <section className="group relative mt-8 overflow-hidden border-y border-border/60 bg-background sm:mt-16 md:mt-24">
           <div aria-hidden className="pointer-events-none absolute -top-16 -right-24 h-56 w-56 rounded-full bg-cyan/10 blur-3xl sm:h-80 sm:w-80 sm:bg-cyan/14" />
           <div aria-hidden className="pointer-events-none absolute -bottom-20 -left-24 h-56 w-56 rounded-full bg-emerald/10 blur-3xl sm:h-80 sm:w-80 sm:bg-emerald/12" />
@@ -214,9 +223,34 @@ export default function IndexDeferredSections() {
 
         <section className="container mt-10 space-y-5 sm:mt-20 sm:space-y-10 md:mt-28">
           <ProductRail title="أفضل التخفيضات" seeAllTo="/results" products={deals} />
+
+          <PromoBanner
+            to="/results?category=Accessories"
+            kicker="عروض الإكسسوارات"
+            title="صفقات السماعات والشواحن"
+            description="خصومات تصل لـ 40% على أفضل البراندات — Anker, Ugreen, Sony وغيرها."
+            cta="تصفّح العروض"
+            image={promoAccessoriesImg}
+            tone="emerald"
+          />
+
           <ProductRail title="الأكثر تقييماً" seeAllTo="/results" products={trending} />
+
+          <PromoBanner
+            to="/sinaa"
+            kicker="بغداد · شارع الصناعة"
+            title="كل محلات الحاسبات على خارطة وحدة"
+            description="حاسبات، قطع، شبكات وطابعات — قارن قبل ما تنزل للسوق."
+            cta="افتح الشارع"
+            image={promoSinaaImg}
+            tone="primary"
+          />
+
           <ProductRail title="إضافات حديثة" seeAllTo="/results" products={newArrivals} />
         </section>
+
+        {/* Brand strip — partner logos */}
+        <BrandStrip />
 
         <section className="relative mt-10 overflow-hidden border-y border-cyan/25 bg-gradient-to-tr from-cyan/14 via-background to-emerald/12 sm:mt-20 md:mt-28">
           <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 h-72 w-72 rounded-full bg-cyan/20 blur-3xl" />
@@ -302,6 +336,9 @@ export default function IndexDeferredSections() {
             </div>
           </div>
         </section>
+
+        {/* Trust / Contact strip — pre-footer */}
+        <ContactStrip />
       </main>
 
       <SiteFooter />
