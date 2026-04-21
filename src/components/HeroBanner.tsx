@@ -18,11 +18,33 @@ export function HeroBanner() {
 
   return (
     <section className="relative isolate bg-background">
-      {/* Single subtle accent — top-right, very faint */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-32 -right-32 -z-10 h-[480px] w-[480px] rounded-full bg-primary-soft/40 blur-[120px]"
-      />
+      {/* Creative premium backdrop — layered mesh, grid, and aurora glows */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        {/* Soft aurora blobs */}
+        <div className="absolute -top-40 -right-32 h-[560px] w-[560px] rounded-full bg-primary/25 blur-[140px]" />
+        <div className="absolute top-32 -left-40 h-[480px] w-[480px] rounded-full bg-violet/20 blur-[150px]" />
+        <div className="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full bg-cyan/20 blur-[140px]" />
+
+        {/* Subtle dotted grid */}
+        <div
+          className="absolute inset-0 opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "radial-gradient(hsl(var(--foreground) / 0.08) 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 80%)",
+          }}
+        />
+
+        {/* Diagonal sheen */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+
+        {/* Bottom fade into page */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
+      </div>
 
       <div className="container relative pt-12 pb-16 sm:pt-20 sm:pb-24 md:pt-28">
         <div className="mx-auto max-w-3xl text-center">
