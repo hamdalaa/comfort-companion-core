@@ -57,10 +57,14 @@ function loadSelectedCity(): { slug: string; cityAr: string } {
 }
 
 const primaryLinks = [
-  { to: "/sinaa", label: "الشوارع", icon: Store },
   { to: "/iraq", label: "المحافظات", icon: Building2 },
   { to: "/brands", label: "البراندات", icon: Heart },
   { to: "/search", label: "البحث", icon: Search },
+];
+
+const streetLinks = [
+  { to: "/sinaa", label: "شارع الصناعة", description: "حاسبات · قطع · شبكات" },
+  { to: "/rubaie", label: "شارع الربيعي", description: "هواتف · شواحن · إكسسوارات" },
 ];
 
 export function TopNav() {
