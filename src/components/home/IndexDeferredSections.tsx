@@ -322,7 +322,7 @@ export default function IndexDeferredSections() {
           </div>
         </section>
 
-        <section className="container mt-10 grid gap-8 sm:mt-20 sm:gap-12 md:mt-28 lg:grid-cols-2 lg:items-start">
+        <section className="container mt-10 grid gap-8 sm:mt-16 sm:gap-12 md:mt-20 lg:grid-cols-2 lg:items-start">
           <HowItWorks />
           <div>
             <span className="atlas-kicker">المؤشرات</span>
