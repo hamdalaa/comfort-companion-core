@@ -1,104 +1,93 @@
 
 
-# خطة تطوير الـUI الحالي — مودرن، تفاعلي، ومرتّب
+# مستوحى من تصميم متجر النبأ — تحسينات الصفحة الرئيسية
 
-نخلي التصميم الحالي كأساس، ونضيف عليه طبقات Polish + تفاعلية + مميزات صغيرة ذكية. بدون كسر هوية الموقع أو تغيير الألوان الأساسية.
+## السياق
+متجر النبأ هو متجر إلكترونيات عراقي (Shopify) بشكل تجاري واضح: شريط إعلانات متحرك، بانر slideshow كبير، شبكة فئات بصرية ضخمة، ومجموعات منتجات (Product Rails) مفصولة ببانرات ترويجية. موقعنا يفتقد لـ 4 عناصر أساسية موجودة عنده: شريط إعلانات، slideshow بدل صورة hero ثابتة، شبكة فئات بصرية ضخمة (Accessories/Laptops/Printer/Storage)، وبانرات ترويجية بين الـ rails.
 
----
+## ما سنضيفه (5 عناصر جديدة + تحسينان)
 
-## 🎨 المرحلة 1: Polish بصري (Design System)
+### 1. Announcement Bar (شريط إعلانات متحرك) — جديد
+شريط رفيع فوق الـ TopNav بخلفية primary (Cyan/Emerald) يعرض رسائل دوّارة:
+- "توصيل لكل العراق" • "ضمان سنة على المنتجات" • "أكثر من 1,200 محل موثوق" • "تحديث يومي للأسعار"
+- Animation: marquee أفقي ناعم (CSS) من اليمين لليسار، يتوقف عند hover.
+- زرار ✕ لإغلاقه (يحفظ بـ localStorage).
 
-**الهدف**: نعطي الموقع إحساس "premium" بدون تغيير الهوية.
+### 2. Hero Slideshow بدل البانر الثابت — تحسين
+استبدال صورة بغداد الواحدة بـ **slideshow بـ 3 شرائح** (دوّار تلقائي كل 6 ثواني + dots + arrows):
+- شريحة 1: "كل محلات الإلكترونيات بمكان واحد" (الحالية)
+- شريحة 2: "قارن أسعار آيفون 15 من 40+ محل" (Deals/Compare)
+- شريحة 3: "خرائط شارع الصناعة والربيعي" (Streets)
 
-- **Typography hierarchy محسّن**: عناوين أكبر مع `letter-spacing` أدق، نصوص ثانوية أهدأ بـ`leading` أوسع
-- **Spacing rhythm**: مسافات أكثر تنفساً بين الأقسام (`mt-32` بدل `mt-20` على الديسكتوب)
-- **Gradient borders ناعمة** على البطاقات المميزة (Brand cards, Featured shops)
-- **Glow effects خفيفة** على الأسعار، الأزرار الرئيسية، والـbadges المهمة
-- **Shadows متدرّجة**: نظام `shadow-soft` → `shadow-soft-md` → `shadow-soft-xl` مطبّق بانسجام
-- **Rounded corners موحّدة**: 16px للبطاقات، 24px للحاويات الكبيرة، 999px للـpills
+كل شريحة بصورة مختلفة + CTA واضح. يحافظ على بحث الـ Hero بالأسفل.
 
-## ⚡ المرحلة 2: Micro-interactions & Animations
-
-**الهدف**: كل عنصر يحس "حي" عند التفاعل.
-
-- **Press feedback**: زر/بطاقة ينضغط بسلاسة (`scale-[0.98]`) عند الضغط
-- **Hover lift**: البطاقات ترتفع 2px مع shadow أعمق عند المرور
-- **Scroll-triggered reveals**: الأقسام تظهر تدريجياً مع `IntersectionObserver` (fade + slide-up خفيف)
-- **Parallax خفيف** على صور الـHero والـbanners (محدود حتى لا يشوّش)
-- **Skeleton shimmer**: استبدال الـpulse الحالي بـshimmer effect أنعم
-- **Number count-up** للمؤشرات في `MetricsStrip` (موجود `CountUp` — نفعّله)
-- **Smooth scroll** بين أقسام الصفحة الواحدة
-- **Icon nudges**: السهم في "عرض الكل" يتحرك يميناً عند hover (موجود جزئياً — نوسّعه)
-
-## ✨ المرحلة 3: مميزات تفاعلية جديدة
-
-**الهدف**: نضيف قيمة وظيفية بدون تعقيد الـUI.
-
-- **Quick View modal** على بطاقة المنتج: أيقونة 👁️ تفتح dialog سريع بصور + سعر + زر "فتح الصفحة" بدون مغادرة المكان
-- **Sticky filters ذكية**: في `/search` و`/results`، الفلاتر تختفي عند النزول وترجع عند الصعود (scroll direction detect)
-- **Recently viewed strip**: شريط أسفل الصفحات يعرض آخر 6 منتجات شفتها (محفوظة في `localStorage`)
-- **Compare bar محسّن**: bar سفلي ثابت يظهر عند اختيار منتجين+، مع زر "قارن الآن"
-- **Keyboard shortcuts**: `⌘K` / `Ctrl+K` يفتح `CommandPalette` (موجود — نربطه)، `/` للتركيز على البحث، `Esc` للإغلاق
-- **Hover preview على بطاقات المحلات**: tooltip سريع يعرض ساعات العمل + عدد المنتجات + رابط الخريطة
-- **Wishlist ❤️**: زر قلب على بطاقة المنتج، محفوظ في `localStorage`، صفحة `/wishlist` بسيطة
-
-## 📐 المرحلة 4: تحسينات Layout & UX
-
-**الهدف**: الموقع يحس "مرتّب" أكثر.
-
-- **TopNav محسّن**: blur background عند scroll، إخفاء جزئي عند النزول
-- **HeroBanner**: تحسين البحث الرئيسي مع suggestions تظهر فورياً تحت الـinput
-- **CategoryCircles**: استبدال بـbento grid mini على الديسكتوب (3×2 بدل circles فقط)
-- **ProductRail**: أسهم scroll أوضح + dots indicator + snap scrolling أنعم
-- **BottomTabBar (موبايل)**: تأثير "active pill" متحرّك بين التابات
-- **SiteFooter**: إعادة ترتيب لـ4 أعمدة منظّمة مع روابط أوضح
-- **Empty states**: تصاميم أحلى للنتائج الفارغة (illustration + CTA)
-
-## 🚀 المرحلة 5: Performance & Polish نهائي
-
-- **Image optimization**: تطبيق `loading="lazy"` + `decoding="async"` على كل الصور (جزئي حالياً)
-- **Reduced motion**: احترام `prefers-reduced-motion` في كل الأنيميشنات
-- **Focus states محسّنة**: ring واضح ومتسق لكل العناصر التفاعلية (keyboard accessibility)
-- **Toast notifications محسّنة**: تصميم أنعم مع icons ملوّنة حسب النوع
-
----
-
-## 📋 الملفات المتأثّرة (تقريباً)
-
+### 3. شبكة فئات بصرية ضخمة (Hero Category Tiles) — جديد
+بعد الـ Hero مباشرة، شبكة 4 كروت ضخمة بأسلوب النبأ:
 ```text
-src/index.css              → keyframes + utility classes جديدة (shimmer, lift, glow)
-tailwind.config.ts         → animations + shadows جديدة
-src/components/ui/skeleton.tsx → shimmer effect
-src/components/TopNav.tsx  → blur on scroll + hide on scroll down
-src/components/HeroBanner.tsx → search suggestions inline
-src/components/ProductCard.tsx → Quick View + Wishlist buttons + hover lift
-src/components/UnifiedProductCard.tsx → نفس التحسينات
-src/components/ShopCard.tsx → hover preview tooltip
-src/components/ProductRail.tsx → scroll arrows + dots + snap
-src/components/BottomTabBar.tsx → animated active pill
-src/components/SiteFooter.tsx → 4-col layout
-src/components/CategoryCircles.tsx → bento variant للديسكتوب
-src/components/CommandPalette.tsx → ⌘K binding
-src/components/MetricsStrip.tsx → تفعيل CountUp
-src/components/CompareBar.tsx → sticky bottom bar محسّن
-src/components/EmptyState.tsx → illustrations + CTA
-src/hooks/useScrollDirection.ts (جديد) → لـsticky filters و TopNav
-src/hooks/useScrollReveal.ts (جديد) → IntersectionObserver wrapper
-src/hooks/useRecentlyViewed.ts (جديد) → localStorage
-src/hooks/useWishlist.ts (جديد) → localStorage
-src/components/QuickViewDialog.tsx (جديد)
-src/components/RecentlyViewedStrip.tsx (جديد)
-src/pages/Wishlist.tsx (جديد) + route في App.tsx
+┌──────────┬──────────┬──────────┬──────────┐
+│ هواتف    │ لابتوبات │ شاشات    │ إكسسوار  │
+│ [صورة]   │ [صورة]   │ [صورة]   │ [صورة]   │
+│ 320+ محل │ 180+ محل │ 95+ محل  │ 410+ محل │
+└──────────┴──────────┴──────────┴──────────┘
+```
+كروت كبيرة (aspect 4/5) بخلفية gradient ناعمة + صورة فئة + كاونت محلات.
+بديل أنظف من `CategoryCircles` الحالية (نُبقيها ضمن قسم "كل الفئات").
+
+### 4. Promo Banner Strip بين الـ Rails — جديد
+بانر عريض ترويجي بين "أفضل التخفيضات" و "الأكثر تقييماً" (مستلهم من banner "Peripheral Deals" عندهم):
+- خلفية gradient + صورة فئة + headline كبير ("صفقات الإكسسوارات — 40% على الـ Headphones") + CTA.
+- بانر ثاني بين "الأكثر تقييماً" و"إضافات حديثة" يقود لشارع الصناعة.
+
+### 5. Brand Strip (شريط براندات أفقي) — جديد
+شريط أفقي بـ logos صغيرة قبل قسم "محلات مختارة": Apple, Samsung, Asus, HP, Lenovo, Anker, Ugreen, Xiaomi, Sony, Dell, MSI, Logitech (12 logo). يستخدم `BrandLogoTile` الموجود.
+
+### 6. Trust/Contact Strip قبل الفوتر — جديد
+3 كروت أفقية مستلهمة من قسم "Contact Us" عندهم:
+- WhatsApp مع رقم
+- Call Us
+- Get in Touch / Email
+بدل ما يكون فوتر فقط.
+
+### 7. ترتيب الصفحة الجديد
+```text
+1. Announcement Bar (جديد)
+2. TopNav (موجود)
+3. Hero Slideshow (مُحسَّن)
+4. Hero Category Tiles 4× (جديد) ← يحل محل الكروت الـ3 الحالية
+5. شبكة فئات كاملة CategoryCircles (موجود)
+6. Product Rail: أفضل التخفيضات (موجود)
+7. Promo Banner #1 (جديد)
+8. Product Rail: الأكثر تقييماً (موجود)
+9. Promo Banner #2 (جديد)
+10. Product Rail: إضافات حديثة (موجود)
+11. Brand Strip (جديد)
+12. مسارات بغداد + شوارع (موجود)
+13. محلات مختارة (موجود)
+14. الوكلاء الرسميون (موجود)
+15. Atlas العراق (موجود)
+16. Trust/Contact Strip (جديد)
+17. SiteFooter (موجود)
 ```
 
----
+## التفاصيل التقنية
 
-## ⏱️ ترتيب التنفيذ المقترح
+| ملف | التغيير |
+|---|---|
+| `src/components/AnnouncementBar.tsx` | **جديد** — marquee + dismissible |
+| `src/components/HeroSlideshow.tsx` | **جديد** — يحل محل الـ Hero الثابت داخل `HeroBanner.tsx` |
+| `src/components/HeroCategoryTiles.tsx` | **جديد** — 4 كروت ضخمة |
+| `src/components/PromoBanner.tsx` | **جديد** — مكون قابل لإعادة الاستخدام (image + headline + CTA) |
+| `src/components/BrandStrip.tsx` | **جديد** — شريط أفقي بـ logos |
+| `src/components/ContactStrip.tsx` | **جديد** — 3 كروت تواصل قبل الفوتر |
+| `src/components/HeroBanner.tsx` | تضمين `HeroSlideshow` بدل الصورة الثابتة، إزالة كروت الـ3 (انتقلت لـ HeroCategoryTiles) |
+| `src/components/home/IndexDeferredSections.tsx` | إعادة ترتيب: إضافة HeroCategoryTiles بعد الـ Hero، PromoBanner بين الـ rails، BrandStrip قبل المحلات، ContactStrip قبل الفوتر |
+| `src/pages/Index.tsx` | تضمين `<AnnouncementBar />` في الأعلى |
+| `src/index.css` | keyframe `marquee-rtl` للـ Announcement Bar |
 
-1. **المرحلة 1 + 2** (Polish + Micro-interactions) — أساس بصري قوي، تأثير فوري
-2. **المرحلة 4** (Layout & UX) — ترتيب وتحسين المكوّنات الموجودة
-3. **المرحلة 3** (مميزات جديدة) — Quick View, Wishlist, Recently Viewed, ⌘K
-4. **المرحلة 5** (Performance & A11y) — لمسات نهائية
+كل المكونات الجديدة بنفس design system الحالي (الألوان: `primary`, `cyan`, `emerald`، الخطوط: `font-display`، الشعاع: `rounded-3xl`، الظلال: `shadow-soft-*`)، RTL، lazy images، ومتجاوبة (mobile carousel على الكروت الضخمة).
 
-ممكن نسوي الكل دفعة واحدة، أو نقسّمها على مراحل ونشوف النتيجة بين كل مرحلة.
+## ما لن نلمسه
+- نظام البحث، صفحات النتائج، المنتج، المحل، البراند.
+- الـ TopNav والـ BottomTabBar.
+- منطق البيانات (`useDataStore`).
 
