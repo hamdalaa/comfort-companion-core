@@ -172,8 +172,8 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
           </span>
         </div>
 
-        {/* CTA — clean, full-width view details button */}
-        <span className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-foreground/[0.04] px-3 py-2 text-[12px] font-semibold text-foreground transition-colors group-hover:bg-foreground group-hover:text-background sm:text-[13px]">
+        {/* CTA — colored full-width view details button */}
+        <span className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary-soft px-3 py-2 text-[12px] font-semibold text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground sm:text-[13px]">
           <span>عرض التفاصيل</span>
           <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-x-0.5" />
         </span>
