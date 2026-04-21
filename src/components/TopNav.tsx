@@ -99,9 +99,9 @@ export function TopNav() {
       requestAnimationFrame(() => {
         const y = window.scrollY;
         setScrolled(y > 8);
-        // Hide on scroll down past threshold; show on scroll up
-        if (y > 80 && y > lastY + 4) setHidden(true);
-        else if (y < lastY - 4 || y < 80) setHidden(false);
+        // Hide as soon as user scrolls down; show only when back at top
+        if (y > 24) setHidden(true);
+        else setHidden(false);
         lastY = y;
         ticking = false;
       });
