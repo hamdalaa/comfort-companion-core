@@ -533,6 +533,7 @@ export default function UnifiedSearch() {
           <ProductsView
             data={data}
             loading={loading}
+            error={error}
             visibleProducts={visibleProducts}
             hasMoreProducts={hasMoreProducts}
             onLoadMore={handleLoadMoreProducts}
