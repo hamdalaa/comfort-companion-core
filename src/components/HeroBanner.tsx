@@ -1,14 +1,10 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, MapPin, Tag, ShieldCheck } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { HeroSearch } from "@/components/HeroSearch";
-
+import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicStoreCount } from "@/lib/catalogCounts";
 import { CITIES } from "@/lib/cityData";
-import sinaaImg from "@/assets/street-sinaa.jpg";
-import rubaieImg from "@/assets/street-rubaie.jpg";
-import iraqImg from "@/assets/iraq-cities.jpg";
 import baghdadMap from "@/assets/hero-baghdad-map.jpg";
 
 export function HeroBanner() {
@@ -20,30 +16,6 @@ export function HeroBanner() {
     { value: totalShops, label: "محل ميداني" },
     { value: brands.length, label: "وكيل وبراند" },
     { value: CITIES.length, label: "محافظة" },
-  ];
-
-  const valueProps = [
-    {
-      icon: Tag,
-      title: "قارن الأسعار قبل ما تطلع",
-      desc: "شوف أرخص سعر للمنتج عند كل المحلات بنفس اللحظة.",
-      tint: "from-primary/20 to-primary/5",
-      icon_color: "text-primary",
-    },
-    {
-      icon: ShieldCheck,
-      title: "محلات موثوقة فقط",
-      desc: "تقييمات حقيقية من زبائن سابقين + وكلاء معتمدين.",
-      tint: "from-violet/20 to-violet/5",
-      icon_color: "text-violet",
-    },
-    {
-      icon: MapPin,
-      title: "اعرف وين المحل بالضبط",
-      desc: "موقع، ساعات دوام، وتلفون — جاهزة قبل ما تتحرك.",
-      tint: "from-cyan/20 to-cyan/5",
-      icon_color: "text-cyan",
-    },
   ];
 
   return (
@@ -124,57 +96,8 @@ export function HeroBanner() {
           </div>
         </div>
 
-        {/* Value propositions hidden per request */}
-
-        {/* Quick entry cards — editorial destination tiles */}
-        <div className="mx-auto mt-8 grid max-w-5xl grid-cols-1 gap-3 sm:mt-12 sm:grid-cols-3 sm:gap-4">
-          {[
-            { to: "/sinaa", title: "شارع الصناعة", note: "حاسبات · شبكات", kicker: "بغداد", img: sinaaImg },
-            { to: "/rubaie", title: "شارع الربيعي", note: "هواتف · شواحن", kicker: "بغداد", img: rubaieImg },
-            { to: "/iraq", title: "كل المحافظات", note: "10 محافظات", kicker: "العراق", img: iraqImg },
-          ].map((entry, index) => (
-            <Link
-              key={entry.to}
-              to={entry.to}
-              className="group press animate-fade-in-up relative isolate flex h-36 items-end overflow-hidden rounded-3xl border border-border/60 bg-card shadow-soft-md transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-soft-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:h-40"
-              style={{ animationDelay: `${280 + index * 90}ms`, animationFillMode: "backwards" }}
-            >
-              <div className="img-frame absolute inset-0 overflow-hidden">
-                <img
-                  src={entry.img}
-                  alt={entry.title}
-                  loading="lazy"
-                  width={800}
-                  height={512}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                {/* Single elegant gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/35 to-transparent" />
-                {/* Subtle hover tint */}
-                <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/10" />
-              </div>
-
-              {/* Top kicker chip */}
-              <div className="absolute right-3 top-3 z-10 rounded-full bg-background/85 px-2 py-0.5 text-[10px] font-semibold text-foreground/80 backdrop-blur-md ring-1 ring-border/60">
-                {entry.kicker}
-              </div>
-
-              <div className="relative z-10 flex w-full items-end justify-between gap-3 p-4 text-right text-white">
-                <div className="min-w-0">
-                  <div className="font-display text-balance text-lg font-semibold leading-tight tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-                    {entry.title}
-                  </div>
-                  <div className="mt-1 text-[11px] font-medium text-white/85">
-                    {entry.note}
-                  </div>
-                </div>
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background/95 text-foreground shadow-soft transition-[transform,background-color,color,box-shadow] duration-300 group-hover:scale-[1.02] group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-soft-lg">
-                  <ArrowLeft className="h-3.5 w-3.5 translate-x-px transition-transform duration-300 group-hover:-translate-x-0.5" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {/* Hero slideshow — replaces the 3 static destination tiles */}
+        <HeroSlideshow />
 
         {/* Stats — premium light cards */}
         <div className="mx-auto mt-8 grid max-w-5xl grid-cols-3 gap-2 sm:gap-4 md:mt-12">
