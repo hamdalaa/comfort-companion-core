@@ -2,25 +2,21 @@ import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
-  Award,
   ChevronLeft,
-  Clock,
   ExternalLink,
   Heart,
-  Home,
   Package,
   Share2,
   ShieldCheck,
-  Sparkles,
   Star,
   Store as StoreIcon,
   TrendingDown,
   Truck,
+  Check,
+  Award,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
