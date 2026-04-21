@@ -712,21 +712,21 @@ function SummaryTile({
   accent?: "primary" | "warning" | "success" | "accent" | "muted";
 }) {
   const tones: Record<string, string> = {
-    primary: "bg-primary/10 text-primary",
-    warning: "bg-warning/15 text-warning",
-    success: "bg-success/15 text-success",
-    accent: "bg-accent/15 text-accent-foreground",
-    muted: "bg-muted text-muted-foreground",
+    primary: "text-primary",
+    warning: "text-warning",
+    success: "text-success",
+    accent: "text-accent-foreground",
+    muted: "text-muted-foreground",
   };
   return (
-    <div className="group rounded-2xl border border-border/60 bg-background/75 p-2.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-md sm:p-3">
-      <div className="flex items-center gap-2 text-muted-foreground min-w-0">
-        <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110 sm:h-9 sm:w-9 sm:rounded-2xl", tones[accent])}>
-          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-        </div>
-        <div className="font-display text-base font-bold text-foreground tracking-tight truncate sm:text-xl">{value}</div>
+    <div className="group flex flex-col gap-1.5 p-4 transition-colors hover:bg-muted/20 sm:gap-2 sm:p-5 [direction:rtl]">
+      <div className="inline-flex items-center gap-1.5 text-[10.5px] font-medium uppercase tracking-[0.08em] text-muted-foreground/70 sm:text-[11px]">
+        <Icon className={cn("h-3 w-3 transition-transform group-hover:scale-110", tones[accent])} strokeWidth={2.25} />
+        <span className="truncate">{label}</span>
       </div>
-      <div className="mt-1.5 text-[10px] leading-4 text-muted-foreground sm:mt-2 sm:text-[11px] sm:leading-5">{label}</div>
+      <div className="font-display text-xl font-semibold tracking-tight text-foreground tabular-nums sm:text-2xl">
+        {value}
+      </div>
     </div>
   );
 }
