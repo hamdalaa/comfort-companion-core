@@ -1,14 +1,10 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, MapPin, Tag, ShieldCheck } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { HeroSearch } from "@/components/HeroSearch";
-
+import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicStoreCount } from "@/lib/catalogCounts";
 import { CITIES } from "@/lib/cityData";
-import sinaaImg from "@/assets/street-sinaa.jpg";
-import rubaieImg from "@/assets/street-rubaie.jpg";
-import iraqImg from "@/assets/iraq-cities.jpg";
 import baghdadMap from "@/assets/hero-baghdad-map.jpg";
 
 export function HeroBanner() {
@@ -20,30 +16,6 @@ export function HeroBanner() {
     { value: totalShops, label: "محل ميداني" },
     { value: brands.length, label: "وكيل وبراند" },
     { value: CITIES.length, label: "محافظة" },
-  ];
-
-  const valueProps = [
-    {
-      icon: Tag,
-      title: "قارن الأسعار قبل ما تطلع",
-      desc: "شوف أرخص سعر للمنتج عند كل المحلات بنفس اللحظة.",
-      tint: "from-primary/20 to-primary/5",
-      icon_color: "text-primary",
-    },
-    {
-      icon: ShieldCheck,
-      title: "محلات موثوقة فقط",
-      desc: "تقييمات حقيقية من زبائن سابقين + وكلاء معتمدين.",
-      tint: "from-violet/20 to-violet/5",
-      icon_color: "text-violet",
-    },
-    {
-      icon: MapPin,
-      title: "اعرف وين المحل بالضبط",
-      desc: "موقع، ساعات دوام، وتلفون — جاهزة قبل ما تتحرك.",
-      tint: "from-cyan/20 to-cyan/5",
-      icon_color: "text-cyan",
-    },
   ];
 
   return (
