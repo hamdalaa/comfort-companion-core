@@ -47,7 +47,7 @@ export function WishlistDrawer({ open, onOpenChange }: Props) {
         <SheetHeader className="sticky top-0 z-10 border-b border-border/60 bg-background/95 px-5 pb-4 pt-5 backdrop-blur-xl">
           <SheetTitle className="flex items-center justify-between gap-3 text-right">
             <span className="inline-flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-rose-500/15 text-rose-500">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-rose/15 text-rose">
                 <Heart className="h-4.5 w-4.5 fill-current" />
               </span>
               <span className="font-display text-base font-semibold tracking-tight">
@@ -149,7 +149,7 @@ function EmptyWishlist() {
   return (
     <div className="px-5 py-12">
       <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-12 text-center">
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-rose-500/10 text-rose-500">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-rose/10 text-rose">
           <Heart className="h-7 w-7" />
         </div>
         <p className="mt-4 text-sm font-medium leading-7 text-foreground">
