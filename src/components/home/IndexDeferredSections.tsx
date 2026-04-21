@@ -14,7 +14,6 @@ import { BrandCarousel } from "@/components/BrandCarousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductRail } from "@/components/ProductRail";
 import { StreetShopsSection } from "@/components/StreetShopsSection";
-import { HeroCategoryTiles } from "@/components/HeroCategoryTiles";
 import { PromoBanner } from "@/components/PromoBanner";
 import { BrandStrip } from "@/components/BrandStrip";
 import { ContactStrip } from "@/components/ContactStrip";
@@ -91,9 +90,6 @@ export default function IndexDeferredSections() {
   return (
     <>
       <main className="pb-12 sm:pb-20">
-        {/* Big visual category tiles — Alnabaa-style */}
-        <HeroCategoryTiles />
-
         <section className="group relative mt-8 overflow-hidden border-y border-border/60 bg-background sm:mt-16 md:mt-24">
           <div aria-hidden className="pointer-events-none absolute -top-16 -right-24 h-56 w-56 rounded-full bg-cyan/10 blur-3xl sm:h-80 sm:w-80 sm:bg-cyan/14" />
           <div aria-hidden className="pointer-events-none absolute -bottom-20 -left-24 h-56 w-56 rounded-full bg-emerald/10 blur-3xl sm:h-80 sm:w-80 sm:bg-emerald/12" />
