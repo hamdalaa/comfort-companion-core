@@ -273,10 +273,8 @@ const ShopView = () => {
           {/* ============ 2. ACTIONS BAR ============ */}
           <div
             className={cn(
-              "sticky top-[56px] z-20 flex items-center gap-1.5 border-t border-border/60 p-2.5 transition-all duration-300 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:whitespace-normal sm:gap-2 sm:p-4 md:top-[60px] md:p-5",
-              scrolled
-                ? "bg-card/95 backdrop-blur-md shadow-soft-md"
-                : "bg-transparent",
+              "flex items-center gap-1.5 border-t border-border/60 p-2.5 transition-all duration-300 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:whitespace-normal sm:gap-2 sm:p-4 md:p-5",
+              scrolled ? "bg-card/95 backdrop-blur-md shadow-soft-md" : "bg-transparent",
             )}
           >
             {shop.googleMapsUrl && (
