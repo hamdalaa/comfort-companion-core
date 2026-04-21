@@ -721,7 +721,7 @@ function SummaryTile({
   return (
     <div className="group flex flex-col gap-1.5 p-4 transition-colors hover:bg-muted/20 sm:gap-2 sm:p-5 [direction:rtl]">
       <div className="inline-flex items-center gap-1.5 text-[10.5px] font-medium uppercase tracking-[0.08em] text-muted-foreground/70 sm:text-[11px]">
-        <Icon className={cn("h-3 w-3 transition-transform group-hover:scale-110", tones[accent])} strokeWidth={2.25} />
+        <Icon className={cn("h-3 w-3 transition-transform group-hover:scale-110", tones[accent])} />
         <span className="truncate">{label}</span>
       </div>
       <div className="font-display text-xl font-semibold tracking-tight text-foreground tabular-nums sm:text-2xl">
