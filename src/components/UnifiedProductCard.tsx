@@ -72,9 +72,10 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
         )}
 
         {/* Top-right: offer count chip */}
-        <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-card/85 px-2 py-0.5 text-[10px] font-semibold text-foreground/80 backdrop-blur-md sm:text-[11px]">
-          <Store className="h-2.5 w-2.5" />
+        <div className="absolute end-3 top-3 z-10 flex items-center gap-1 rounded-full bg-foreground/85 px-2 py-1 text-[10px] font-semibold text-background shadow-[0_2px_8px_-2px_rgb(0_0_0/0.3)] backdrop-blur-md sm:text-[11px]">
+          <Store className="h-3 w-3" />
           <span className="tabular-nums">{product.offerCount}</span>
+          <span className="hidden sm:inline">محل</span>
         </div>
 
         {/* Bottom-left: stock pill */}
