@@ -151,9 +151,10 @@ export default function ProductDetail() {
             {/* Gallery */}
             <div className="lg:sticky lg:top-24 lg:self-start">
               <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card">
-                <div className="absolute end-4 top-4 z-10 flex flex-col gap-2">
-                  <IconAction label="إضافة إلى المفضلة"><Heart className="h-4 w-4" /></IconAction>
-                  <IconAction label="مشاركة"><Share2 className="h-4 w-4" /></IconAction>
+                <div className="absolute end-3 top-3 z-10 inline-flex items-center gap-0.5 rounded-full border border-border/60 bg-card/90 p-1 shadow-sm backdrop-blur-md">
+                  <IconAction label="إضافة إلى المفضلة"><Heart className="h-3.5 w-3.5" /></IconAction>
+                  <span aria-hidden className="h-4 w-px bg-border/60" />
+                  <IconAction label="مشاركة"><Share2 className="h-3.5 w-3.5" /></IconAction>
                 </div>
 
                 {savings > 5 && (
@@ -413,7 +414,7 @@ function IconAction({ children, label }: { children: ReactNode; label: string })
     <button
       type="button"
       aria-label={label}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-card/95 text-foreground shadow-sm ring-1 ring-border/60 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:bg-card hover:text-primary active:scale-95"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted/60 hover:text-foreground active:scale-95"
     >
       {children}
     </button>
