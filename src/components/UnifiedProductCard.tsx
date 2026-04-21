@@ -59,7 +59,7 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
                 event.currentTarget.src = fallbackImage;
               }
             }}
-            className="relative z-[2] h-full w-full object-contain object-center p-4 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.05]"
+            className="relative z-[2] h-full w-full object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.05]"
           />
         </div>
 
