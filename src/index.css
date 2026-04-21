@@ -859,16 +859,15 @@
     white-space: nowrap;
   }
   .filter-pill:hover {
-    border-color: hsl(var(--primary) / 0.5);
-    background: hsl(var(--primary-soft));
-    color: hsl(var(--primary));
-    transform: translateY(-1px);
+    border-color: hsl(var(--foreground) / 0.3);
+    background: hsl(var(--muted) / 0.6);
+    color: hsl(var(--foreground));
   }
   .filter-pill[data-active="true"] {
     background: hsl(var(--foreground));
     color: hsl(var(--background));
     border-color: hsl(var(--foreground));
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-xs);
   }
 
   /* Compare drawer slide-up */
