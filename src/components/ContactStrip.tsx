@@ -10,7 +10,7 @@ const SPONSOR_PERKS = [
 
 export function ContactStrip() {
   return (
-    <section className="container mt-10 space-y-6 sm:mt-20 md:mt-24">
+    <section className="container mt-8 space-y-6 sm:mt-12 md:mt-16">
       <div className="group relative overflow-hidden rounded-3xl border border-violet/25 bg-gradient-to-br from-violet/12 via-card to-rose/8 p-6 shadow-soft-lg md:p-10">
         <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 h-56 w-56 rounded-full bg-violet/20 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-12 h-56 w-56 rounded-full bg-rose/15 blur-3xl" />
