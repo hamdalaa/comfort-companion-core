@@ -19,6 +19,7 @@ import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useSta
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
+  AlertTriangle,
   Clock,
   Package,
   Search,
@@ -110,6 +111,7 @@ export default function UnifiedSearch() {
   const [shopSort, setShopSort] = useState<ShopSortKey>("relevance");
   const [data, setData] = useState<UnifiedSearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [recent, setRecent] = useState<string[]>(getRecent());
   const [visibleProductCount, setVisibleProductCount] = useState(INITIAL_VISIBLE_PRODUCT_COUNT);
 
@@ -132,9 +134,18 @@ export default function UnifiedSearch() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    searchUnified({ ...filters, q: activeQuery, sort }).then((res) => {
-      if (!cancelled) { setData(res); setLoading(false); }
-    });
+    setError(null);
+    searchUnified({ ...filters, q: activeQuery, sort })
+      .then((res) => {
+        if (!cancelled) { setData(res); setLoading(false); }
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error("[UnifiedSearch] fetch failed", err);
+        setError(err instanceof Error ? err.message : "تعذّر الاتصال بالخادم");
+        setData(null);
+        setLoading(false);
+      });
     return () => { cancelled = true; };
   }, [activeQuery, filters, sort]);
 
@@ -523,6 +534,7 @@ export default function UnifiedSearch() {
           <ProductsView
             data={data}
             loading={loading}
+            error={error}
             visibleProducts={visibleProducts}
             hasMoreProducts={hasMoreProducts}
             onLoadMore={handleLoadMoreProducts}
@@ -572,10 +584,11 @@ function TabButton({
 }
 
 const ProductsView = memo(function ProductsView({
-  data, loading, visibleProducts, hasMoreProducts, onLoadMore, filters, setFilters, sort, setSort, activeChips, onResetFilters,
+  data, loading, error, visibleProducts, hasMoreProducts, onLoadMore, filters, setFilters, sort, setSort, activeChips, onResetFilters,
 }: {
   data: UnifiedSearchResponse | null;
   loading: boolean;
+  error: string | null;
   visibleProducts: UnifiedSearchResponse["products"];
   hasMoreProducts: boolean;
   onLoadMore: () => void;
@@ -648,7 +661,21 @@ const ProductsView = memo(function ProductsView({
           </div>
         )}
 
-        {loading && visibleProducts.length === 0 ? (
+        {error && !loading ? (
+          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-destructive/30 bg-destructive/5 px-6 py-12 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+              <AlertTriangle className="h-6 w-6" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold text-foreground">اكو مشكلة بالاتصال حالياً</h3>
+              <p className="text-sm text-muted-foreground">ما گدرنا نوصل لخادم المنتجات. جرّب تعيد المحاولة بعد لحظة.</p>
+              <p className="text-xs text-muted-foreground/70 font-mono pt-1">{error}</p>
+            </div>
+            <Button onClick={() => window.location.reload()} variant="outline" className="rounded-full">
+              إعادة المحاولة
+            </Button>
+          </div>
+        ) : loading && visibleProducts.length === 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <Skeleton key={i} className="aspect-[3/4] w-full rounded-2xl" />
