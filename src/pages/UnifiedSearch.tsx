@@ -583,10 +583,11 @@ function TabButton({
 }
 
 const ProductsView = memo(function ProductsView({
-  data, loading, visibleProducts, hasMoreProducts, onLoadMore, filters, setFilters, sort, setSort, activeChips, onResetFilters,
+  data, loading, error, visibleProducts, hasMoreProducts, onLoadMore, filters, setFilters, sort, setSort, activeChips, onResetFilters,
 }: {
   data: UnifiedSearchResponse | null;
   loading: boolean;
+  error: string | null;
   visibleProducts: UnifiedSearchResponse["products"];
   hasMoreProducts: boolean;
   onLoadMore: () => void;
