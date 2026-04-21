@@ -150,7 +150,7 @@ export default function ProductDetail() {
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Gallery */}
             <div className="lg:sticky lg:top-24 lg:self-start">
-              <div className="group relative overflow-hidden rounded-3xl bg-muted/30">
+              <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card">
                 <div className="absolute end-4 top-4 z-10 flex flex-col gap-2">
                   <IconAction label="إضافة إلى المفضلة"><Heart className="h-4 w-4" /></IconAction>
                   <IconAction label="مشاركة"><Share2 className="h-4 w-4" /></IconAction>
@@ -163,11 +163,11 @@ export default function ProductDetail() {
                   </div>
                 )}
 
-                <div className="relative flex aspect-square items-center justify-center p-8 sm:p-12">
+                <div className="relative aspect-square w-full overflow-hidden">
                   <img
                     src={activeImageSrc}
                     alt={title}
-                    className="h-full w-full object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]"
                   />
                 </div>
               </div>
@@ -181,13 +181,13 @@ export default function ProductDetail() {
                       onClick={() => setActiveImageIndex(index)}
                       aria-label={`عرض الصورة ${index + 1}`}
                       className={cn(
-                        "relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-muted/30 ring-1 ring-inset transition-all duration-300",
+                        "relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-card ring-1 ring-inset transition-all duration-300",
                         safeActiveImage === index
                           ? "ring-2 ring-foreground"
                           : "ring-border/50 hover:ring-foreground/30",
                       )}
                     >
-                      <img src={image} alt="" className="h-full w-full object-contain p-2" />
+                      <img src={image} alt="" className="h-full w-full object-cover" />
                     </button>
                   ))}
                 </div>
