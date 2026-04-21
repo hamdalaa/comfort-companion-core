@@ -3,15 +3,13 @@ import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   Award,
+  Check,
   ChevronLeft,
-  Clock,
   ExternalLink,
   Heart,
-  Home,
   Package,
   Share2,
   ShieldCheck,
-  Sparkles,
   Star,
   Store as StoreIcon,
   TrendingDown,
@@ -19,8 +17,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -65,20 +61,16 @@ export default function ProductDetail() {
   const fallbackDescription = useMemo(() => {
     if (!product) return "";
     if (product.description) return decodeHtmlEntities(product.description);
-
     const parts = [
       product.brand ? decodeHtmlEntities(product.brand) : undefined,
       decodeHtmlEntities(product.title),
       product.category ? `ضمن فئة ${decodeHtmlEntities(product.category)}` : undefined,
       product.offerCount > 0 ? `ومتوفر حالياً عبر ${formatCount(product.offerCount)} عرض داخل حاير.` : undefined,
     ].filter(Boolean);
-
     return parts.join(" ");
   }, [product]);
 
-  if (loading) {
-    return <ProductDetailSkeleton />;
-  }
+  if (loading) return <ProductDetailSkeleton />;
 
   if (!product && (productQuery.isError || offersQuery.isError)) {
     return (
@@ -96,7 +88,7 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen atlas-shell">
+      <div className="min-h-screen bg-background">
         <TopNav />
         <main className="container py-20 text-center">
           <h1 className="text-2xl font-bold text-foreground">المنتج غير موجود</h1>
@@ -129,346 +121,244 @@ export default function ProductDetail() {
   const activeImageSrc = gallery[safeActiveImage] ?? fallbackImage;
 
   return (
-    <div className="min-h-screen atlas-shell">
+    <div className="min-h-screen bg-background">
       <TopNav />
 
-      <div className="border-b border-border bg-background">
-        <div className="container flex items-center gap-2 overflow-x-auto whitespace-nowrap py-2.5 text-xs text-muted-foreground">
-          <Link to="/" className="inline-flex items-center gap-1 transition-colors hover:text-primary">
-            <Home className="h-3 w-3" />
-            الرئيسية
-          </Link>
-          <ChevronLeft className="h-3 w-3" />
-          <Link to="/search" className="transition-colors hover:text-primary">
-            البحث الموحّد
-          </Link>
+      {/* Breadcrumb */}
+      <div className="border-b border-border/40">
+        <div className="container flex items-center gap-1.5 overflow-x-auto whitespace-nowrap py-3 text-[12px] text-muted-foreground">
+          <Link to="/" className="transition-colors hover:text-foreground">الرئيسية</Link>
+          <ChevronLeft className="h-3 w-3 opacity-50" />
+          <Link to="/search" className="transition-colors hover:text-foreground">البحث</Link>
           {brand && (
             <>
-              <ChevronLeft className="h-3 w-3" />
-              <span>{brand}</span>
+              <ChevronLeft className="h-3 w-3 opacity-50" />
+              <span className="transition-colors hover:text-foreground">{brand}</span>
             </>
           )}
-          <ChevronLeft className="h-3 w-3" />
+          <ChevronLeft className="h-3 w-3 opacity-50" />
           <span className="line-clamp-1 font-medium text-foreground">{title}</span>
         </div>
       </div>
 
-      <section className="relative overflow-hidden border-y border-cyan/25 bg-gradient-to-bl from-emerald/14 via-background to-cyan/12">
-        <div aria-hidden className="pointer-events-none absolute -top-20 -left-16 h-72 w-72 rounded-full bg-emerald/20 blur-3xl" />
-        <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-cyan/20 blur-3xl" />
-
-        <div className="container relative py-8 sm:py-12 md:py-14">
-          <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-stretch">
-            <div className="order-2 lg:order-1">
-              <span className="atlas-kicker">مطابقة السوق</span>
-
-              <h1 className="font-display mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl">
-                {title}
-              </h1>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {brand && (
-                  <Badge
-                    variant="outline"
-                    className="rounded-full border-white/70 bg-white/90 px-3 py-1 text-xs font-bold shadow-soft-sm backdrop-blur-md"
-                  >
-                    {brand}
-                  </Badge>
-                )}
-                {category && (
-                  <Badge className="rounded-full bg-accent-cyan-soft px-3 py-1 text-accent-cyan shadow-soft-sm hover:bg-accent-cyan-soft">
-                    {category}
-                  </Badge>
-                )}
-                <Badge className="gap-1 rounded-full bg-primary-soft px-3 py-1 text-primary shadow-soft-sm hover:bg-primary-soft">
-                  <Sparkles className="h-3 w-3" />
-                  مقارنة من {formatCount(offers.length)} متجر
-                </Badge>
-                {trustedOffers > 0 && (
-                  <Badge className="gap-1 rounded-full bg-accent-emerald-soft px-3 py-1 text-accent-emerald shadow-soft-sm hover:bg-accent-emerald-soft">
-                    <ShieldCheck className="h-3.5 w-3.5" />
-                    {formatCount(trustedOffers)} مصادر موثقة
-                  </Badge>
-                )}
-              </div>
-
-              <div className="mt-6 rounded-3xl border border-border/70 bg-card/88 p-5 shadow-soft-xl backdrop-blur-sm sm:p-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
-                      أفضل قراءة الآن
-                    </p>
-                    <div className="mt-3 flex flex-wrap items-end gap-3">
-                      <span className="font-outfit tabular-nums text-[2.1rem] font-extrabold leading-none text-foreground sm:text-[2.6rem]">
-                        {product.lowestPrice ? formatIQD(product.lowestPrice) : "غير متوفر"}
-                      </span>
-                      {product.highestPrice && product.highestPrice > (product.lowestPrice ?? 0) && (
-                        <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft-sm">
-                          أعلى قراءة {formatIQD(product.highestPrice)}
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-3 text-sm text-muted-foreground">
-                      {bestOffer
-                        ? `أرخص عرض حالياً من ${decodeHtmlEntities(bestOffer.storeName)}`
-                        : "لم يتم رصد عروض شراء مباشرة لهذا المنتج بعد."}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col gap-2 sm:items-end">
-                    {bestOffer ? (
-                      <Button asChild className="rounded-full bg-gradient-primary px-5 text-primary-foreground shadow-glow">
-                        <a href={bestOffer.productUrl} target="_blank" rel="noopener noreferrer">
-                          اشترِ من {decodeHtmlEntities(bestOffer.storeName)}
-                          <ExternalLink className="ms-1 h-4 w-4" />
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button asChild variant="outline" className="rounded-full px-5">
-                        <Link to="/search">العودة للبحث</Link>
-                      </Button>
-                    )}
-
-                    <div className="flex flex-wrap gap-2 text-xs text-muted-foreground sm:justify-end">
-                      {bestOffer?.shippingNote && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-background/80 px-3 py-1 shadow-soft-sm">
-                          <Truck className="h-3.5 w-3.5 text-accent-emerald" />
-                          {bestOffer.shippingNote}
-                        </span>
-                      )}
-                      {bestOffer?.freshnessLabel && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-background/80 px-3 py-1 shadow-soft-sm">
-                          <Clock className="h-3.5 w-3.5 text-primary" />
-                          {bestOffer.freshnessLabel}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {product.rating != null && product.rating > 0 && (
-                <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
-                  <div className="flex items-center gap-0.5">
-                    {[1, 2, 3, 4, 5].map((step) => (
-                      <Star
-                        key={step}
-                        className={cn(
-                          "h-4 w-4",
-                          step <= Math.round(product.rating) ? "fill-warning text-warning" : "text-muted",
-                        )}
-                      />
-                    ))}
-                  </div>
-                  <span className="font-semibold tabular-nums text-foreground">{product.rating.toFixed(1)}</span>
-                  <span className="text-muted-foreground">
-                    ({formatCount(product.reviewCount ?? 0)} تقييم)
-                  </span>
-                </div>
-              )}
-
-              <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
-                <MetricCard icon={StoreIcon} value={formatCount(offers.length)} label="متجر" />
-                <MetricCard icon={Package} value={formatCount(inStockOffers.length)} label="متوفر" accent="emerald" />
-                <MetricCard icon={TrendingDown} value={`${formatCount(savings)}%`} label="فرق السعر" accent="rose" />
-                <MetricCard icon={ShieldCheck} value={formatCount(trustedOffers)} label="موثق" />
-              </div>
-
-              <div className="mt-4 rounded-[1.8rem] border border-border/70 bg-card/72 p-4 shadow-soft-sm backdrop-blur-sm sm:p-5">
-                <p className="text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
-                  {fallbackDescription || "تفاصيل مباشرة من السوق العراقي مع قراءة واضحة لأفضل الأسعار والعروض الموثقة."}
-                </p>
-              </div>
-            </div>
-
-            <div className="order-1 lg:order-2">
-              <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-white shadow-soft-xl">
-
-                <div className="absolute start-4 top-4 z-10 flex flex-wrap gap-2">
-                  <GlassPill>
-                    <StoreIcon className="h-3.5 w-3.5 text-primary" />
-                    {formatCount(offers.length)} عرض
-                  </GlassPill>
-                  {savings > 5 && (
-                    <span className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-accent-rose px-3 text-[11px] font-bold text-white shadow-soft-md">
-                      <TrendingDown className="h-3.5 w-3.5" />
-                      وفر حتى {formatCount(savings)}%
-                    </span>
-                  )}
-                  {trustedOffers > 0 && (
-                    <span className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-success px-3 text-[11px] font-bold text-white shadow-soft-md">
-                      <ShieldCheck className="h-3.5 w-3.5" />
-                      موثّق
-                    </span>
-                  )}
-                </div>
-
+      {/* Hero — gallery + buy box */}
+      <section className="border-b border-border/40">
+        <div className="container py-8 md:py-12">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+            {/* Gallery */}
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <div className="group relative overflow-hidden rounded-3xl bg-muted/30">
                 <div className="absolute end-4 top-4 z-10 flex flex-col gap-2">
-                  <button
-                    type="button"
-                    className="ios-tap hit-target inline-flex items-center justify-center rounded-full border border-border/70 bg-card/96 p-0 text-foreground shadow-[0_10px_24px_-18px_rgba(15,23,42,0.45),0_2px_6px_rgba(15,23,42,0.08)] backdrop-blur-md transition-[background-color,border-color,color,transform,box-shadow] hover:-translate-y-0.5 hover:border-primary/25 hover:bg-white hover:text-primary hover:shadow-[0_14px_28px_-18px_rgba(14,165,164,0.38),0_4px_10px_rgba(15,23,42,0.1)]"
-                    aria-label="إضافة إلى المفضلة"
-                  >
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface text-current transition-[background-color,transform] duration-300">
-                      <Heart className="h-[1.05rem] w-[1.05rem] translate-x-[0.01rem] stroke-[2.1]" />
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    className="ios-tap hit-target inline-flex items-center justify-center rounded-full border border-border/70 bg-card/96 p-0 text-foreground shadow-[0_10px_24px_-18px_rgba(15,23,42,0.45),0_2px_6px_rgba(15,23,42,0.08)] backdrop-blur-md transition-[background-color,border-color,color,transform,box-shadow] hover:-translate-y-0.5 hover:border-primary/25 hover:bg-white hover:text-primary hover:shadow-[0_14px_28px_-18px_rgba(14,165,164,0.38),0_4px_10px_rgba(15,23,42,0.1)]"
-                    aria-label="مشاركة"
-                  >
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface text-current transition-[background-color,transform] duration-300">
-                      <Share2 className="h-[1.02rem] w-[1.02rem] -translate-x-[0.01rem] stroke-[2.1]" />
-                    </span>
-                  </button>
+                  <IconAction label="إضافة إلى المفضلة"><Heart className="h-4 w-4" /></IconAction>
+                  <IconAction label="مشاركة"><Share2 className="h-4 w-4" /></IconAction>
                 </div>
 
-                <div className="relative flex aspect-[5/4] items-center justify-center px-2 pb-4 pt-16 sm:aspect-square sm:px-3 sm:pb-5 sm:pt-20">
-                  <div className="relative z-[1] flex h-full w-full items-center justify-center rounded-[2rem] border border-border/60 bg-white px-3 py-4 shadow-[inset_0_1px_0_hsl(0_0%_100%/0.9)] sm:px-4 sm:py-5">
-                    <img
-                      src={activeImageSrc}
-                      alt={title}
-                      className="relative z-[2] h-full w-full scale-[1.04] object-contain object-center transition-transform duration-500 ease-out group-hover:scale-[1.07]"
-                    />
+                {savings > 5 && (
+                  <div className="absolute start-4 top-4 z-10 inline-flex items-center gap-1 rounded-full bg-foreground px-2.5 py-1 text-[11px] font-semibold text-background">
+                    <TrendingDown className="h-3 w-3" />
+                    وفّر {formatCount(savings)}%
                   </div>
-                </div>
+                )}
 
-                <div className="px-3 pb-3 sm:px-4 sm:pb-4">
-                  <div className="rounded-[1.55rem] border border-border/75 bg-card p-4 shadow-soft-md">
-                    <div className="flex items-end justify-between gap-4">
-                      <div className="min-w-0 flex-1 text-right">
-                        <p className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground/80">
-                        قراءة السوق الحالية
-                        </p>
-                        <h2 className="mt-1 line-clamp-1 text-[1.05rem] font-bold text-foreground sm:text-[1.5rem]">
-                          {bestOffer ? decodeHtmlEntities(bestOffer.storeName) : title}
-                        </h2>
-                        <p className="mt-1 line-clamp-1 text-xs text-muted-foreground sm:text-sm">
-                          {bestOffer?.storeCity
-                            ? `${bestOffer.storeCity} • ${bestOffer.stock === "in_stock" ? "متوفر الآن" : "متابعة مستمرة"}`
-                            : `${formatCount(product.inStockCount)} عرض متوفر حالياً`}
-                        </p>
-                      </div>
-
-                      <div className="shrink-0 rounded-[1.15rem] border border-border/70 bg-surface px-3.5 py-3 text-right shadow-soft-sm">
-                        <p className="text-[10px] font-medium text-muted-foreground">يبدأ من</p>
-                        <p className="font-outfit tabular-nums mt-1 text-[1.1rem] font-extrabold leading-none text-foreground sm:text-[1.35rem]">
-                          {product.lowestPrice ? formatIQD(product.lowestPrice) : "—"}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                <div className="relative flex aspect-square items-center justify-center p-8 sm:p-12">
+                  <img
+                    src={activeImageSrc}
+                    alt={title}
+                    className="h-full w-full object-contain transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]"
+                  />
                 </div>
               </div>
 
               {gallery.length > 1 && (
-                <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
                   {gallery.map((image, index) => (
                     <button
                       key={`${image}-${index}`}
                       type="button"
                       onClick={() => setActiveImageIndex(index)}
+                      aria-label={`عرض الصورة ${index + 1}`}
                       className={cn(
-                        "img-frame ios-tap relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border bg-white/90 p-1 shadow-soft-sm backdrop-blur-md transition-[border-color,box-shadow,transform] duration-300",
+                        "relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-muted/30 ring-1 ring-inset transition-all duration-300",
                         safeActiveImage === index
-                          ? "border-primary shadow-soft-lg"
-                          : "border-border/70 hover:border-primary/30 hover:shadow-soft-md",
+                          ? "ring-2 ring-foreground"
+                          : "ring-border/50 hover:ring-foreground/30",
                       )}
                     >
-                      <img src={image} alt="" className="h-full w-full rounded-[1rem] object-contain bg-surface p-1" />
+                      <img src={image} alt="" className="h-full w-full object-contain p-2" />
                     </button>
                   ))}
                 </div>
               )}
             </div>
+
+            {/* Buy box */}
+            <div className="flex flex-col">
+              {/* Brand · Category */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-muted-foreground">
+                {brand && <span className="font-semibold text-foreground/75">{brand}</span>}
+                {brand && category && <span className="h-1 w-1 rounded-full bg-muted-foreground/40" aria-hidden />}
+                {category && <span>{category}</span>}
+              </div>
+
+              {/* Title */}
+              <h1 className="mt-3 text-balance text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl md:text-4xl">
+                {title}
+              </h1>
+
+              {/* Rating */}
+              {product.rating != null && product.rating > 0 && (
+                <div className="mt-4 flex items-center gap-2 text-[13px]">
+                  <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map((step) => (
+                      <Star
+                        key={step}
+                        className={cn(
+                          "h-3.5 w-3.5",
+                          step <= Math.round(product.rating ?? 0) ? "fill-foreground text-foreground" : "text-muted-foreground/30",
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className="font-semibold tabular-nums text-foreground">{product.rating.toFixed(1)}</span>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="text-muted-foreground">{formatCount(product.reviewCount ?? 0)} تقييم</span>
+                </div>
+              )}
+
+              {/* Price block */}
+              <div className="mt-6 rounded-3xl border border-border/60 bg-card p-5 sm:p-6">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  أقل سعر متوفر
+                </p>
+                <div className="mt-2 flex flex-wrap items-baseline gap-3">
+                  <span className="font-outfit tabular-nums text-4xl font-semibold leading-none tracking-tight text-foreground sm:text-5xl">
+                    {product.lowestPrice ? formatIQD(product.lowestPrice) : "—"}
+                  </span>
+                  {product.highestPrice && product.highestPrice > (product.lowestPrice ?? 0) && (
+                    <span className="font-outfit tabular-nums text-base text-muted-foreground/70 line-through">
+                      {formatIQD(product.highestPrice)}
+                    </span>
+                  )}
+                </div>
+
+                {bestOffer && (
+                  <p className="mt-3 text-[13px] text-muted-foreground">
+                    من <span className="font-semibold text-foreground">{decodeHtmlEntities(bestOffer.storeName)}</span>
+                    {bestOffer.storeCity && <span> · {bestOffer.storeCity}</span>}
+                  </p>
+                )}
+
+                {bestOffer ? (
+                  <Button asChild size="lg" variant="primary" className="mt-5 w-full rounded-2xl text-[14px]">
+                    <a href={bestOffer.productUrl} target="_blank" rel="noopener noreferrer">
+                      اشترِ من {decodeHtmlEntities(bestOffer.storeName)}
+                      <ExternalLink className="ms-1 h-4 w-4" />
+                    </a>
+                  </Button>
+                ) : (
+                  <Button asChild variant="outline" size="lg" className="mt-5 w-full rounded-2xl">
+                    <Link to="/search">العودة للبحث</Link>
+                  </Button>
+                )}
+
+                {/* Trust strip */}
+                <div className="mt-5 grid grid-cols-2 gap-3 border-t border-border/50 pt-4 text-[12px] sm:grid-cols-3">
+                  {bestOffer?.shippingNote && (
+                    <TrustItem icon={Truck} label={bestOffer.shippingNote} />
+                  )}
+                  {trustedOffers > 0 && (
+                    <TrustItem icon={ShieldCheck} label={`${formatCount(trustedOffers)} مصدر موثّق`} />
+                  )}
+                  {product.inStockCount > 0 && (
+                    <TrustItem icon={Check} label={`${formatCount(product.inStockCount)} متوفر`} />
+                  )}
+                </div>
+              </div>
+
+              {/* Quick metrics */}
+              <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                <MiniStat value={formatCount(offers.length)} label="متجر" />
+                <MiniStat value={formatCount(inStockOffers.length)} label="متوفر" />
+                <MiniStat value={savings > 0 ? `${formatCount(savings)}%` : "—"} label="فرق" />
+                <MiniStat value={formatCount(trustedOffers)} label="موثّق" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <main className="container space-y-6 py-6 md:space-y-8 md:py-8">
-        <section className="rounded-3xl border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
-          <div className="border-b border-border/70 pb-4">
-            <span className="atlas-kicker">العروض</span>
-            <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">عروض موثوقة وجاهزة للمقارنة</h2>
-                <p className="mt-1 text-sm leading-7 text-muted-foreground">
-                  نفس لغة `/brands`: بطاقات واضحة، حالة توفر مباشرة، ومصدر الشراء ظاهر بدون ضجيج.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2 text-xs">
-                <SummaryChip>{formatCount(inStockOffers.length)} متوفر الآن</SummaryChip>
-                <SummaryChip>{formatCount(trustedOffers)} مصدر موثق</SummaryChip>
-                <SummaryChip>{formatCount(offers.length)} عرض مفهرس</SummaryChip>
-              </div>
-            </div>
-          </div>
+      <main className="container space-y-12 py-10 md:space-y-16 md:py-14">
+        {/* Offers */}
+        <section>
+          <SectionHeader
+            kicker="العروض"
+            title="جميع المتاجر اللي يبيعون هذا المنتج"
+            subtitle="مرتّبة حسب السعر والتوفر — بدون ضجيج."
+          />
 
           {offers.length > 0 ? (
-            <div className="mt-5 space-y-3">
+            <div className="mt-6 divide-y divide-border/40 overflow-hidden rounded-3xl border border-border/60 bg-card">
               {offers.map((offer, index) => (
-                <OfferCard key={offer.id} offer={offer} highlighted={index === 0 && offer.stock === "in_stock"} />
+                <OfferRow key={offer.id} offer={offer} highlighted={index === 0 && offer.stock === "in_stock"} />
               ))}
             </div>
           ) : (
-            <div className="mt-5 rounded-3xl border border-dashed border-border bg-background/70 p-8 text-center text-sm text-muted-foreground">
-              لا توجد عروض شراء مباشرة لهذا المنتج حالياً.
-            </div>
+            <EmptyPanel>لا توجد عروض شراء مباشرة لهذا المنتج حالياً.</EmptyPanel>
           )}
         </section>
 
-        <section className="rounded-3xl border border-border/70 bg-card/85 p-5 shadow-soft-lg backdrop-blur-sm md:p-6">
-          <div className="border-b border-border/70 pb-4">
-            <span className="atlas-kicker">التفاصيل</span>
-            <h2 className="mt-3 text-2xl font-bold text-foreground">مواصفات مختصرة ووصف المنتج</h2>
-          </div>
+        {/* Details tabs */}
+        <section>
+          <SectionHeader kicker="التفاصيل" title="مواصفات ووصف المنتج" />
 
-          <Tabs defaultValue="specs" className="mt-5 w-full">
-            <TabsList className="grid w-full grid-cols-3 rounded-full bg-background/85 p-1 shadow-soft-sm">
-              <TabsTrigger value="specs" className="rounded-full">
+          <Tabs defaultValue="specs" className="mt-6 w-full">
+            <TabsList className="h-auto rounded-2xl bg-muted/50 p-1">
+              <TabsTrigger value="specs" className="rounded-xl px-4 py-2 text-[13px] font-medium data-[state=active]:bg-card data-[state=active]:shadow-sm">
                 المواصفات
               </TabsTrigger>
-              <TabsTrigger value="description" className="rounded-full">
+              <TabsTrigger value="description" className="rounded-xl px-4 py-2 text-[13px] font-medium data-[state=active]:bg-card data-[state=active]:shadow-sm">
                 الوصف
               </TabsTrigger>
-              <TabsTrigger value="offers" className="rounded-full">
-                الملخص السوقي
+              <TabsTrigger value="summary" className="rounded-xl px-4 py-2 text-[13px] font-medium data-[state=active]:bg-card data-[state=active]:shadow-sm">
+                الملخص
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="specs" className="mt-5">
+            <TabsContent value="specs" className="mt-6">
               {Object.keys(fallbackSpecs).length > 0 ? (
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {Object.entries(fallbackSpecs).map(([key, value]) => (
+                <dl className="overflow-hidden rounded-2xl border border-border/60 bg-card">
+                  {Object.entries(fallbackSpecs).map(([key, value], i, arr) => (
                     <div
                       key={key}
-                      className="flex items-center justify-between gap-4 rounded-[1.4rem] border border-border/70 bg-background/80 px-4 py-4 shadow-soft-sm"
+                      className={cn(
+                        "flex items-center justify-between gap-4 px-5 py-3.5 text-[13px]",
+                        i < arr.length - 1 && "border-b border-border/40",
+                      )}
                     >
-                      <span className="text-sm text-muted-foreground">{key}</span>
-                      <span className="text-sm font-semibold text-foreground">{decodeHtmlEntities(String(value))}</span>
+                      <dt className="text-muted-foreground">{key}</dt>
+                      <dd className="font-semibold text-foreground">{decodeHtmlEntities(String(value))}</dd>
                     </div>
                   ))}
-                </div>
+                </dl>
               ) : (
                 <EmptyPanel>لا توجد مواصفات تفصيلية لهذا المنتج بعد.</EmptyPanel>
               )}
             </TabsContent>
 
-            <TabsContent value="description" className="mt-5">
-              <div className="rounded-[1.8rem] border border-border/70 bg-background/80 p-5 shadow-soft-sm">
-                <p className="text-sm leading-8 text-foreground">
+            <TabsContent value="description" className="mt-6">
+              <div className="rounded-2xl border border-border/60 bg-card p-6">
+                <p className="text-[14px] leading-7 text-foreground/90">
                   {fallbackDescription || "لا يوجد وصف متاح لهذا المنتج بعد."}
                 </p>
               </div>
             </TabsContent>
 
-            <TabsContent value="offers" className="mt-5">
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                <MetricCard icon={StoreIcon} value={formatCount(offers.length)} label="عدد العروض" />
-                <MetricCard icon={Package} value={formatCount(inStockOffers.length)} label="عروض متوفرة" accent="emerald" />
-                <MetricCard icon={TrendingDown} value={`${formatCount(savings)}%`} label="فرق السعر" accent="rose" />
-                <MetricCard icon={Award} value={formatCount(trustedOffers)} label="مصادر موثقة" />
+            <TabsContent value="summary" className="mt-6">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <SummaryStat icon={StoreIcon} value={formatCount(offers.length)} label="عدد العروض" />
+                <SummaryStat icon={Package} value={formatCount(inStockOffers.length)} label="عروض متوفرة" />
+                <SummaryStat icon={TrendingDown} value={`${formatCount(savings)}%`} label="فرق السعر" />
+                <SummaryStat icon={Award} value={formatCount(trustedOffers)} label="مصادر موثقة" />
               </div>
             </TabsContent>
           </Tabs>
@@ -480,78 +370,69 @@ export default function ProductDetail() {
   );
 }
 
-function MetricCard({
-  icon: Icon,
-  value,
-  label,
-  accent = "primary",
-}: {
-  icon: LucideIcon;
-  value: string;
-  label: string;
-  accent?: "primary" | "emerald" | "rose";
-}) {
-  const accentClass =
-    accent === "emerald"
-      ? "bg-accent-emerald-soft text-accent-emerald"
-      : accent === "rose"
-        ? "bg-accent-rose-soft text-accent-rose"
-        : "bg-primary-soft text-primary";
+/* ============================================================ */
+/*                       Sub-components                         */
+/* ============================================================ */
 
+function SectionHeader({ kicker, title, subtitle }: { kicker: string; title: string; subtitle?: string }) {
   return (
-    <div className="rounded-[1.5rem] border border-border/70 bg-white/85 p-4 text-center shadow-soft-sm backdrop-blur-sm">
-      <div className={cn("mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full", accentClass)}>
-        <Icon className="h-4 w-4" />
-      </div>
-      <div className="font-outfit text-xl font-extrabold text-foreground">{value}</div>
-      <div className="mt-1 text-xs font-medium text-muted-foreground">{label}</div>
+    <div>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{kicker}</p>
+      <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">{title}</h2>
+      {subtitle && <p className="mt-2 text-[14px] text-muted-foreground">{subtitle}</p>}
     </div>
   );
 }
 
-function GlassPill({
-  children,
-}: {
-  children: ReactNode;
-}) {
+function IconAction({ children, label }: { children: ReactNode; label: string }) {
   return (
-    <span className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-white/70 bg-white/90 px-3 text-[11px] font-semibold text-foreground shadow-soft-sm backdrop-blur-md">
+    <button
+      type="button"
+      aria-label={label}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-card/95 text-foreground shadow-sm ring-1 ring-border/60 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:bg-card hover:text-primary active:scale-95"
+    >
       {children}
-    </span>
+    </button>
   );
 }
 
-function SummaryChip({
-  children,
-}: {
-  children: ReactNode;
-}) {
+function TrustItem({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-border/70 bg-background/80 px-3 py-1.5 font-medium text-muted-foreground shadow-soft-sm">
-      {children}
-    </span>
+    <div className="flex items-center gap-1.5 text-muted-foreground">
+      <Icon className="h-3.5 w-3.5 text-foreground/70" />
+      <span className="truncate">{label}</span>
+    </div>
   );
 }
 
-function EmptyPanel({
-  children,
-}: {
-  children: ReactNode;
-}) {
+function MiniStat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="rounded-[1.8rem] border border-dashed border-border bg-background/70 p-8 text-center text-sm text-muted-foreground">
+    <div className="rounded-2xl bg-muted/40 px-3 py-3 text-center">
+      <div className="font-outfit tabular-nums text-lg font-semibold text-foreground">{value}</div>
+      <div className="mt-0.5 text-[11px] font-medium text-muted-foreground">{label}</div>
+    </div>
+  );
+}
+
+function SummaryStat({ icon: Icon, value, label }: { icon: LucideIcon; value: string; label: string }) {
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card p-5">
+      <Icon className="h-4 w-4 text-muted-foreground" />
+      <div className="font-outfit tabular-nums mt-3 text-2xl font-semibold text-foreground">{value}</div>
+      <div className="mt-1 text-[12px] font-medium text-muted-foreground">{label}</div>
+    </div>
+  );
+}
+
+function EmptyPanel({ children }: { children: ReactNode }) {
+  return (
+    <div className="mt-6 rounded-2xl border border-dashed border-border/60 bg-muted/20 p-10 text-center text-[13px] text-muted-foreground">
       {children}
     </div>
   );
 }
 
-function OfferCard({
-  offer,
-  highlighted = false,
-}: {
-  offer: UnifiedOffer;
-  highlighted?: boolean;
-}) {
+function OfferRow({ offer, highlighted = false }: { offer: UnifiedOffer; highlighted?: boolean }) {
   const storeName = decodeHtmlEntities(offer.storeName);
   const official = offer.officialDealer;
   const verified = offer.verified && !official;
@@ -559,96 +440,86 @@ function OfferCard({
   return (
     <article
       className={cn(
-        "rounded-[1.8rem] border border-border/70 p-4 shadow-soft-sm transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-lg md:p-5",
-        highlighted
-          ? "bg-gradient-to-br from-primary-soft/85 via-card to-card shadow-soft-lg"
-          : "bg-background/80",
+        "flex flex-col gap-4 p-5 transition-colors duration-300 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:gap-6",
+        highlighted && "bg-primary-soft/30",
       )}
     >
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            {official ? (
-              <Badge className="gap-1 rounded-full bg-primary-soft px-3 py-1 text-primary hover:bg-primary-soft">
-                <Award className="h-3.5 w-3.5" />
-                وكيل رسمي
-              </Badge>
-            ) : verified ? (
-              <Badge className="gap-1 rounded-full bg-accent-emerald-soft px-3 py-1 text-accent-emerald hover:bg-accent-emerald-soft">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                موثّق
-              </Badge>
-            ) : (
-              <Badge variant="outline" className="rounded-full px-3 py-1">
-                متجر مفهرس
-              </Badge>
+      {/* Left: store info */}
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-1.5">
+          {highlighted && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-background">
+              الأرخص
+            </span>
+          )}
+          {official ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-semibold text-primary">
+              <Award className="h-3 w-3" />
+              وكيل رسمي
+            </span>
+          ) : verified ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-accent-emerald-soft px-2 py-0.5 text-[10px] font-semibold text-accent-emerald">
+              <ShieldCheck className="h-3 w-3" />
+              موثّق
+            </span>
+          ) : null}
+          <span
+            className={cn(
+              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold",
+              offer.stock === "in_stock" && "bg-accent-emerald-soft text-accent-emerald",
+              offer.stock === "preorder" && "bg-primary-soft text-primary",
+              offer.stock === "out_of_stock" && "bg-destructive/10 text-destructive",
             )}
-
-            <Badge
-              variant="outline"
-              className={cn(
-                "rounded-full px-3 py-1",
-                offer.stock === "in_stock" && "border-success/30 bg-success-soft text-success",
-                offer.stock === "preorder" && "border-primary/20 bg-primary-soft text-primary",
-                offer.stock === "out_of_stock" && "border-destructive/20 text-destructive",
-              )}
-            >
-              {offer.stock === "in_stock" ? "متوفر" : offer.stock === "preorder" ? "طلب مسبق" : "نفد"}
-            </Badge>
-
-            {offer.freshnessLabel && <SummaryChip>{offer.freshnessLabel}</SummaryChip>}
-          </div>
-
-          <h3 className="mt-3 text-lg font-bold leading-tight text-foreground">{storeName}</h3>
-
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
-            {offer.storeCity && <span>{offer.storeCity}</span>}
-            {offer.shippingNote && (
-              <span className="inline-flex items-center gap-1">
-                <Truck className="h-3.5 w-3.5 text-accent-emerald" />
-                {offer.shippingNote}
-              </span>
-            )}
-            {offer.storeRating != null && offer.storeRating > 0 && (
-              <span className="inline-flex items-center gap-1">
-                <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-                {offer.storeRating.toFixed(1)}
-              </span>
-            )}
-          </div>
+          >
+            {offer.stock === "in_stock" && <span className="h-1.5 w-1.5 rounded-full bg-accent-emerald" />}
+            {offer.stock === "in_stock" ? "متوفر" : offer.stock === "preorder" ? "طلب مسبق" : "نفد"}
+          </span>
         </div>
 
-        <div className="rounded-[1.5rem] border border-border/70 bg-white/80 p-4 shadow-soft-sm lg:min-w-[240px]">
-          <div className="flex items-end justify-between gap-4 lg:flex-col lg:items-end">
-            <div className="text-right">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                السعر الحالي
-              </p>
-              <p className="font-outfit tabular-nums mt-2 text-2xl font-extrabold text-foreground">
-                {formatIQD(offer.price)}
-              </p>
-              {offer.originalPrice && (
-                <p className="font-outfit tabular-nums mt-1 text-sm text-muted-foreground line-through">
-                  {formatIQD(offer.originalPrice)}
-                </p>
-              )}
-            </div>
+        <h3 className="mt-2 text-[15px] font-semibold text-foreground sm:text-base">{storeName}</h3>
 
-            <Button
-              asChild
-              variant={highlighted ? "default" : "outline"}
-              className={cn(
-                "w-full rounded-full lg:w-auto",
-                highlighted && "bg-gradient-primary text-primary-foreground shadow-glow",
-              )}
-            >
-              <a href={offer.productUrl} target="_blank" rel="noopener noreferrer">
-                زيارة العرض
-                <ArrowLeft className="ms-1 h-4 w-4" />
-              </a>
-            </Button>
-          </div>
+        <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-muted-foreground">
+          {offer.storeCity && <span>{offer.storeCity}</span>}
+          {offer.shippingNote && (
+            <span className="inline-flex items-center gap-1">
+              <Truck className="h-3 w-3" />
+              {offer.shippingNote}
+            </span>
+          )}
+          {offer.storeRating != null && offer.storeRating > 0 && (
+            <span className="inline-flex items-center gap-1">
+              <Star className="h-3 w-3 fill-foreground text-foreground" />
+              <span className="tabular-nums">{offer.storeRating.toFixed(1)}</span>
+            </span>
+          )}
+          {offer.freshnessLabel && <span>{offer.freshnessLabel}</span>}
         </div>
+      </div>
+
+      {/* Right: price + CTA */}
+      <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end sm:gap-3">
+        <div className="text-end">
+          <p className="font-outfit tabular-nums text-xl font-semibold text-foreground sm:text-2xl">
+            {formatIQD(offer.price)}
+          </p>
+          {offer.originalPrice && (
+            <p className="font-outfit tabular-nums text-[12px] text-muted-foreground line-through">
+              {formatIQD(offer.originalPrice)}
+            </p>
+          )}
+        </div>
+
+        <Button
+          asChild
+          size="sm"
+          variant={highlighted ? "primary" : "outline"}
+          className="rounded-xl"
+        >
+          <a href={offer.productUrl} target="_blank" rel="noopener noreferrer">
+            زيارة العرض
+            <ArrowLeft className="h-3.5 w-3.5" />
+          </a>
+        </Button>
       </div>
     </article>
   );
