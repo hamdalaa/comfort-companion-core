@@ -627,9 +627,9 @@
       border-color 0.25s var(--ease-premium);
   }
   .card-elevate:hover {
-    transform: translate3d(0, -3px, 0);
-    box-shadow: var(--shadow-lg);
-    border-color: hsl(var(--primary) / 0.3);
+    transform: translate3d(0, -2px, 0);
+    box-shadow: var(--shadow-md);
+    border-color: hsl(var(--border));
   }
 
   .shimmer-bg {
