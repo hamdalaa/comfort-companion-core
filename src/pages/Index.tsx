@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { TopNav } from "@/components/TopNav";
 import { HeroBanner } from "@/components/HeroBanner";
+import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const DeferredSections = lazy(() => import("@/components/home/IndexDeferredSections"));
@@ -53,6 +54,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen atlas-shell">
+      <AnnouncementBar />
       <TopNav />
       <HeroBanner />
       <div ref={triggerRef}>
