@@ -298,6 +298,28 @@ export function TopNav() {
               </span>
             </button>
 
+            {/* Wishlist drawer trigger with count badge */}
+            <button
+              onClick={() => setFavOpen(true)}
+              className="ios-tap relative flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-[background-color,color] hover:bg-rose/10 hover:text-rose"
+              aria-label={`المفضلة (${favItems.length})`}
+              title="المفضلة"
+            >
+              <Heart
+                className={cn(
+                  "h-4 w-4 transition-[transform,fill] duration-200",
+                  favItems.length > 0 && "fill-rose text-rose",
+                )}
+              />
+              {favItems.length > 0 && (
+                <span
+                  className="absolute -end-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-rose px-1 text-[9px] font-bold leading-none text-white shadow-soft"
+                  aria-hidden
+                >
+                  {favItems.length > 9 ? "9+" : favItems.length}
+                </span>
+              )}
+            </button>
 
             <Link
               to="/about"
