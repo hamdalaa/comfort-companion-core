@@ -521,14 +521,6 @@ function TabButton({
     >
       {icon}
       {label}
-      {count != null && (
-        <span className={cn(
-          "rounded-full px-2 py-0.5 text-[10px] font-bold",
-          active ? "bg-primary text-primary-foreground" : "bg-surface text-muted-foreground",
-        )}>
-          {count}
-        </span>
-      )}
       {active && <span className="absolute inset-x-2 bottom-0 h-0.5 rounded-t-full bg-primary" />}
     </button>
   );
