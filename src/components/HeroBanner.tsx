@@ -11,6 +11,7 @@ export function HeroBanner() {
   const totalShops = getPublicStoreCount(summary.totalStores, computedShops);
 
   const stats = [
+    { value: 150000, label: "منتج", suffix: "+" },
     { value: totalShops, label: "محل ميداني" },
     { value: brands.length, label: "وكيل وبراند" },
     { value: CITIES.length, label: "محافظة" },
