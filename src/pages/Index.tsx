@@ -34,22 +34,20 @@ export default function Index() {
           setShowDeferredSections(true);
         }
       },
-      { rootMargin: "500px 0px" },
+      { rootMargin: "200px 0px" },
     );
 
     if (triggerRef.current) observer.observe(triggerRef.current);
 
-    const idleHandle = "requestIdleCallback" in window
-      ? window.requestIdleCallback(() => setShowDeferredSections(true), { timeout: 2500 })
-      : (window as Window).setTimeout(() => setShowDeferredSections(true), 2500);
+    // Only reveal on actual user scroll — don't auto-load on idle to keep initial paint light.
+    const onScroll = () => {
+      if (window.scrollY > 40) setShowDeferredSections(true);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       observer.disconnect();
-      if (typeof idleHandle === "number") {
-        window.clearTimeout(idleHandle);
-      } else {
-        window.cancelIdleCallback?.(idleHandle);
-      }
+      window.removeEventListener("scroll", onScroll);
     };
   }, [showDeferredSections]);
 
