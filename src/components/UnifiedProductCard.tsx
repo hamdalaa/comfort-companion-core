@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Store,
@@ -9,11 +9,15 @@ import {
   ArrowLeft,
   Tag,
   CircleDot,
+  Eye,
+  Sparkles,
+  Flame,
 } from "lucide-react";
 import { formatIQD, type UnifiedProduct } from "@/lib/unifiedSearch";
 import { optimizeImageUrl } from "@/lib/imageUrl";
 import { getFallbackProductImage, isRenderableProductImage } from "@/lib/productVisuals";
 import { decodeHtmlEntities } from "@/lib/textDisplay";
+import { QuickViewDialog } from "@/components/QuickViewDialog";
 
 interface Props {
   product: UnifiedProduct;
@@ -22,6 +26,7 @@ interface Props {
 }
 
 export const UnifiedProductCard = memo(function UnifiedProductCard({ product, topOffers }: Props) {
+  const [quickOpen, setQuickOpen] = useState(false);
   const title = decodeHtmlEntities(product.title);
   const brand = decodeHtmlEntities(product.brand);
   const savings =
@@ -39,7 +44,12 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
     product.images.find((image) => isRenderableProductImage(image)) ?? fallbackImage;
   const displayImage = optimizeImageUrl(primaryImage, { width: 720, height: 576 }) ?? primaryImage;
 
+  // Heuristic badges: HOT = lots of offers, NEW = no rating yet, SALE handled by `savings`
+  const isHot = product.offerCount >= 8;
+  const isNew = !product.rating || product.rating === 0;
+
   return (
+    <>
     <Link
       to={`/product/${product.id}`}
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-card transition-[transform,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] will-change-transform hover:-translate-y-1 hover:border-border hover:shadow-[0_12px_32px_-16px_hsl(220_40%_20%/0.12)]"
@@ -63,13 +73,27 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
           />
         </div>
 
-        {/* Top-left: discount badge */}
-        {savings > 5 && (
-          <div className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold text-background sm:text-[11px]">
-            <TrendingDown className="h-2.5 w-2.5" />
-            <span className="tabular-nums">-{savings}%</span>
-          </div>
-        )}
+        {/* Top-left: status badges (SALE / HOT / NEW) */}
+        <div className="absolute start-3 top-3 z-10 flex flex-col items-start gap-1">
+          {savings > 5 && (
+            <span className="flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold text-background sm:text-[11px]">
+              <TrendingDown className="h-2.5 w-2.5" />
+              <span className="tabular-nums">-{savings}%</span>
+            </span>
+          )}
+          {isHot && (
+            <span className="flex items-center gap-1 rounded-full bg-rose px-2 py-0.5 text-[10px] font-semibold text-white sm:text-[11px]">
+              <Flame className="h-2.5 w-2.5" />
+              HOT
+            </span>
+          )}
+          {isNew && !isHot && savings <= 5 && (
+            <span className="flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground sm:text-[11px]">
+              <Sparkles className="h-2.5 w-2.5" />
+              جديد
+            </span>
+          )}
+        </div>
 
         {/* Top-right: offer count chip */}
         <div className="absolute end-3 top-3 z-10 flex items-center gap-1 rounded-full bg-foreground/85 px-2 py-1 text-[10px] font-semibold text-background shadow-[0_2px_8px_-2px_rgb(0_0_0/0.3)] backdrop-blur-md sm:text-[11px]">
@@ -92,6 +116,21 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
             </div>
           )}
         </div>
+
+        {/* Bottom-right: Quick View button (visible on hover/tap) */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setQuickOpen(true);
+          }}
+          aria-label="معاينة سريعة"
+          className="absolute bottom-3 end-3 z-10 inline-flex h-8 items-center gap-1 rounded-full bg-background/95 px-2.5 text-[11px] font-semibold text-foreground opacity-0 shadow-soft-md backdrop-blur-md transition-[opacity,transform] duration-300 hover:bg-foreground hover:text-background group-hover:opacity-100 group-focus-within:opacity-100 sm:translate-y-1 sm:group-hover:translate-y-0"
+        >
+          <Eye className="h-3 w-3" />
+          معاينة
+        </button>
       </div>
 
       {/* ===== Body ===== */}

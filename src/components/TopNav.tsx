@@ -14,7 +14,6 @@ import {
   Search,
   Store,
   Sun,
-  Trash2,
   X,
   XCircle,
 } from "lucide-react";
