@@ -329,6 +329,33 @@
     letter-spacing: -0.005em;
   }
 
+  /* ---- Smooth, native-feeling scroll ---- */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* ---- Universal focus ring — accessible & calm ---- */
+  :where(button, a, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--ring) / 0.6);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  /* ---- Subtle text smoothing for Arabic/SF Pro ---- */
+  body {
+    font-feature-settings: "ss01", "calt", "kern", "liga";
+  }
+
+  /* ---- Premium image rendering ---- */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+
   /* Hide scrollbars globally — keep scrolling functional */
   * {
     scrollbar-width: none;          /* Firefox */
