@@ -10,25 +10,21 @@ const ITEMS = [
     icon: ShieldCheck,
     label: "ضمان الوكيل",
     sub: "أصلي ومضمون",
-    tone: "text-accent-emerald bg-accent-emerald/10",
   },
   {
     icon: Truck,
     label: "توصيل لكل المحافظات",
     sub: "خلال 1-3 أيام",
-    tone: "text-primary bg-primary/10",
   },
   {
     icon: RefreshCcw,
     label: "7 أيام استبدال",
     sub: "حسب سياسة المحل",
-    tone: "text-accent-violet bg-accent-violet/10",
   },
   {
     icon: CreditCard,
     label: "دفع عند الاستلام",
     sub: "آمن وموثوق",
-    tone: "text-accent-cyan bg-accent-cyan/10",
   },
 ] as const;
 
@@ -43,11 +39,9 @@ export function TrustBadges() {
         return (
           <li
             key={item.label}
-            className="flex items-center gap-2.5 rounded-2xl border border-border/60 bg-card p-3 transition-[transform,border-color] hover:-translate-y-0.5 hover:border-border"
+            className="flex items-center gap-2.5 rounded-2xl border border-border/60 bg-card p-3 transition-colors duration-200 hover:border-border"
           >
-            <span
-              className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ${item.tone}`}
-            >
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-muted/60 text-foreground/80">
               <Icon className="h-4 w-4" />
             </span>
             <div className="min-w-0">

@@ -165,11 +165,13 @@ export default function ProductDetail() {
                 )}
 
                 <div className="relative aspect-square w-full overflow-hidden">
-                  <img
-                    src={activeImageSrc}
-                    alt={title}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]"
-                  />
+                  <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-10">
+                    <img
+                      src={activeImageSrc}
+                      alt={title}
+                      className="h-full w-full object-contain object-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -182,13 +184,13 @@ export default function ProductDetail() {
                       onClick={() => setActiveImageIndex(index)}
                       aria-label={`عرض الصورة ${index + 1}`}
                       className={cn(
-                        "relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-card ring-1 ring-inset transition-all duration-300",
+                        "relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-card p-2 ring-1 ring-inset transition-all duration-300",
                         safeActiveImage === index
                           ? "ring-2 ring-foreground"
                           : "ring-border/50 hover:ring-foreground/30",
                       )}
                     >
-                      <img src={image} alt="" className="h-full w-full object-cover" />
+                      <img src={image} alt="" className="h-full w-full object-contain" />
                     </button>
                   ))}
                 </div>
