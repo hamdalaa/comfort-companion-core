@@ -298,8 +298,53 @@ export default function UnifiedSearch() {
       <TopNav />
 
       {/* HERO + SEARCH BAR */}
-      <section className="relative border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)]" />
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
+        {/* === Creative animated background === */}
+        {/* Floating gradient orbs */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-24 -left-16 -z-10 h-[28rem] w-[28rem] rounded-full opacity-60 blur-[110px] mix-blend-screen dark:mix-blend-plus-lighter motion-safe:animate-[blob-drift_18s_ease-in-out_infinite]"
+          style={{ background: "radial-gradient(circle at 30% 30%, hsl(var(--accent-violet) / 0.55), transparent 65%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full opacity-55 blur-[120px] mix-blend-screen dark:mix-blend-plus-lighter motion-safe:animate-[blob-drift-2_22s_ease-in-out_infinite]"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.55), transparent 65%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-32 -right-16 -z-10 h-[30rem] w-[30rem] rounded-full opacity-55 blur-[120px] mix-blend-screen dark:mix-blend-plus-lighter motion-safe:animate-[blob-drift-3_24s_ease-in-out_infinite]"
+          style={{ background: "radial-gradient(circle at 60% 40%, hsl(var(--accent-cyan) / 0.5), transparent 65%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-24 left-1/4 -z-10 h-[22rem] w-[22rem] rounded-full opacity-45 blur-[100px] mix-blend-screen dark:mix-blend-plus-lighter motion-safe:animate-[blob-drift_26s_ease-in-out_infinite_reverse]"
+          style={{ background: "radial-gradient(circle, hsl(var(--accent-rose) / 0.45), transparent 65%)" }}
+        />
+        {/* Subtle dot grid */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.18] dark:opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, hsl(var(--foreground) / 0.35) 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
+            maskImage:
+              "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+          }}
+        />
+        {/* Top conic shimmer */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.6), hsl(var(--accent-violet) / 0.6), hsl(var(--accent-cyan) / 0.6), transparent)",
+          }}
+        />
+
         <div className="container mx-auto px-4 py-8 sm:py-10">
           <div className="mx-auto max-w-3xl text-center">
             <Badge className="mb-3 gap-1 bg-primary-soft text-primary hover:bg-primary-soft">
