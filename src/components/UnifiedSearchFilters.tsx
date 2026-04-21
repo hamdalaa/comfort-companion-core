@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, Filter, X } from "lucide-react";
+import { Check, ChevronDown, Filter, PackageCheck, ShieldCheck, Sparkles, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -126,28 +126,58 @@ function FilterBody({ facets, value, onChange, onReset }: Omit<Props, "className
       </Section>
 
       <Section title="التوفر والحالة">
-        <div className="grid grid-cols-2 gap-1.5">
+        <div className="flex flex-col gap-1">
           {[
-            { id: "f-instock", label: "متوفر فقط", checked: !!value.inStockOnly, onChange: (v: boolean) => onChange({ ...value, inStockOnly: v }) },
-            { id: "f-onsale", label: "عليه تخفيض", checked: !!value.onSaleOnly, onChange: (v: boolean) => onChange({ ...value, onSaleOnly: v }) },
-            { id: "f-verified", label: "محل موثّق", checked: !!value.verifiedOnly, onChange: (v: boolean) => onChange({ ...value, verifiedOnly: v }) },
-            { id: "f-official", label: "وكيل رسمي", checked: !!value.officialDealerOnly, onChange: (v: boolean) => onChange({ ...value, officialDealerOnly: v }) },
-          ].map((opt) => (
-            <button
-              key={opt.id}
-              type="button"
-              onClick={() => opt.onChange(!opt.checked)}
-              aria-pressed={opt.checked}
-              className={cn(
-                "group relative flex items-center justify-center rounded-xl border px-3 py-2.5 text-[12.5px] font-semibold transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] active:scale-[0.97]",
-                opt.checked
-                  ? "border-primary bg-primary text-primary-foreground shadow-[0_4px_12px_-4px_hsl(var(--primary)/0.4)]"
-                  : "border-border/60 bg-surface/40 text-foreground/75 hover:border-primary/40 hover:bg-primary-soft hover:text-primary"
-              )}
-            >
-              {opt.label}
-            </button>
-          ))}
+            { id: "f-instock", label: "متوفر فقط", icon: PackageCheck, checked: !!value.inStockOnly, onChange: (v: boolean) => onChange({ ...value, inStockOnly: v }) },
+            { id: "f-onsale", label: "عليه تخفيض", icon: Tag, checked: !!value.onSaleOnly, onChange: (v: boolean) => onChange({ ...value, onSaleOnly: v }) },
+            { id: "f-verified", label: "محل موثّق", icon: ShieldCheck, checked: !!value.verifiedOnly, onChange: (v: boolean) => onChange({ ...value, verifiedOnly: v }) },
+            { id: "f-official", label: "وكيل رسمي", icon: Sparkles, checked: !!value.officialDealerOnly, onChange: (v: boolean) => onChange({ ...value, officialDealerOnly: v }) },
+          ].map((opt) => {
+            const Icon = opt.icon;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => opt.onChange(!opt.checked)}
+                aria-pressed={opt.checked}
+                className={cn(
+                  "group flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-right transition-colors duration-200",
+                  opt.checked ? "bg-primary-soft/60" : "hover:bg-surface/60"
+                )}
+              >
+                <span
+                  className={cn(
+                    "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[6px] border transition-all duration-200",
+                    opt.checked
+                      ? "border-primary bg-primary text-primary-foreground shadow-[0_2px_6px_-2px_hsl(var(--primary)/0.5)]"
+                      : "border-border bg-background group-hover:border-primary/50"
+                  )}
+                >
+                  <Check
+                    className={cn(
+                      "h-3 w-3 transition-opacity duration-200",
+                      opt.checked ? "opacity-100" : "opacity-0"
+                    )}
+                    strokeWidth={3}
+                  />
+                </span>
+                <Icon
+                  className={cn(
+                    "h-4 w-4 shrink-0 transition-colors",
+                    opt.checked ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "flex-1 text-[13px] font-medium transition-colors",
+                    opt.checked ? "text-foreground" : "text-foreground/75 group-hover:text-foreground"
+                  )}
+                >
+                  {opt.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </Section>
 
