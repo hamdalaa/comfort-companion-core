@@ -219,5 +219,12 @@ export const UnifiedProductCard = memo(function UnifiedProductCard({ product, to
       </div>
 
     </Link>
+    <QuickViewDialog
+      productId={quickOpen ? product.id : null}
+      open={quickOpen}
+      onOpenChange={setQuickOpen}
+      initialProduct={product}
+    />
+    </>
   );
 });
