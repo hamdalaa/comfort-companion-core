@@ -691,33 +691,7 @@ const ProductsView = memo(function ProductsView({
           </div>
         )}
 
-        {error && !loading ? (
-          <div className="flex min-h-[60vh] w-full items-center justify-center px-4">
-            <div className="mx-auto flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-border/50 bg-surface/40 px-8 py-10 text-center shadow-soft backdrop-blur-sm">
-              <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
-                <span className="absolute inset-0 animate-ping rounded-2xl bg-destructive/10" aria-hidden />
-                <AlertTriangle className="relative h-7 w-7" strokeWidth={2.2} />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold tracking-tight text-foreground">
-                  اكو مشكلة بالاتصال حالياً
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  ما گدرنا نوصل لخادم المنتجات. جرّب تعيد المحاولة بعد لحظة.
-                </p>
-              </div>
-              <code className="block w-full truncate rounded-lg border border-border/40 bg-muted/40 px-3 py-1.5 text-[11px] text-muted-foreground/80">
-                {error}
-              </code>
-              <Button
-                onClick={() => window.location.reload()}
-                className="rounded-full px-6 shadow-soft"
-              >
-                إعادة المحاولة
-              </Button>
-            </div>
-          </div>
-        ) : loading && visibleProducts.length === 0 ? (
+        {loading && visibleProducts.length === 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <Skeleton key={i} className="aspect-[3/4] w-full rounded-2xl" />
