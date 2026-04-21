@@ -1,93 +1,128 @@
 
 
-# مستوحى من تصميم متجر النبأ — تحسينات الصفحة الرئيسية
+# مميزات Shopify-modern UX — حزمة شاملة
 
 ## السياق
-متجر النبأ هو متجر إلكترونيات عراقي (Shopify) بشكل تجاري واضح: شريط إعلانات متحرك، بانر slideshow كبير، شبكة فئات بصرية ضخمة، ومجموعات منتجات (Product Rails) مفصولة ببانرات ترويجية. موقعنا يفتقد لـ 4 عناصر أساسية موجودة عنده: شريط إعلانات، slideshow بدل صورة hero ثابتة، شبكة فئات بصرية ضخمة (Accessories/Laptops/Printer/Storage)، وبانرات ترويجية بين الـ rails.
+الموقع كتالوج/مقارنة (مو متجر بيع فعلي). راح نضيف **مميزات UX مستوحاة من ثيمات Shopify الحديثة** (النبأ، Dawn، Impulse) بدون تفعيل Shopify فعلياً. كل المميزات الأربع المختارة + لمسات ثيمات حديثة مدمجة.
 
-## ما سنضيفه (5 عناصر جديدة + تحسينان)
+## ما سنبنيه (8 ميزات جديدة + 3 تحسينات)
 
-### 1. Announcement Bar (شريط إعلانات متحرك) — جديد
-شريط رفيع فوق الـ TopNav بخلفية primary (Cyan/Emerald) يعرض رسائل دوّارة:
-- "توصيل لكل العراق" • "ضمان سنة على المنتجات" • "أكثر من 1,200 محل موثوق" • "تحديث يومي للأسعار"
-- Animation: marquee أفقي ناعم (CSS) من اليمين لليسار، يتوقف عند hover.
-- زرار ✕ لإغلاقه (يحفظ بـ localStorage).
+### A. حفظ ومعاينة سريعة
 
-### 2. Hero Slideshow بدل البانر الثابت — تحسين
-استبدال صورة بغداد الواحدة بـ **slideshow بـ 3 شرائح** (دوّار تلقائي كل 6 ثواني + dots + arrows):
-- شريحة 1: "كل محلات الإلكترونيات بمكان واحد" (الحالية)
-- شريحة 2: "قارن أسعار آيفون 15 من 40+ محل" (Deals/Compare)
-- شريحة 3: "خرائط شارع الصناعة والربيعي" (Streets)
+**1. Wishlist Drawer — جديد**
+- زر القلب الموجود حالياً في `TopNav` يفتح **Sheet جانبي** يعرض كل المنتجات المحفوظة بتصميم كرت كامل + سعر + رابط للمنتج + زر إزالة + CTA "افتح صفحة المنتج".
+- فيه عداد رقمي على الأيقونة (badge أحمر) لما يكون فيه عناصر.
+- ملف جديد: `src/components/WishlistDrawer.tsx`، يستهلك `useUserPrefs().favorites` (موجود).
 
-كل شريحة بصورة مختلفة + CTA واضح. يحافظ على بحث الـ Hero بالأسفل.
+**2. Quick View Modal — جديد**
+- زر "عين 👁" يطلع على hover فوق `UnifiedProductCard` و`ProductCard` (يمين الكرت).
+- يفتح Dialog فيه: صورة كبيرة + عنوان + برند + سعر + أعلى 3 عروض + زرّ "افتح صفحة كاملة" + زر إضافة للمفضلة وللمقارنة — كل شي بدون مغادرة الصفحة.
+- ملف جديد: `src/components/QuickViewDialog.tsx`.
 
-### 3. شبكة فئات بصرية ضخمة (Hero Category Tiles) — جديد
-بعد الـ Hero مباشرة، شبكة 4 كروت ضخمة بأسلوب النبأ:
-```text
-┌──────────┬──────────┬──────────┬──────────┐
-│ هواتف    │ لابتوبات │ شاشات    │ إكسسوار  │
-│ [صورة]   │ [صورة]   │ [صورة]   │ [صورة]   │
-│ 320+ محل │ 180+ محل │ 95+ محل  │ 410+ محل │
-└──────────┴──────────┴──────────┴──────────┘
-```
-كروت كبيرة (aspect 4/5) بخلفية gradient ناعمة + صورة فئة + كاونت محلات.
-بديل أنظف من `CategoryCircles` الحالية (نُبقيها ضمن قسم "كل الفئات").
+**3. Recently Viewed محسّن — تحديث**
+- نخلي `RecentlyViewedStrip` يظهر على الموبايل أيضاً (حالياً `lg:block` فقط) مع تصميم strip أفقي قابل للسحب.
+- نضيف "اعرض الكل" يفتح drawer مشابه للـ Wishlist.
 
-### 4. Promo Banner Strip بين الـ Rails — جديد
-بانر عريض ترويجي بين "أفضل التخفيضات" و "الأكثر تقييماً" (مستلهم من banner "Peripheral Deals" عندهم):
-- خلفية gradient + صورة فئة + headline كبير ("صفقات الإكسسوارات — 40% على الـ Headphones") + CTA.
-- بانر ثاني بين "الأكثر تقييماً" و"إضافات حديثة" يقود لشارع الصناعة.
+---
 
-### 5. Brand Strip (شريط براندات أفقي) — جديد
-شريط أفقي بـ logos صغيرة قبل قسم "محلات مختارة": Apple, Samsung, Asus, HP, Lenovo, Anker, Ugreen, Xiaomi, Sony, Dell, MSI, Logitech (12 logo). يستخدم `BrandLogoTile` الموجود.
+### B. ثقة وتحويل بصفحة المنتج
 
-### 6. Trust/Contact Strip قبل الفوتر — جديد
-3 كروت أفقية مستلهمة من قسم "Contact Us" عندهم:
-- WhatsApp مع رقم
-- Call Us
-- Get in Touch / Email
-بدل ما يكون فوتر فقط.
+**4. Sticky Buy Bar — جديد**
+- شريط ثابت بأسفل الشاشة (يطلع بعد scroll للـ ProductDetail) فيه: صورة مصغّرة + اسم + أقل سعر + زر "اطلب من المحل" + زر "قارن الأسعار".
+- يختفي على الموبايل حتى ما يصير conflict مع `BottomTabBar` (نخليه فوقه).
+- ملف جديد: `src/components/product/StickyBuyBar.tsx`.
 
-### 7. ترتيب الصفحة الجديد
-```text
-1. Announcement Bar (جديد)
-2. TopNav (موجود)
-3. Hero Slideshow (مُحسَّن)
-4. Hero Category Tiles 4× (جديد) ← يحل محل الكروت الـ3 الحالية
-5. شبكة فئات كاملة CategoryCircles (موجود)
-6. Product Rail: أفضل التخفيضات (موجود)
-7. Promo Banner #1 (جديد)
-8. Product Rail: الأكثر تقييماً (موجود)
-9. Promo Banner #2 (جديد)
-10. Product Rail: إضافات حديثة (موجود)
-11. Brand Strip (جديد)
-12. مسارات بغداد + شوارع (موجود)
-13. محلات مختارة (موجود)
-14. الوكلاء الرسميون (موجود)
-15. Atlas العراق (موجود)
-16. Trust/Contact Strip (جديد)
-17. SiteFooter (موجود)
-```
+**5. Trust Badges Strip — جديد**
+- 4 شارات أنيقة بصفحة المنتج بعد السعر مباشرة: ضمان الوكيل · توصيل لكل المحافظات · 7 أيام استبدال · دفع آمن عند الاستلام.
+- icons + microcopy عربي قصير.
+- ملف جديد: `src/components/product/TrustBadges.tsx`.
+
+**6. Reviews & Ratings UI متقدّم — جديد**
+- قسم بصفحة المنتج فيه: متوسط النجوم الكبير + توزيع نجوم (5★ 70%, 4★ 20%…) bar chart + فلترة المراجعات (بالنجوم) + sample reviews من Google (موجود في `Shop.reviewsSample`).
+- ملف جديد: `src/components/product/ReviewsBlock.tsx`.
+
+---
+
+### C. تصفح وبحث احترافي
+
+**7. Mega Menu بالـ TopNav — جديد**
+- استبدال dropdown الفئات الحالي بـ **Mega Menu** عريض (يظهر على hover/focus على ديسكتوب) فيه:
+  - عمود يسار: الفئات الرئيسية مع icons
+  - عمود وسط: أشهر البراندات لكل فئة
+  - عمود يمين: صورة فئة + CTA "تصفح الكل"
+- على الموبايل يبقى Sheet الموجود.
+- تحديث: `src/components/TopNav.tsx` + ملف جديد `src/components/MegaMenu.tsx`.
+
+**8. Search Suggestions غني — تحديث**
+- نطوّر `SearchAutocomplete` ليعرض 3 أعمدة على ديسكتوب: **منتجات** (مع صور صغيرة + سعر) · **براندات** (مع logo) · **فئات/أقسام** (مع icon).
+- نضيف "عمليات بحث شائعة" (chips) لما يكون الـ input فاضي + "بحوثاتي السابقة" (من localStorage).
+
+**9. Sort Pills + Active Filters — تحديث**
+- بصفحة `Results.tsx` و `UnifiedSearch.tsx`: نضيف شريط pills بأعلى النتائج (الأرخص · الأعلى تقييم · الأحدث · الأكثر مبيعاً) + شريط chips للفلاتر النشطة (بزر ✕ لكل واحد) + count "324 نتيجة".
+- تحديث: `src/components/UnifiedSearchFilters.tsx` و pages.
+
+---
+
+### D. Collection / Bundle Pages
+
+**10. Collection Pages — جديد**
+- صفحات منسّقة بمسارات مثل `/collections/[slug]`:
+  - `/collections/back-to-school` — لابتوبات + طابعات + إكسسوارات مكتب
+  - `/collections/gifts-under-100` — منتجات أقل من 100$ معبأة كهدايا
+  - `/collections/gaming-essentials` — كل ما يحتاجه gamer
+  - `/collections/best-deals` — أعلى نسب الخصم
+- كل صفحة: hero banner كبير + وصف + product grid بفلترة مسبقة.
+- ملفات جديدة: `src/pages/Collection.tsx` + `src/lib/collections.ts` (تعريفات الـ bundles).
+- إضافة rail بالصفحة الرئيسية "تشكيلات مختارة" بعد PromoBanner #2 (4 كروت).
+
+---
+
+### E. لمسات ثيمات Shopify الحديثة (مدمجة في كل ما سبق)
+
+- **Hover effects**: شيل بسيط للصور + crossfade لصورة ثانية لو متوفرة.
+- **Color swatches**: لما يكون فيه offers من محلات متعددة، نعرض dots ملونة صغيرة (موحدة بصرياً).
+- **Quick badges**: NEW · SALE -X% · HOT (3+ مشاهدات بآخر ساعة) · LOW STOCK.
+- **Scroll-triggered animations**: fade-in-up للـ rails (موجود — نوسّعه للـ collections).
+
+---
+
+## ترتيب التنفيذ (مرحلتين)
+
+**المرحلة 1 (هاي اللوب):**
+- WishlistDrawer + Quick View Modal + Sticky Buy Bar + Trust Badges + ReviewsBlock + Sort Pills + Active Filters chips.
+
+**المرحلة 2 (لوب ثاني بعد التأكيد):**
+- Mega Menu + Search Suggestions الغني + Collection Pages + Bundle rail.
+
+---
 
 ## التفاصيل التقنية
 
 | ملف | التغيير |
 |---|---|
-| `src/components/AnnouncementBar.tsx` | **جديد** — marquee + dismissible |
-| `src/components/HeroSlideshow.tsx` | **جديد** — يحل محل الـ Hero الثابت داخل `HeroBanner.tsx` |
-| `src/components/HeroCategoryTiles.tsx` | **جديد** — 4 كروت ضخمة |
-| `src/components/PromoBanner.tsx` | **جديد** — مكون قابل لإعادة الاستخدام (image + headline + CTA) |
-| `src/components/BrandStrip.tsx` | **جديد** — شريط أفقي بـ logos |
-| `src/components/ContactStrip.tsx` | **جديد** — 3 كروت تواصل قبل الفوتر |
-| `src/components/HeroBanner.tsx` | تضمين `HeroSlideshow` بدل الصورة الثابتة، إزالة كروت الـ3 (انتقلت لـ HeroCategoryTiles) |
-| `src/components/home/IndexDeferredSections.tsx` | إعادة ترتيب: إضافة HeroCategoryTiles بعد الـ Hero، PromoBanner بين الـ rails، BrandStrip قبل المحلات، ContactStrip قبل الفوتر |
-| `src/pages/Index.tsx` | تضمين `<AnnouncementBar />` في الأعلى |
-| `src/index.css` | keyframe `marquee-rtl` للـ Announcement Bar |
+| `src/components/WishlistDrawer.tsx` | **جديد** — Sheet drawer للمفضلة |
+| `src/components/QuickViewDialog.tsx` | **جديد** — Dialog للمعاينة السريعة |
+| `src/components/product/StickyBuyBar.tsx` | **جديد** — شريط شراء ثابت |
+| `src/components/product/TrustBadges.tsx` | **جديد** — 4 شارات ثقة |
+| `src/components/product/ReviewsBlock.tsx` | **جديد** — توزيع نجوم + فلترة |
+| `src/components/MegaMenu.tsx` | **جديد** (مرحلة 2) |
+| `src/components/SortPillsBar.tsx` | **جديد** — pills للترتيب + active filters |
+| `src/pages/Collection.tsx` | **جديد** (مرحلة 2) |
+| `src/lib/collections.ts` | **جديد** (مرحلة 2) — تعريف الـ bundles |
+| `src/components/UnifiedProductCard.tsx` | **تحديث** — Quick View button + badges (NEW/SALE/HOT) |
+| `src/components/ProductCard.tsx` | **تحديث** — نفس الإضافات |
+| `src/components/TopNav.tsx` | **تحديث** — badge على القلب + يفتح WishlistDrawer + Mega Menu (م2) |
+| `src/components/SearchAutocomplete.tsx` | **تحديث** (م2) — 3 أعمدة + popular queries |
+| `src/pages/ProductDetail.tsx` | **تحديث** — يستخدم StickyBuyBar + TrustBadges + ReviewsBlock |
+| `src/pages/Results.tsx` + `UnifiedSearch.tsx` | **تحديث** — SortPillsBar + chips |
+| `src/App.tsx` | **تحديث** (م2) — route `/collections/:slug` |
+| `src/components/RecentlyViewedStrip.tsx` | **تحديث** — يظهر على الموبايل + drawer "اعرض الكل" |
 
-كل المكونات الجديدة بنفس design system الحالي (الألوان: `primary`, `cyan`, `emerald`، الخطوط: `font-display`، الشعاع: `rounded-3xl`، الظلال: `shadow-soft-*`)، RTL، lazy images، ومتجاوبة (mobile carousel على الكروت الضخمة).
+كل المكونات بنفس design system (`primary`, `cyan`, `emerald`, `violet` · `font-display` · `rounded-3xl` · `shadow-soft-*`)، RTL، lazy images، ومتجاوبة.
 
 ## ما لن نلمسه
-- نظام البحث، صفحات النتائج، المنتج، المحل، البراند.
-- الـ TopNav والـ BottomTabBar.
-- منطق البيانات (`useDataStore`).
+- منطق البيانات/الباكيند (`useDataStore`, queries).
+- BottomTabBar.
+- نظام theme/ألوان.
+- `HeroBanner` أو الإضافات السابقة (announcement, slideshow, category tiles, contact strip).
 
