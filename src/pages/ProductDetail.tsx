@@ -465,70 +465,86 @@ function OfferRow({ offer, highlighted = false }: { offer: UnifiedOffer; highlig
   return (
     <article
       className={cn(
-        "flex flex-col gap-4 p-5 transition-colors duration-300 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:gap-6",
-        highlighted && "bg-primary-soft/30",
+        "group relative flex flex-col gap-5 px-5 py-4 transition-colors duration-200 hover:bg-muted/40 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-6",
+        highlighted && "bg-primary-soft/20",
       )}
     >
+      {highlighted && (
+        <span aria-hidden className="absolute inset-y-3 start-0 w-0.5 rounded-full bg-foreground" />
+      )}
+
       {/* Left: store info */}
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-1.5">
-          {highlighted && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-background">
-              الأرخص
-            </span>
-          )}
-          {official ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-semibold text-primary">
-              <Award className="h-3 w-3" />
-              وكيل رسمي
-            </span>
-          ) : verified ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-accent-emerald-soft px-2 py-0.5 text-[10px] font-semibold text-accent-emerald">
-              <ShieldCheck className="h-3 w-3" />
-              موثّق
-            </span>
-          ) : null}
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold",
-              offer.stock === "in_stock" && "bg-accent-emerald-soft text-accent-emerald",
-              offer.stock === "preorder" && "bg-primary-soft text-primary",
-              offer.stock === "out_of_stock" && "bg-destructive/10 text-destructive",
-            )}
-          >
-            {offer.stock === "in_stock" && <span className="h-1.5 w-1.5 rounded-full bg-accent-emerald" />}
-            {offer.stock === "in_stock" ? "متوفر" : offer.stock === "preorder" ? "طلب مسبق" : "نفد"}
-          </span>
+      <div className="flex min-w-0 flex-1 items-start gap-3.5">
+        {/* Store avatar — first letter as a clean monogram */}
+        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-border/60 bg-muted/40 text-[15px] font-semibold text-foreground/80">
+          {storeName.charAt(0)}
         </div>
 
-        <h3 className="mt-2 text-[15px] font-semibold text-foreground sm:text-base">{storeName}</h3>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="truncate text-[15px] font-semibold leading-tight text-foreground">
+              {storeName}
+            </h3>
+            {official && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary">
+                <Award className="h-3 w-3" />
+                وكيل رسمي
+              </span>
+            )}
+            {verified && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-accent-emerald">
+                <ShieldCheck className="h-3 w-3" />
+                موثّق
+              </span>
+            )}
+          </div>
 
-        <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-muted-foreground">
-          {offer.storeCity && <span>{offer.storeCity}</span>}
-          {offer.shippingNote && (
-            <span className="inline-flex items-center gap-1">
-              <Truck className="h-3 w-3" />
-              {offer.shippingNote}
+          <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] text-muted-foreground">
+            {offer.storeCity && <span>{offer.storeCity}</span>}
+            {offer.storeRating != null && offer.storeRating > 0 && (
+              <span className="inline-flex items-center gap-1">
+                <Star className="h-3 w-3 fill-foreground text-foreground" />
+                <span className="tabular-nums">{offer.storeRating.toFixed(1)}</span>
+              </span>
+            )}
+            {offer.shippingNote && (
+              <span className="inline-flex items-center gap-1">
+                <Truck className="h-3 w-3" />
+                {offer.shippingNote}
+              </span>
+            )}
+            {offer.freshnessLabel && <span className="text-muted-foreground/70">{offer.freshnessLabel}</span>}
+          </div>
+
+          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+            {highlighted && (
+              <span className="inline-flex items-center rounded-md bg-foreground px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-background">
+                الأرخص
+              </span>
+            )}
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-medium",
+                offer.stock === "in_stock" && "bg-accent-emerald-soft text-accent-emerald",
+                offer.stock === "preorder" && "bg-primary-soft text-primary",
+                offer.stock === "out_of_stock" && "bg-muted text-muted-foreground",
+              )}
+            >
+              {offer.stock === "in_stock" && <span className="h-1.5 w-1.5 rounded-full bg-accent-emerald" />}
+              {offer.stock === "in_stock" ? "متوفر" : offer.stock === "preorder" ? "طلب مسبق" : "نفد"}
             </span>
-          )}
-          {offer.storeRating != null && offer.storeRating > 0 && (
-            <span className="inline-flex items-center gap-1">
-              <Star className="h-3 w-3 fill-foreground text-foreground" />
-              <span className="tabular-nums">{offer.storeRating.toFixed(1)}</span>
-            </span>
-          )}
-          {offer.freshnessLabel && <span>{offer.freshnessLabel}</span>}
+          </div>
         </div>
       </div>
 
       {/* Right: price + CTA */}
-      <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end sm:gap-3">
+      <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end sm:gap-2.5">
         <div className="text-end">
-          <p className="font-outfit tabular-nums text-xl font-semibold text-foreground sm:text-2xl">
+          <p className="font-outfit tabular-nums text-xl font-semibold leading-none text-foreground sm:text-[22px]">
             {formatIQD(offer.price)}
           </p>
           {offer.originalPrice && (
-            <p className="font-outfit tabular-nums text-[12px] text-muted-foreground line-through">
+            <p className="font-outfit tabular-nums mt-1 text-[12px] text-muted-foreground line-through">
               {formatIQD(offer.originalPrice)}
             </p>
           )}
@@ -538,7 +554,7 @@ function OfferRow({ offer, highlighted = false }: { offer: UnifiedOffer; highlig
           asChild
           size="sm"
           variant={highlighted ? "primary" : "outline"}
-          className="rounded-xl"
+          className="h-9 rounded-lg px-3.5 text-[13px]"
         >
           <a href={offer.productUrl} target="_blank" rel="noopener noreferrer">
             زيارة العرض
