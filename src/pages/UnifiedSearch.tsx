@@ -660,7 +660,21 @@ const ProductsView = memo(function ProductsView({
           </div>
         )}
 
-        {loading && visibleProducts.length === 0 ? (
+        {error && !loading ? (
+          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-destructive/30 bg-destructive/5 px-6 py-12 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+              <AlertTriangle className="h-6 w-6" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold text-foreground">اكو مشكلة بالاتصال حالياً</h3>
+              <p className="text-sm text-muted-foreground">ما گدرنا نوصل لخادم المنتجات. جرّب تعيد المحاولة بعد لحظة.</p>
+              <p className="text-xs text-muted-foreground/70 font-mono pt-1">{error}</p>
+            </div>
+            <Button onClick={() => window.location.reload()} variant="outline" className="rounded-full">
+              إعادة المحاولة
+            </Button>
+          </div>
+        ) : loading && visibleProducts.length === 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <Skeleton key={i} className="aspect-[3/4] w-full rounded-2xl" />
