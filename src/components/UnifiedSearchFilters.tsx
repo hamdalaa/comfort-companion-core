@@ -126,37 +126,28 @@ function FilterBody({ facets, value, onChange, onReset }: Omit<Props, "className
       </Section>
 
       <Section title="التوفر والحالة">
-        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
-          <Label htmlFor="f-instock" className="cursor-pointer text-[13px] font-medium text-foreground/85">متوفر فقط</Label>
-          <Switch
-            id="f-instock"
-            checked={!!value.inStockOnly}
-            onCheckedChange={(v) => onChange({ ...value, inStockOnly: v })}
-          />
-        </div>
-        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
-          <Label htmlFor="f-onsale" className="cursor-pointer text-[13px] font-medium text-foreground/85">عليه تخفيض</Label>
-          <Switch
-            id="f-onsale"
-            checked={!!value.onSaleOnly}
-            onCheckedChange={(v) => onChange({ ...value, onSaleOnly: v })}
-          />
-        </div>
-        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
-          <Label htmlFor="f-verified" className="cursor-pointer text-[13px] font-medium text-foreground/85">محل موثّق</Label>
-          <Switch
-            id="f-verified"
-            checked={!!value.verifiedOnly}
-            onCheckedChange={(v) => onChange({ ...value, verifiedOnly: v })}
-          />
-        </div>
-        <div className="flex items-center justify-between rounded-lg px-2 py-2 transition-colors hover:bg-surface/60">
-          <Label htmlFor="f-official" className="cursor-pointer text-[13px] font-medium text-foreground/85">وكيل رسمي</Label>
-          <Switch
-            id="f-official"
-            checked={!!value.officialDealerOnly}
-            onCheckedChange={(v) => onChange({ ...value, officialDealerOnly: v })}
-          />
+        <div className="grid grid-cols-2 gap-1.5">
+          {[
+            { id: "f-instock", label: "متوفر فقط", checked: !!value.inStockOnly, onChange: (v: boolean) => onChange({ ...value, inStockOnly: v }) },
+            { id: "f-onsale", label: "عليه تخفيض", checked: !!value.onSaleOnly, onChange: (v: boolean) => onChange({ ...value, onSaleOnly: v }) },
+            { id: "f-verified", label: "محل موثّق", checked: !!value.verifiedOnly, onChange: (v: boolean) => onChange({ ...value, verifiedOnly: v }) },
+            { id: "f-official", label: "وكيل رسمي", checked: !!value.officialDealerOnly, onChange: (v: boolean) => onChange({ ...value, officialDealerOnly: v }) },
+          ].map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => opt.onChange(!opt.checked)}
+              aria-pressed={opt.checked}
+              className={cn(
+                "group relative flex items-center justify-center rounded-xl border px-3 py-2.5 text-[12.5px] font-semibold transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] active:scale-[0.97]",
+                opt.checked
+                  ? "border-primary bg-primary text-primary-foreground shadow-[0_4px_12px_-4px_hsl(var(--primary)/0.4)]"
+                  : "border-border/60 bg-surface/40 text-foreground/75 hover:border-primary/40 hover:bg-primary-soft hover:text-primary"
+              )}
+            >
+              {opt.label}
+            </button>
+          ))}
         </div>
       </Section>
 
