@@ -119,36 +119,42 @@ export function StreetShopsSection({
   };
 
   return (
-    <section className="atlas-panel overflow-hidden p-4 sm:p-5 md:p-7">
-      <div className="pointer-events-none absolute -left-10 top-8 h-24 w-24 rounded-full bg-primary/12 blur-3xl" />
-
-      <div className="atlas-separator flex flex-wrap items-end justify-between gap-3 pb-4 sm:gap-4 sm:pb-5">
+    <section className="rounded-3xl border border-border/60 bg-card p-5 sm:p-7 md:p-9">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border/50 pb-5 sm:pb-6">
         <div className="min-w-0 max-w-3xl text-right">
-          <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{area}</div>
-          <h2 className="font-display mt-2 text-2xl font-bold leading-tight text-foreground sm:mt-3 sm:text-4xl md:text-5xl">{title}</h2>
-          {subtitle && <p className="mt-2 text-sm leading-7 text-muted-foreground sm:mt-3">{subtitle}</p>}
+          <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground/80">
+            {area}
+          </div>
+          <h2 className="font-display mt-2.5 text-[26px] font-semibold leading-tight tracking-tight text-foreground sm:text-[34px] md:text-[40px]">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="mt-2 max-w-2xl text-[13.5px] leading-6 text-muted-foreground sm:text-sm sm:leading-7">
+              {subtitle}
+            </p>
+          )}
         </div>
 
         {!hideHeaderCta && (
           <Link
             to={areaToPath(area)}
-            className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-sm font-bold text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md"
+            className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border/70 bg-background px-3.5 py-2 text-[12.5px] font-medium text-foreground transition-all hover:border-foreground/40 hover:bg-muted/40"
           >
             كل محلات الشارع
-            <ArrowLeft className="icon-nudge-x h-4 w-4" />
+            <ArrowLeft className="icon-nudge-x h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-foreground" />
           </Link>
         )}
       </div>
 
       {loading ? (
-        <div className="mt-5 flex gap-2 overflow-hidden">
+        <div className="mt-5 flex gap-1.5 overflow-hidden">
           {Array.from({ length: 6 }).map((_, index) => (
-            <Skeleton key={index} className="h-9 w-24 shrink-0 rounded-full" />
+            <Skeleton key={index} className="h-8 w-20 shrink-0 rounded-full" />
           ))}
         </div>
       ) : (
-        <div className="mt-4 -mx-4 overflow-x-auto px-4 sm:mt-5 sm:-mx-5 sm:px-5 md:-mx-7 md:px-7 md:overflow-visible scrollbar-hide">
-          <div className="flex gap-2 whitespace-nowrap pb-1 md:flex-wrap md:whitespace-normal md:pb-0">
+        <div className="mt-5 -mx-5 overflow-x-auto px-5 sm:mt-6 sm:-mx-7 sm:px-7 md:-mx-9 md:px-9 md:overflow-visible scrollbar-hide">
+          <div className="flex gap-1.5 whitespace-nowrap pb-1 md:flex-wrap md:whitespace-normal md:pb-0">
             <FilterChip active={activeCat === "all"} onClick={() => setActiveCat("all")} label="كل المحلات" count={streetShops.length} />
             {availableCats.map(([category, count]) => (
               <FilterChip
@@ -163,16 +169,16 @@ export function StreetShopsSection({
         </div>
       )}
 
-      <div className="mt-6">
+      <div className="mt-7">
         {loading ? (
           <ShopCardSkeletonGrid count={6} />
         ) : visibleShops.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border bg-background/74 py-14 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-              <MapPin className="h-6 w-6 text-muted-foreground" />
+          <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border/60 bg-muted/20 py-16 text-center">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-muted">
+              <MapPin className="h-5 w-5 text-muted-foreground" />
             </div>
-            <p className="text-sm text-muted-foreground">ماكو محلات بهالفلتر حالياً. جرّب فئة ثانية.</p>
-            <button onClick={() => setActiveCat("all")} className="text-xs font-semibold text-accent">
+            <p className="text-[13px] text-muted-foreground">ماكو محلات بهالفلتر حالياً. جرّب فئة ثانية.</p>
+            <button onClick={() => setActiveCat("all")} className="text-[12px] font-medium text-foreground underline-offset-4 hover:underline">
               امسح الفلتر
             </button>
           </div>
@@ -186,7 +192,7 @@ export function StreetShopsSection({
                   <ShopCarousel shops={list} hideAbove="xl" />
 
                   {/* Desktop: grid */}
-                  <div className="hidden xl:grid xl:grid-cols-3 xl:gap-4">
+                  <div className="hidden xl:grid xl:grid-cols-3 xl:gap-5">
                     {list.map((shop, index) => (
                       <div
                         key={shop.id}
@@ -202,13 +208,13 @@ export function StreetShopsSection({
             })()}
 
             {limit != null && (
-              <div className="mt-7 flex justify-center">
+              <div className="mt-8 flex justify-center">
                 <Link
                   to={areaToPath(area)}
-                  className="group inline-flex items-center gap-2 rounded-full border border-secondary/16 bg-secondary px-5 py-3 text-sm font-bold text-secondary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+                  className="group inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-[13px] font-medium text-background transition-all hover:bg-foreground/90 hover:shadow-sm"
                 >
                   عرض كل المحلات ({visibleShops.length.toLocaleString("ar")})
-                  <ArrowLeft className="icon-nudge-x h-4 w-4" />
+                  <ArrowLeft className="icon-nudge-x h-3.5 w-3.5" />
                 </Link>
               </div>
             )}
@@ -234,17 +240,17 @@ function FilterChip({
     <button
       onClick={onClick}
       className={cn(
-        "inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold transition-colors",
+        "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-all",
         active
-          ? "border-secondary bg-secondary text-secondary-foreground"
-          : "border-border/80 bg-background text-foreground/82 hover:border-secondary/30 hover:text-foreground",
+          ? "border-foreground bg-foreground text-background"
+          : "border-border/60 bg-background text-muted-foreground hover:border-foreground/30 hover:text-foreground",
       )}
     >
       <span>{label}</span>
       <span
         className={cn(
-          "rounded-full px-1.5 py-0.5 text-[10px] font-bold",
-          active ? "bg-white/14 text-secondary-foreground" : "bg-muted text-muted-foreground",
+          "tabular-nums text-[10.5px] font-medium",
+          active ? "text-background/70" : "text-muted-foreground/70",
         )}
       >
         {count.toLocaleString("ar")}
