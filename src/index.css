@@ -438,7 +438,7 @@
   }
 
   html {
-    font-family: "Thmanyah Sans", "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "SF Arabic", "SF Pro", "Thmanyah Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-size: 123%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
