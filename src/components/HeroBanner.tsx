@@ -129,21 +129,19 @@ export function HeroBanner() {
 
           {/* Trust pills — single understated row */}
           <div
-            className="animate-fade-in-up mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:mt-8 sm:gap-x-4"
+            className="animate-fade-in-up mt-7 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:mt-8 sm:gap-x-5"
             style={{ animationDelay: "400ms", animationFillMode: "backwards" }}
           >
-            {trustPills.map((pill, idx) => {
+            {trustPills.map((pill) => {
               const tones = toneClasses[pill.tone];
               const Icon = pill.icon;
               return (
-                <span key={pill.label} className="inline-flex items-center gap-2 sm:gap-3">
-                  <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground/90 sm:text-[12.5px]">
-                    <Icon className={`h-3.5 w-3.5 ${tones.text}`} strokeWidth={2.4} />
-                    <span>{pill.label}</span>
-                  </span>
-                  {idx < trustPills.length - 1 && (
-                    <span aria-hidden className="text-muted-foreground/30">·</span>
-                  )}
+                <span
+                  key={pill.label}
+                  className="inline-flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground/90 sm:text-[12.5px]"
+                >
+                  <Icon className={`h-3.5 w-3.5 ${tones.text}`} strokeWidth={2.4} />
+                  <span>{pill.label}</span>
                 </span>
               );
             })}
