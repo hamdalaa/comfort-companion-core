@@ -184,7 +184,7 @@ export default function IndexDeferredSections() {
 
             <div className="grid gap-4 sm:gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
               <div>
-                <h2 className="font-display text-balance text-2xl font-semibold leading-tight tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] sm:text-4xl md:text-5xl">
+                <h2 className="font-thmanyah text-balance text-2xl font-bold leading-tight tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] sm:text-4xl md:text-5xl">
                   نفس لغة السوق <br className="hidden sm:inline" /> في كل المحافظات.
                 </h2>
                 <p className="mt-3 max-w-3xl text-pretty text-sm leading-7 text-white/85 sm:mt-4 sm:text-base sm:leading-8">
@@ -194,7 +194,7 @@ export default function IndexDeferredSections() {
               </div>
 
               <div className="flex items-center gap-3 border-t border-white/20 pt-4 sm:gap-4 md:border-0 md:pt-0">
-                <span className="font-display text-base font-bold text-white sm:text-xl">
+                <span className="font-thmanyah text-base font-bold text-white sm:text-xl">
                   افتح الأطلس
                 </span>
                 <ArrowLeft className="icon-nudge-x h-4 w-4 translate-x-px text-white sm:h-5 sm:w-5" />
