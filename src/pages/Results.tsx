@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ShopCard } from "@/components/ShopCard";
 import { ComparisonGroup } from "@/components/ComparisonGroup";
 import { EmptyState } from "@/components/EmptyState";
+import { SearchResultsSkeleton } from "@/components/skeletons/PageSkeletons";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -62,19 +63,43 @@ const Results = () => {
   const category = (params.get("category") as Category | null) ?? "all";
   const sort = (params.get("sort") as Sort | null) ?? "relevance";
 
+  // Defer the heavy filter inputs so React can keep the input/clicks
+  // responsive while the new filtered list is being computed. When the
+  // current value differs from the deferred value, we render a skeleton
+  // so the user sees instant feedback instead of a stale grid.
+  const deferredQ = useDeferredValue(q);
+  const deferredArea = useDeferredValue(area);
+  const deferredCategory = useDeferredValue(category);
+  const deferredSort = useDeferredValue(sort);
+  const deferredMinRating = useDeferredValue(minRating);
+  const deferredVerifiedOnly = useDeferredValue(verifiedOnly);
+  const deferredWithDeals = useDeferredValue(withDeals);
+  const deferredPriceRange = useDeferredValue(priceRange);
+  const deferredBrandFilters = useDeferredValue(brandFilters);
+  const isFiltering =
+    q !== deferredQ ||
+    area !== deferredArea ||
+    category !== deferredCategory ||
+    sort !== deferredSort ||
+    minRating !== deferredMinRating ||
+    verifiedOnly !== deferredVerifiedOnly ||
+    withDeals !== deferredWithDeals ||
+    priceRange !== deferredPriceRange ||
+    brandFilters !== deferredBrandFilters;
+
   const shopsById = useMemo(() => Object.fromEntries(shops.map((shop) => [shop.id, shop])), [shops]);
   const verifiedShopIds = useMemo(() => new Set(shops.filter((shop) => shop.verified).map((shop) => shop.id)), [shops]);
 
   const baseResults = useMemo(
     () =>
       searchProducts(products, {
-        q,
-        area,
-        category,
-        sort,
+        q: deferredQ,
+        area: deferredArea,
+        category: deferredCategory,
+        sort: deferredSort,
         ratingByShopId: (shopId) => shopsById[shopId]?.rating,
       }),
-    [products, q, area, category, sort, shopsById],
+    [products, deferredQ, deferredArea, deferredCategory, deferredSort, shopsById],
   );
 
   const allBrands = useMemo(() => {
@@ -83,21 +108,21 @@ const Results = () => {
     return Array.from(set).sort();
   }, [baseResults]);
 
-  const range = PRICE_RANGES.find((entry) => entry.id === priceRange)!;
+  const range = PRICE_RANGES.find((entry) => entry.id === deferredPriceRange)!;
 
   const results = useMemo(() => {
     return baseResults.filter((product) => {
-      if (minRating > 0 && (product.rating ?? 0) < minRating) return false;
-      if (verifiedOnly && !verifiedShopIds.has(product.shopId)) return false;
-      if (withDeals && !(product.originalPriceValue && product.priceValue && product.originalPriceValue > product.priceValue)) return false;
-      if (brandFilters.size > 0 && (!product.brand || !brandFilters.has(product.brand))) return false;
-      if (priceRange !== "all") {
+      if (deferredMinRating > 0 && (product.rating ?? 0) < deferredMinRating) return false;
+      if (deferredVerifiedOnly && !verifiedShopIds.has(product.shopId)) return false;
+      if (deferredWithDeals && !(product.originalPriceValue && product.priceValue && product.originalPriceValue > product.priceValue)) return false;
+      if (deferredBrandFilters.size > 0 && (!product.brand || !deferredBrandFilters.has(product.brand))) return false;
+      if (deferredPriceRange !== "all") {
         if (product.priceValue === undefined) return false;
         if (product.priceValue < range.min || product.priceValue > range.max) return false;
       }
       return true;
     });
-  }, [baseResults, minRating, verifiedOnly, verifiedShopIds, withDeals, brandFilters, priceRange, range]);
+  }, [baseResults, deferredMinRating, deferredVerifiedOnly, verifiedShopIds, deferredWithDeals, deferredBrandFilters, deferredPriceRange, range]);
 
   const { groups, loose } = useMemo(() => groupComparable(results), [results]);
 
