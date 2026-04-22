@@ -48,7 +48,7 @@ export function HeroDestinations() {
         <Link
           key={d.to}
           to={d.to}
-          className="group animate-fade-in-up relative block overflow-hidden rounded-2xl border border-border/60 bg-card transition-[transform,box-shadow,border-color] duration-500 ease-ios will-change-transform hover:-translate-y-1 hover:border-foreground/20 hover:shadow-[0_12px_36px_-14px_hsl(var(--foreground)/0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="group animate-fade-in-up relative block overflow-hidden rounded-2xl border border-border/60 bg-card transition-[transform,box-shadow,border-color] duration-500 ease-ios will-change-transform [@media(hover:hover)]:hover:-translate-y-1 [@media(hover:hover)]:hover:border-foreground/20 [@media(hover:hover)]:hover:shadow-[0_12px_36px_-14px_hsl(var(--foreground)/0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label={d.title}
           style={{ animationDelay: `${500 + index * 100}ms`, animationFillMode: "backwards" }}
         >
@@ -62,7 +62,7 @@ export function HeroDestinations() {
               loading="lazy"
               decoding="async"
               onLoad={() => setLoaded((prev) => ({ ...prev, [d.to]: true }))}
-              className={`h-full w-full object-cover transition-[transform,opacity] duration-[900ms] ease-out group-hover:scale-[1.06] ${loaded[d.to] ? "opacity-100" : "opacity-0"}`}
+              className={`h-full w-full object-cover transition-[transform,opacity] duration-[900ms] ease-out [@media(hover:hover)]:group-hover:scale-[1.06] ${loaded[d.to] ? "opacity-100" : "opacity-0"}`}
             />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-foreground/75 via-foreground/10 to-transparent" />
             <div className="absolute end-3 top-3 flex items-center gap-1.5">
@@ -87,7 +87,7 @@ export function HeroDestinations() {
           </div>
 
           <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-start sm:px-5">
-            <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-foreground transition-transform duration-300 group-hover:-translate-x-1">
+            <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-foreground transition-transform duration-300 [@media(hover:hover)]:group-hover:-translate-x-1">
               استكشف <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2.4} />
             </span>
             <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground/70 tabular-nums">
