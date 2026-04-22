@@ -62,6 +62,16 @@ export default function IndexDeferredSections() {
     .sort(compareCatalogShopsByPriority)
     .slice(0, 6);
 
+  const topRated = [...shops]
+    .filter((shop) => !shop.archivedAt)
+    .filter((shop) => typeof shop.rating === "number" && (shop.rating ?? 0) > 0)
+    .sort((a, b) => {
+      const ratingDiff = (b.rating ?? 0) - (a.rating ?? 0);
+      if (ratingDiff !== 0) return ratingDiff;
+      return (b.reviewCount ?? 0) - (a.reviewCount ?? 0);
+    })
+    .slice(0, 6);
+
   return (
     <>
       <main className="pb-12 sm:pb-20">
