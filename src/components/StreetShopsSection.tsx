@@ -153,8 +153,8 @@ export function StreetShopsSection({
           ))}
         </div>
       ) : (
-        <div className="mt-4 -mx-4 overflow-x-auto px-4 sm:mt-6 sm:-mx-7 sm:px-7 md:-mx-9 md:px-9 md:overflow-visible scrollbar-hide">
-          <div className="flex gap-1.5 whitespace-nowrap pb-1 md:flex-wrap md:whitespace-normal md:pb-0">
+        <div className="mt-4 sm:mt-6">
+          <div className="flex flex-wrap gap-2">
             <FilterChip active={activeCat === "all"} onClick={() => setActiveCat("all")} label="كل المحلات" count={streetShops.length} />
             {availableCats.map(([category, count]) => (
               <FilterChip
@@ -240,16 +240,16 @@ function FilterChip({
     <button
       onClick={onClick}
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-all",
+        "inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all sm:px-3 sm:text-[12px]",
         active
           ? "border-foreground bg-foreground text-background"
           : "border-border/60 bg-background text-muted-foreground hover:border-foreground/30 hover:text-foreground",
       )}
     >
-      <span>{label}</span>
+      <span className="truncate">{label}</span>
       <span
         className={cn(
-          "tabular-nums text-[10.5px] font-medium",
+          "shrink-0 tabular-nums text-[10px] font-medium sm:text-[10.5px]",
           active ? "text-background/70" : "text-muted-foreground/70",
         )}
       >
