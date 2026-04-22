@@ -65,6 +65,7 @@ export async function createCatalogApiServer(
           hostname.endsWith(".lovable.app") ||
           hostname.endsWith(".lovable.dev") ||
           hostname.endsWith(".lovableproject.com") ||
+          hostname.endsWith(".lovable.host") ||
           hostname.endsWith(".h-db.site") ||
           hostname === "h-db.site";
         return cb(null, allowed);
