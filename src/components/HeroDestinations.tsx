@@ -38,12 +38,12 @@ const DESTINATIONS: Destination[] = [
 
 export function HeroDestinations() {
   return (
-    <div className="mx-auto mt-10 grid w-full max-w-5xl grid-cols-1 gap-3 sm:mt-14 sm:grid-cols-3 sm:gap-4">
+    <div className="mx-auto mt-10 grid w-full max-w-5xl grid-cols-1 gap-3 sm:mt-12 sm:grid-cols-3 sm:gap-4">
       {DESTINATIONS.map((d) => (
         <Link
           key={d.to}
           to={d.to}
-          className="group relative block overflow-hidden rounded-2xl border border-border/60 bg-card shadow-soft transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft-lg"
+          className="group relative block overflow-hidden rounded-2xl border border-border/60 bg-card/85 shadow-xs backdrop-blur transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-soft-lg"
           aria-label={d.title}
         >
           <div className="relative aspect-[5/3] overflow-hidden bg-muted">
@@ -52,24 +52,27 @@ export function HeroDestinations() {
               alt={d.title}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
             />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-            <span className="absolute right-3 top-3 inline-flex items-center rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground backdrop-blur-md">
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
+            <span className="absolute right-3 top-3 inline-flex items-center rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground shadow-xs backdrop-blur-md">
               {d.kicker}
             </span>
-          </div>
-
-          <div className="flex items-center justify-between gap-3 px-4 py-4 text-right sm:px-5">
-            <ArrowLeft className="h-4 w-4 shrink-0 text-primary transition-transform duration-300 group-hover:-translate-x-1" />
-            <div className="min-w-0 flex-1">
-              <h3 className="font-display truncate text-base font-semibold text-foreground sm:text-lg">
+            {/* Title overlaid on image bottom for stronger visual */}
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white">
+              <h3 className="font-display truncate text-base font-semibold drop-shadow-sm sm:text-lg">
                 {d.title}
               </h3>
-              <p className="mt-0.5 truncate text-[11px] text-muted-foreground sm:text-xs">
-                {d.meta}
-              </p>
             </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-right sm:px-5">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary transition-transform duration-300 group-hover:-translate-x-1">
+              استكشف <ArrowLeft className="h-3.5 w-3.5" />
+            </span>
+            <p className="min-w-0 flex-1 truncate text-[11.5px] text-muted-foreground sm:text-xs">
+              {d.meta}
+            </p>
           </div>
         </Link>
       ))}
