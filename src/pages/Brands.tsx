@@ -265,17 +265,7 @@ export default function Brands() {
               اشترِ من <span className="text-primary">المصدر الموثوق</span>
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
-              وكلاء معتمدون رسمياً مع تغطية واضحة للفروع والمدن. شعارات البراندات من
-              {" "}
-              <a
-                href="https://thesvg.org"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="font-semibold text-foreground underline-offset-4 hover:underline"
-              >
-                theSVG
-              </a>
-              {" "}— مكتبة مفتوحة المصدر.
+              وكلاء معتمدون رسمياً مع تغطية واضحة للفروع والمدن.
             </p>
           </div>
 
@@ -330,11 +320,7 @@ export default function Brands() {
         )}
 
         <p className="mt-10 text-center text-xs text-muted-foreground">
-          * نعرض أشهر 40 براند لتخفيف الحمل. الشعارات مقدّمة عبر CDN من{" "}
-          <a href="https://thesvg.org" target="_blank" rel="noreferrer noopener" className="font-medium text-foreground hover:text-primary">
-            theSVG
-          </a>
-          .
+          * نعرض أشهر 40 براند لتخفيف الحمل.
         </p>
       </main>
 
