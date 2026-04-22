@@ -157,11 +157,16 @@ export function HeroSearch({
             value={category}
             onValueChange={(value) => setCategory(value as Category | "all")}
             open={categoryOpen}
-            onOpenChange={setCategoryOpen}
+            onOpenChange={(open) => {
+              setCategoryOpen(open);
+              if (open) lastFocusedFilter.current = "category";
+            }}
           >
             <SelectTrigger
+              ref={categoryTriggerRef}
               tabIndex={2}
               aria-label="اختر الفئة"
+              onFocus={() => { lastFocusedFilter.current = "category"; }}
               className="h-[52px] min-h-[44px] w-full min-w-0 rounded-xl border-0 bg-transparent px-3.5 text-[13px] text-foreground shadow-none transition-all duration-200 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-primary/40 sm:w-40 sm:rounded-[1rem] sm:text-[13.5px]"
             >
               <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -184,11 +189,16 @@ export function HeroSearch({
             value={area}
             onValueChange={(value) => setArea(value as Area | "all")}
             open={areaOpen}
-            onOpenChange={setAreaOpen}
+            onOpenChange={(open) => {
+              setAreaOpen(open);
+              if (open) lastFocusedFilter.current = "area";
+            }}
           >
             <SelectTrigger
+              ref={areaTriggerRef}
               tabIndex={3}
               aria-label="اختر المنطقة"
+              onFocus={() => { lastFocusedFilter.current = "area"; }}
               className="h-[52px] min-h-[44px] w-full min-w-0 rounded-xl border-0 bg-transparent px-3.5 text-[13px] text-foreground shadow-none transition-all duration-200 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-primary/40 sm:w-40 sm:rounded-[1rem] sm:text-[13.5px]"
             >
               <div className="flex min-w-0 flex-1 items-center gap-2">
