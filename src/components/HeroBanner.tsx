@@ -75,6 +75,89 @@ export function HeroBanner() {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
 
+      {/* ============== Creative floating shapes ============== */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
+        {/* Rotating dashed ring — top left */}
+        <svg
+          className="absolute -top-10 left-[6%] h-28 w-28 animate-spin-slow text-primary/25 sm:h-36 sm:w-36"
+          viewBox="0 0 100 100"
+          fill="none"
+        >
+          <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="1" strokeDasharray="3 6" />
+          <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 4" opacity="0.6" />
+        </svg>
+
+        {/* Floating rounded square — top right */}
+        <div
+          className="absolute top-16 right-[8%] h-10 w-10 rotate-12 rounded-xl border border-cyan/30 bg-cyan-soft/40 shadow-[0_8px_24px_-8px_hsl(var(--accent-cyan)/0.35)] animate-float sm:h-14 sm:w-14"
+          style={{ animationDelay: "0.4s" }}
+        />
+
+        {/* Triangle — mid right */}
+        <svg
+          className="absolute top-[36%] right-[4%] h-8 w-8 animate-float text-violet/40 sm:h-12 sm:w-12"
+          style={{ animationDelay: "1.2s" }}
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M12 3 L22 20 L2 20 Z" stroke="currentColor" strokeWidth="0.6" strokeLinejoin="round" />
+        </svg>
+
+        {/* Plus sign — mid left */}
+        <svg
+          className="absolute top-[30%] left-[5%] h-6 w-6 animate-bounce-subtle text-emerald/50 sm:h-8 sm:w-8"
+          style={{ animationDelay: "0.8s" }}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+        >
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+
+        {/* Sparkle dot cluster — bottom left */}
+        <div className="absolute bottom-[22%] left-[10%] flex items-end gap-1.5">
+          <span className="block h-1.5 w-1.5 rounded-full bg-primary/60 animate-ping-soft" />
+          <span className="block h-1 w-1 rounded-full bg-violet/60" />
+          <span className="block h-2 w-2 rounded-full bg-cyan/50 animate-float" style={{ animationDelay: "0.6s" }} />
+        </div>
+
+        {/* Concentric circle — bottom right */}
+        <svg
+          className="absolute bottom-[14%] right-[6%] h-20 w-20 animate-float text-rose/30 sm:h-28 sm:w-28"
+          style={{ animationDelay: "1.6s" }}
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="currentColor"
+        >
+          <circle cx="50" cy="50" r="46" strokeWidth="0.8" />
+          <circle cx="50" cy="50" r="32" strokeWidth="0.8" opacity="0.7" />
+          <circle cx="50" cy="50" r="18" strokeWidth="0.8" opacity="0.5" />
+          <circle cx="50" cy="50" r="3" fill="currentColor" />
+        </svg>
+
+        {/* Diagonal line — decorative accent */}
+        <svg
+          className="absolute top-[12%] left-[42%] hidden h-16 w-16 text-primary/20 sm:block"
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+        >
+          <path d="M10 90 L90 10" strokeWidth="1.5" strokeDasharray="2 4" />
+        </svg>
+
+        {/* Tiny star — top center */}
+        <svg
+          className="absolute top-[6%] right-[38%] h-5 w-5 animate-spin-slow text-amber-400/60 sm:h-6 sm:w-6"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M12 2l2.39 7.36H22l-6.18 4.49L18.21 22 12 17.27 5.79 22l2.39-8.15L2 9.36h7.61z" />
+        </svg>
+      </div>
+
       <div className="container relative pt-10 pb-14 sm:pt-20 sm:pb-24 md:pt-24">
         {/* ============== Hero content — centered, generous spacing ============== */}
         <div className="mx-auto max-w-3xl text-center">
