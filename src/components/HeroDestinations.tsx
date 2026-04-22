@@ -10,6 +10,7 @@ interface Destination {
   title: string;
   meta: string;
   img: string;
+  badge?: string;
 }
 
 const DESTINATIONS: Destination[] = [
@@ -19,6 +20,7 @@ const DESTINATIONS: Destination[] = [
     title: "كل محافظات العراق",
     meta: "10 محافظات · 1,200+ محل",
     img: iraqImg,
+    badge: "جديد",
   },
   {
     to: "/sinaa",
