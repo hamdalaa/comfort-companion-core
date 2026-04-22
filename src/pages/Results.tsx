@@ -234,7 +234,10 @@ const Results = () => {
                 مساحة البحث
               </span>
 
-              <h1 className="font-display mt-4 text-[2.6rem] font-bold leading-none text-foreground sm:text-5xl md:text-6xl">
+              <h1
+                id="results-heading"
+                className="font-display mt-4 text-[2.6rem] font-bold leading-none text-foreground sm:text-5xl md:text-6xl"
+              >
                 {q ? (
                   <>
                     نتائج "{q}"
