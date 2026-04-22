@@ -251,6 +251,36 @@ export default function IndexDeferredSections() {
               seeAll="/brands"
             />
 
+            <div className="mt-10 sm:mt-14">
+              <SectionHeader
+                kicker="الأعلى تقييماً"
+                title="المتاجر الأعلى تقييماً"
+                description="مرتبة حسب تقييمات الزبائن الحقيقية وعدد المراجعات."
+                seeAll="/results?sort=rating"
+              />
+
+              <div className="mt-5 sm:mt-8">
+                {loading ? (
+                  <ShopCardSkeletonGrid count={6} />
+                ) : topRated.length === 0 ? null : (
+                  <>
+                    <ShopCarousel shops={topRated} hideAbove="xl" />
+                    <div className="hidden xl:grid xl:grid-cols-3 xl:gap-6">
+                      {topRated.map((shop, index) => (
+                        <div
+                          key={shop.id}
+                          className="animate-fade-in-up"
+                          style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
+                        >
+                          <ShopCard shop={shop} />
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
             <div className="mt-6 sm:mt-8">
               {loading ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
