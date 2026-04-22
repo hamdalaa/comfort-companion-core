@@ -38,41 +38,44 @@ const DESTINATIONS: Destination[] = [
 
 export function HeroDestinations() {
   return (
-    <div className="mx-auto mt-12 grid w-full max-w-5xl grid-cols-1 gap-3 sm:mt-16 sm:grid-cols-3 sm:gap-5">
-      {DESTINATIONS.map((d) => (
+    <div className="mx-auto mt-16 grid w-full max-w-5xl grid-cols-1 gap-4 sm:mt-20 sm:grid-cols-3 sm:gap-5">
+      {DESTINATIONS.map((d, index) => (
         <Link
           key={d.to}
           to={d.to}
-          className="group relative block overflow-hidden rounded-[1.25rem] border border-border/60 bg-card/85 shadow-xs backdrop-blur-md transition-[transform,box-shadow,border-color] duration-500 ease-ios hover:-translate-y-1 hover:border-primary/25 hover:shadow-md"
+          className="group animate-fade-in-up relative block overflow-hidden rounded-2xl border border-border/60 bg-card transition-[transform,box-shadow,border-color] duration-500 ease-ios hover:-translate-y-1 hover:border-foreground/20 hover:shadow-[0_16px_40px_-16px_hsl(var(--foreground)/0.18)]"
           aria-label={d.title}
+          style={{ animationDelay: `${500 + index * 100}ms`, animationFillMode: "backwards" }}
         >
-          <div className="relative aspect-[5/3] overflow-hidden bg-muted">
+          <div className="relative aspect-[16/10] overflow-hidden bg-muted">
             <img
               src={d.img}
               alt={d.title}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.07]"
+              className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
             />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            <span className="absolute right-3 top-3 inline-flex items-center rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-foreground shadow-xs backdrop-blur-md">
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/15 to-transparent" />
+            <span className="absolute right-3 top-3 inline-flex items-center rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-foreground shadow-xs backdrop-blur-md">
               {d.kicker}
             </span>
-            {/* Title overlay */}
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white sm:p-5">
-              <h3 className="font-display truncate text-base font-semibold tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] sm:text-[17px]">
+            <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+              <h3 className="font-display truncate text-base font-semibold tracking-tight text-background drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] sm:text-[17px]">
                 {d.title}
               </h3>
+              <p className="mt-1 truncate text-[11.5px] text-background/80 sm:text-[12px]">
+                {d.meta}
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-right sm:px-5 sm:py-4">
-            <span className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-primary transition-transform duration-300 group-hover:-translate-x-1">
+          <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-right sm:px-5">
+            <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-foreground transition-transform duration-300 group-hover:-translate-x-1">
               استكشف <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2.4} />
             </span>
-            <p className="min-w-0 flex-1 truncate text-[11.5px] text-muted-foreground sm:text-[12.5px]">
-              {d.meta}
-            </p>
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground/70">
+              {String(index + 1).padStart(2, "0")}
+            </span>
           </div>
         </Link>
       ))}
