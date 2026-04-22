@@ -62,6 +62,16 @@ export default function IndexDeferredSections() {
     .sort(compareCatalogShopsByPriority)
     .slice(0, 6);
 
+  const topRated = [...shops]
+    .filter((shop) => !shop.archivedAt)
+    .filter((shop) => typeof shop.rating === "number" && (shop.rating ?? 0) > 0)
+    .sort((a, b) => {
+      const ratingDiff = (b.rating ?? 0) - (a.rating ?? 0);
+      if (ratingDiff !== 0) return ratingDiff;
+      return (b.reviewCount ?? 0) - (a.reviewCount ?? 0);
+    })
+    .slice(0, 6);
+
   return (
     <>
       <main className="pb-12 sm:pb-20">
@@ -240,6 +250,36 @@ export default function IndexDeferredSections() {
               description="وكلاء معتمدون رسمياً في العراق — ضمان أصلي وأسعار من المصدر مباشرة."
               seeAll="/brands"
             />
+
+            <div className="mt-10 sm:mt-14">
+              <SectionHeader
+                kicker="الأعلى تقييماً"
+                title="المتاجر الأعلى تقييماً"
+                description="مرتبة حسب تقييمات الزبائن الحقيقية وعدد المراجعات."
+                seeAll="/results?sort=rating"
+              />
+
+              <div className="mt-5 sm:mt-8">
+                {loading ? (
+                  <ShopCardSkeletonGrid count={6} />
+                ) : topRated.length === 0 ? null : (
+                  <>
+                    <ShopCarousel shops={topRated} hideAbove="xl" />
+                    <div className="hidden xl:grid xl:grid-cols-3 xl:gap-6">
+                      {topRated.map((shop, index) => (
+                        <div
+                          key={shop.id}
+                          className="animate-fade-in-up"
+                          style={{ animationDelay: `${index * 60}ms`, animationFillMode: "backwards" }}
+                        >
+                          <ShopCard shop={shop} />
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
 
             <div className="mt-6 sm:mt-8">
               {loading ? (
