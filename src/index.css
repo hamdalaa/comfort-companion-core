@@ -438,7 +438,7 @@
   }
 
   html {
-    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Thmanyah Sans", "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-size: 123%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -506,7 +506,7 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Thmanyah Display", "Thmanyah Sans", "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.025em;
     text-wrap: balance;
@@ -556,7 +556,7 @@
   }
 
   .font-display {
-    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Thmanyah Display", "Thmanyah Sans", "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.035em;
   }
