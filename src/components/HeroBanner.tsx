@@ -192,70 +192,65 @@ export function HeroBanner() {
 function HeroVisual() {
   return (
     <div className="relative mx-auto aspect-[5/4] w-full max-w-md sm:max-w-lg lg:max-w-none">
-      {/* outer soft halo */}
-      <div aria-hidden className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan/10 via-primary/5 to-violet/10 blur-2xl" />
+      {/* Outer aurora halo — vibrant, no plate border */}
+      <div aria-hidden className="absolute inset-0 overflow-visible">
+        {/* Big violet/pink heart-shaped aurora behind devices */}
+        <div className="absolute inset-x-4 inset-y-6 rounded-[3rem] bg-gradient-to-br from-violet/40 via-rose/30 to-cyan/40 blur-3xl" />
+        <div className="absolute -top-4 right-6 h-64 w-64 rounded-full bg-violet/45 blur-3xl animate-float" />
+        <div className="absolute bottom-4 left-2 h-72 w-72 rounded-full bg-rose/40 blur-3xl animate-float" style={{ animationDelay: "1.4s" }} />
+        <div className="absolute top-10 left-1/3 h-56 w-56 rounded-full bg-cyan/45 blur-3xl animate-float" style={{ animationDelay: "2.6s" }} />
+      </div>
 
-      {/* glass plate */}
-      <div className="relative h-full w-full overflow-hidden rounded-[2.25rem] border border-white/40 bg-card/40 shadow-panel backdrop-blur-2xl">
-        {/* aurora blobs inside the plate */}
-        <div aria-hidden className="absolute inset-0">
-          <div className="absolute -top-10 -right-10 h-64 w-64 rounded-full bg-cyan/50 blur-3xl animate-float" />
-          <div className="absolute top-1/3 -left-12 h-72 w-72 rounded-full bg-violet/50 blur-3xl animate-float" style={{ animationDelay: "1.2s" }} />
-          <div className="absolute -bottom-10 right-1/4 h-60 w-60 rounded-full bg-rose/40 blur-3xl animate-float" style={{ animationDelay: "2.4s" }} />
-          <div className="absolute top-1/2 left-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/40 blur-2xl" />
-        </div>
-
-        {/* fine grid overlay */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "linear-gradient(hsl(var(--foreground) / 0.05) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground) / 0.05) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-            maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 90%)",
-            WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 90%)",
-          }}
-        />
-
-        {/* center sparkle */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-card/80 ring-1 ring-white/50 backdrop-blur-xl shadow-md">
-            <Sparkles className="h-9 w-9 text-primary" />
+      {/* Stylized 3D device stack — mimics phone + laptop + earbuds composition */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        {/* Laptop slab */}
+        <div className="relative h-[58%] w-[78%] -rotate-3 rounded-[1.5rem] bg-gradient-to-br from-primary via-violet to-violet/80 shadow-[0_30px_60px_-20px_hsl(var(--accent-violet)/0.55)] ring-1 ring-white/15">
+          <div className="absolute inset-2 rounded-[1.1rem] bg-gradient-to-br from-foreground/85 to-foreground/65 ring-1 ring-white/10" />
+          <div className="absolute inset-x-0 bottom-0 h-2 rounded-b-[1.5rem] bg-gradient-to-r from-primary/60 via-cyan/60 to-violet/60" />
+          {/* screen highlight icon */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Laptop className="h-12 w-12 text-white/30" strokeWidth={1.2} />
           </div>
         </div>
 
-        {/* floating chip — top */}
-        <div className="absolute right-5 top-5 flex items-center gap-2 rounded-2xl border border-white/60 bg-card/90 px-3 py-2 shadow-md backdrop-blur-xl animate-float" style={{ animationDelay: "0.4s" }}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-soft text-cyan ring-1 ring-cyan/20">
-            <Package className="h-4 w-4" />
-          </span>
-          <div className="flex flex-col leading-tight">
-            <span className="font-numeric text-sm font-bold text-foreground">+149K</span>
-            <span className="text-[10px] text-muted-foreground">منتج متاح</span>
+        {/* Phone — overlapping front-left */}
+        <div className="absolute right-[6%] top-[14%] h-[55%] w-[22%] rotate-6 rounded-[1.25rem] bg-gradient-to-br from-cyan via-primary to-violet shadow-[0_24px_50px_-18px_hsl(var(--accent-cyan)/0.6)] ring-1 ring-white/20">
+          <div className="absolute inset-1.5 rounded-[1rem] bg-gradient-to-br from-foreground/85 to-foreground/65 ring-1 ring-white/10" />
+          <div className="absolute left-1/2 top-2 h-1 w-6 -translate-x-1/2 rounded-full bg-foreground/40" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Smartphone className="h-7 w-7 text-white/35" strokeWidth={1.2} />
           </div>
         </div>
 
-        {/* floating chip — bottom */}
-        <div className="absolute bottom-5 left-5 flex items-center gap-2 rounded-2xl border border-white/60 bg-card/90 px-3 py-2 shadow-md backdrop-blur-xl animate-float" style={{ animationDelay: "1.6s" }}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-soft text-emerald ring-1 ring-emerald/20">
-            <TrendingUp className="h-4 w-4" />
-          </span>
-          <div className="flex flex-col leading-tight">
-            <span className="text-[11px] font-semibold text-foreground">أسعار محدثة</span>
-            <span className="text-[10px] text-muted-foreground">يومياً</span>
-          </div>
+        {/* Earbuds case — bottom-left */}
+        <div className="absolute bottom-[8%] left-[10%] flex h-16 w-16 -rotate-12 items-center justify-center rounded-2xl bg-gradient-to-br from-rose via-violet to-primary shadow-[0_20px_40px_-15px_hsl(var(--accent-rose)/0.55)] ring-1 ring-white/20 sm:h-20 sm:w-20">
+          <Headphones className="h-7 w-7 text-white/80" strokeWidth={1.5} />
         </div>
+      </div>
 
-        {/* floating chip — middle right (cities) */}
-        <div className="absolute bottom-1/3 right-3 hidden items-center gap-2 rounded-2xl border border-white/60 bg-card/90 px-3 py-2 shadow-md backdrop-blur-xl animate-float sm:flex" style={{ animationDelay: "2.2s" }}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-soft text-violet ring-1 ring-violet/20">
-            <MapPin className="h-4 w-4" />
-          </span>
-          <div className="flex flex-col leading-tight">
-            <span className="text-[11px] font-semibold text-foreground">10 محافظات</span>
-            <span className="text-[10px] text-muted-foreground">تغطية كاملة</span>
-          </div>
+      {/* Floating chip — top-left of visual (matches reference) */}
+      <div className="absolute left-2 top-2 flex items-center gap-2 rounded-2xl border border-border/60 bg-card/90 px-3 py-2 shadow-md backdrop-blur-xl animate-float sm:left-4 sm:top-4" style={{ animationDelay: "0.4s" }}>
+        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-soft text-cyan ring-1 ring-cyan/20">
+          <Package className="h-4 w-4" />
+        </span>
+        <div className="flex flex-col leading-tight">
+          <span className="font-numeric text-sm font-bold text-foreground">+149K</span>
+          <span className="text-[10px] text-muted-foreground">منتج متاح</span>
+        </div>
+        {/* mini sparkline */}
+        <svg viewBox="0 0 40 16" className="ml-1 h-4 w-10 text-primary">
+          <path d="M0 12 L8 10 L14 13 L20 6 L26 9 L32 4 L40 7" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+
+      {/* Floating chip — bottom-right */}
+      <div className="absolute bottom-2 right-2 flex items-center gap-2 rounded-2xl border border-border/60 bg-card/90 px-3 py-2 shadow-md backdrop-blur-xl animate-float sm:bottom-4 sm:right-4" style={{ animationDelay: "1.6s" }}>
+        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-soft text-emerald ring-1 ring-emerald/20">
+          <TrendingUp className="h-4 w-4" />
+        </span>
+        <div className="flex flex-col leading-tight">
+          <span className="text-[11px] font-semibold text-foreground">أسعار محدثة</span>
+          <span className="text-[10px] text-muted-foreground">يومياً</span>
         </div>
       </div>
     </div>
