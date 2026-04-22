@@ -138,6 +138,31 @@ const Results = () => {
     return labels;
   }, [area, category, priceRange, minRating, verifiedOnly, withDeals, brandFilters]);
 
+  // Removable chip descriptors — each chip carries its own clear handler
+  // so the user can drop a single filter without nuking the whole set.
+  type FilterChip = { id: string; label: string; clear: () => void };
+  const activeFilterChips = useMemo<FilterChip[]>(() => {
+    const chips: FilterChip[] = [];
+    if (area !== "all") chips.push({ id: `area:${area}`, label: `المنطقة: ${area}`, clear: () => setFilter("area", "all") });
+    if (category !== "all") chips.push({ id: `cat:${category}`, label: `الفئة: ${category}`, clear: () => setFilter("category", "all") });
+    if (priceRange !== "all") {
+      chips.push({
+        id: `price:${priceRange}`,
+        label: PRICE_RANGES.find((entry) => entry.id === priceRange)?.label ?? priceRange,
+        clear: () => setPriceRange("all"),
+      });
+    }
+    if (minRating > 0) chips.push({ id: `rating:${minRating}`, label: `${minRating}+ نجوم`, clear: () => setMinRating(0) });
+    if (verifiedOnly) chips.push({ id: "verified", label: "موثّق فقط", clear: () => setVerifiedOnly(false) });
+    if (withDeals) chips.push({ id: "deals", label: "عليها تخفيض", clear: () => setWithDeals(false) });
+    brandFilters.forEach((brand) =>
+      chips.push({ id: `brand:${brand}`, label: brand, clear: () => toggleBrand(brand) }),
+    );
+    return chips;
+    // setFilter / toggleBrand are stable closures over `params` & state — re-deriving on dep change is fine.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [area, category, priceRange, minRating, verifiedOnly, withDeals, brandFilters]);
+
   function setSort(next: Sort) {
     const nextParams = new URLSearchParams(params);
     nextParams.set("sort", next);
