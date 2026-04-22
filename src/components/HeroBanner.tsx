@@ -219,7 +219,7 @@ export function HeroBanner() {
           >
             كل محلات الإلكترونيات
             <br />
-            <span className="relative inline-block bg-gradient-to-l from-violet via-primary to-cyan bg-clip-text text-transparent">
+            <span className="relative inline-block text-grad-iridescent">
               بمكان واحد.
               <svg aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-1 h-2 w-full text-primary/30" viewBox="0 0 100 8" preserveAspectRatio="none" fill="none">
                 <path d="M0 4 Q 25 0, 50 4 T 100 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
