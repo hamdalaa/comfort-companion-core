@@ -150,7 +150,7 @@ export function HeroBanner() {
 
         {/* Tiny star — top center */}
         <svg
-          className="absolute top-[6%] right-[38%] h-5 w-5 animate-spin-slow text-amber-400/60 sm:h-6 sm:w-6"
+          className="absolute top-[6%] right-[38%] h-5 w-5 animate-spin-slow text-warning/70 sm:h-6 sm:w-6"
           viewBox="0 0 24 24"
           fill="currentColor"
         >
