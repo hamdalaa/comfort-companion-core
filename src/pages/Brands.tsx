@@ -255,6 +255,48 @@ export default function Brands() {
         <div aria-hidden className="pointer-events-none absolute -top-24 -left-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-accent-cyan/10 blur-3xl" />
 
+        {/* Creative decorative shapes */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          {/* Dotted grid pattern */}
+          <svg className="absolute inset-0 h-full w-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="brand-hero-dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1" fill="hsl(var(--primary))" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#brand-hero-dots)" />
+          </svg>
+
+          {/* Floating ring (top-right) */}
+          <div className="absolute top-10 right-[8%] h-24 w-24 rounded-full border-2 border-primary/30 animate-drift-1" />
+          {/* Filled blob (top-right inner) */}
+          <div className="absolute top-16 right-[14%] h-10 w-10 rounded-full bg-primary/20 animate-drift-2" />
+
+          {/* Rotated square (top-left) */}
+          <div className="absolute top-12 left-[6%] h-16 w-16 rotate-12 rounded-2xl border-2 border-accent-cyan/40 animate-drift-3" />
+          {/* Triangle (top-left) */}
+          <svg className="absolute top-24 left-[16%] h-10 w-10 animate-drift-1" viewBox="0 0 40 40" fill="none">
+            <path d="M20 4 L36 34 L4 34 Z" stroke="hsl(var(--violet))" strokeWidth="2" strokeLinejoin="round" />
+          </svg>
+
+          {/* Diamond (bottom-right) */}
+          <div className="absolute bottom-10 right-[18%] h-8 w-8 rotate-45 border-2 border-primary/40 animate-drift-2" />
+          {/* Small dot cluster (bottom-left) */}
+          <div className="absolute bottom-14 left-[12%] flex gap-1.5 animate-drift-3">
+            <span className="h-2 w-2 rounded-full bg-primary/50" />
+            <span className="h-2 w-2 rounded-full bg-accent-cyan/50" />
+            <span className="h-2 w-2 rounded-full bg-violet/50" />
+          </div>
+
+          {/* Plus sign (mid-right) */}
+          <svg className="absolute top-1/2 right-[4%] h-8 w-8 -translate-y-1/2 animate-drift-1" viewBox="0 0 32 32" fill="none">
+            <path d="M16 6 V26 M6 16 H26" stroke="hsl(var(--primary)/0.5)" strokeWidth="2.5" strokeLinecap="round" />
+          </svg>
+
+          {/* Small ring (mid-left) */}
+          <div className="absolute top-1/2 left-[3%] h-6 w-6 -translate-y-1/2 rounded-full border-2 border-violet/40 animate-drift-2" />
+        </div>
+
         <div className="container relative py-10 sm:py-14 md:py-16">
           <div className="mx-auto max-w-3xl text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-[11px] font-semibold text-primary">
