@@ -1,4 +1,4 @@
-import { useDeferredValue, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,12 @@ export function HeroSearch({
   const [acOpen, setAcOpen] = useState(false);
   const [acIndex, setAcIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const categoryTriggerRef = useRef<HTMLButtonElement>(null);
+  const areaTriggerRef = useRef<HTMLButtonElement>(null);
+  // Remember the last filter trigger the user touched so we can restore
+  // focus to it after Escape closes the autocomplete or after a submit
+  // returns the user to the page (instead of dumping focus on <body>).
+  const lastFocusedFilter = useRef<"category" | "area" | null>(null);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [areaOpen, setAreaOpen] = useState(false);
   const deferredQuery = useDeferredValue(q);
@@ -52,7 +58,13 @@ export function HeroSearch({
   }
 
   function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Escape") { setAcOpen(false); return; }
+    if (e.key === "Escape") {
+      setAcOpen(false);
+      // Restore focus to the last-touched filter, if any — keeps the
+      // keyboard user where they were before opening autocomplete.
+      restoreFilterFocus();
+      return;
+    }
     if (!acOpen || !suggestions.length) return;
     if (e.key === "ArrowDown") { e.preventDefault(); setAcIndex((i) => Math.min(i + 1, suggestions.length - 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setAcIndex((i) => Math.max(i - 1, -1)); }
@@ -60,6 +72,16 @@ export function HeroSearch({
       e.preventDefault();
       handleAcSelect(suggestions[acIndex]);
     }
+  }
+
+  function restoreFilterFocus() {
+    const target =
+      lastFocusedFilter.current === "category"
+        ? categoryTriggerRef.current
+        : lastFocusedFilter.current === "area"
+          ? areaTriggerRef.current
+          : null;
+    if (target) target.focus();
   }
 
   // Form-level Escape handler — close any open select/autocomplete and
@@ -71,7 +93,10 @@ export function HeroSearch({
         setCategoryOpen(false);
         setAreaOpen(false);
         setAcOpen(false);
-        inputRef.current?.focus();
+        // Prefer restoring focus to the filter the user last interacted
+        // with; fall back to the search input when none was touched.
+        if (lastFocusedFilter.current) restoreFilterFocus();
+        else inputRef.current?.focus();
       }
     }
   }
