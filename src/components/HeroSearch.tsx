@@ -147,7 +147,7 @@ export function HeroSearch({
           <Button
             type="submit"
             size="lg"
-            className="h-10 w-auto shrink-0 gap-1.5 rounded-lg px-4 text-[13px] font-medium sm:h-12 sm:rounded-2xl sm:px-7 sm:text-sm"
+            className="h-11 w-auto shrink-0 gap-1.5 rounded-2xl bg-gradient-to-l from-violet via-primary to-cyan px-5 text-[13px] font-semibold text-white shadow-md transition-all hover:opacity-95 hover:shadow-lg sm:h-12 sm:px-7 sm:text-sm"
           >
             <Search className="h-4 w-4" />
             ابحث
