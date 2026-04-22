@@ -81,7 +81,7 @@ export function HeroBanner() {
           {/* Status chip — refined, technical */}
           <Link
             to="/iraq"
-            className="animate-fade-in-up group/chip inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 py-1 ps-1 pe-3.5 text-[11.5px] font-medium text-muted-foreground shadow-xs backdrop-blur-md transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary-soft sm:text-[12px]"
+            className="animate-fade-in-up group/chip inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 py-1.5 ps-1.5 pe-4 text-[11.5px] font-medium text-muted-foreground shadow-xs backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary-soft hover:text-foreground hover:shadow-sm sm:text-[12px]"
             style={{ animationDelay: "0ms", animationFillMode: "backwards" }}
           >
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-soft px-2 py-0.5 text-[10px] font-semibold text-emerald">
@@ -97,19 +97,22 @@ export function HeroBanner() {
 
           {/* Headline — Linear-style large, tight, refined */}
           <h1
-            className="animate-fade-in-up font-display mt-7 text-balance text-[clamp(2.4rem,5.2vw,4.25rem)] font-bold leading-[1.02] tracking-[-0.035em] text-foreground sm:mt-8"
+            className="animate-fade-in-up font-display mt-7 text-balance text-[clamp(2.1rem,5vw,4rem)] font-bold leading-[1.04] tracking-[-0.035em] text-foreground sm:mt-8"
             style={{ animationDelay: "80ms", animationFillMode: "backwards" }}
           >
             كل محلات الإلكترونيات
             <br />
             <span className="relative inline-block bg-gradient-to-l from-violet via-primary to-cyan bg-clip-text text-transparent">
               بمكان واحد.
+              <svg aria-hidden className="absolute -bottom-1 left-0 h-2 w-full text-primary/30" viewBox="0 0 100 8" preserveAspectRatio="none" fill="none">
+                <path d="M0 4 Q 25 0, 50 4 T 100 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
             </span>
           </h1>
 
           {/* Subheading — calm, restrained */}
           <p
-            className="animate-fade-in-up mx-auto mt-6 max-w-xl text-pretty text-[14.5px] leading-[1.75] text-muted-foreground sm:mt-7 sm:text-[16px] sm:leading-[1.8]"
+            className="animate-fade-in-up mx-auto mt-6 max-w-[34rem] text-pretty text-[14.5px] leading-[1.75] text-muted-foreground sm:mt-7 sm:text-[16px] sm:leading-[1.8]"
             style={{ animationDelay: "160ms", animationFillMode: "backwards" }}
           >
             قارن الأسعار، شوف العنوان والتقييم، وتواصل مع المحل مباشرةً —
@@ -126,19 +129,21 @@ export function HeroBanner() {
 
           {/* Trust pills — single understated row */}
           <div
-            className="animate-fade-in-up mt-7 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 sm:mt-8"
-            style={{ animationDelay: "320ms", animationFillMode: "backwards" }}
+            className="animate-fade-in-up mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:mt-8 sm:gap-x-4"
+            style={{ animationDelay: "400ms", animationFillMode: "backwards" }}
           >
-            {trustPills.map((pill) => {
+            {trustPills.map((pill, idx) => {
               const tones = toneClasses[pill.tone];
               const Icon = pill.icon;
               return (
-                <span
-                  key={pill.label}
-                  className="inline-flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground/90 sm:text-[12.5px]"
-                >
-                  <Icon className={`h-3.5 w-3.5 ${tones.text}`} strokeWidth={2.4} />
-                  <span>{pill.label}</span>
+                <span key={pill.label} className="inline-flex items-center gap-2 sm:gap-3">
+                  <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground/90 sm:text-[12.5px]">
+                    <Icon className={`h-3.5 w-3.5 ${tones.text}`} strokeWidth={2.4} />
+                    <span>{pill.label}</span>
+                  </span>
+                  {idx < trustPills.length - 1 && (
+                    <span aria-hidden className="text-muted-foreground/30">·</span>
+                  )}
                 </span>
               );
             })}
@@ -147,25 +152,26 @@ export function HeroBanner() {
 
         {/* ============== Stat row — clean inline metrics, dividers, no cards ============== */}
         <div className="mx-auto mt-14 max-w-3xl sm:mt-16">
-          <div className="grid grid-cols-3 divide-x divide-x-reverse divide-border/70 rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md">
+          <div className="grid grid-cols-3 divide-x divide-x-reverse divide-border/70 overflow-hidden rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md">
             {statCards.map((stat, index) => {
               const tones = toneClasses[stat.tone];
               const Icon = stat.icon;
               return (
                 <div
                   key={stat.label}
-                  className="animate-fade-in-up group flex flex-col items-center gap-2 px-2 py-5 text-center sm:gap-2.5 sm:py-6"
-                  style={{ animationDelay: `${400 + index * 80}ms`, animationFillMode: "backwards" }}
+                  className="animate-fade-in-up group flex flex-col items-center gap-2 px-2 py-5 text-center transition-colors duration-300 hover:bg-card/70 sm:gap-2.5 sm:py-6"
+                  style={{ animationDelay: `${480 + index * 80}ms`, animationFillMode: "backwards" }}
                 >
-                  <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${tones.bg} ${tones.text} ring-1 ${tones.ring} transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10`}>
+                  <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${tones.bg} ${tones.text} ring-1 ${tones.ring} transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 sm:h-10 sm:w-10`}>
                     <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={2.2} />
                   </span>
                   <CountUp
                     value={stat.value}
                     suffix={stat.suffix}
-                    className="font-numeric text-xl font-bold leading-none tracking-tight text-foreground sm:text-2xl"
+                    className="font-numeric tabular-nums text-xl font-bold leading-none tracking-tight text-foreground sm:text-2xl"
                   />
-                  <span className="text-[10.5px] font-medium tracking-wide text-muted-foreground sm:text-[11.5px]">
+                  <span className="inline-flex items-center gap-1.5 text-[10.5px] font-medium tracking-wide text-muted-foreground sm:text-[11.5px]">
+                    <span aria-hidden className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" />
                     {stat.label}
                   </span>
                 </div>

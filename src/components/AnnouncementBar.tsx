@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, Truck, ShieldCheck, Store, RefreshCw } from "lucide-react";
+import { X, Truck, ShieldCheck, Store, RefreshCw, Sparkles } from "lucide-react";
 
 const STORAGE_KEY = "atlas-announcement-dismissed-v1";
 
@@ -37,11 +37,15 @@ export function AnnouncementBar() {
 
   return (
     <div className="relative z-40 overflow-hidden border-b border-border/50 bg-background/80 text-foreground backdrop-blur-xl">
-      <div className="container relative flex items-center gap-3 py-1.5">
+      <div className="container relative flex items-center gap-3 py-1.5 pe-9">
+        <span className="hidden shrink-0 items-center gap-1.5 border-e border-border/60 pe-3 text-[11px] font-semibold text-primary/80 sm:inline-flex">
+          <Sparkles className="h-3 w-3" strokeWidth={2.4} />
+          أتلس
+        </span>
         <div className="group/marquee relative flex-1 overflow-hidden">
           <div
             className="flex w-max items-center gap-10 animate-marquee group-hover/marquee:[animation-play-state:paused]"
-            style={{ animationDuration: "50s" }}
+            style={{ animationDuration: "60s" }}
           >
             {loop.map((m, i) => {
               const Icon = m.icon;
@@ -55,14 +59,14 @@ export function AnnouncementBar() {
             })}
           </div>
           {/* Edge fades */}
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 start-0 w-12 bg-gradient-to-l from-transparent to-background" />
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 end-0 w-12 bg-gradient-to-r from-transparent to-background" />
+          <div aria-hidden className="pointer-events-none absolute inset-y-0 start-0 w-16 bg-gradient-to-l from-transparent to-background" />
+          <div aria-hidden className="pointer-events-none absolute inset-y-0 end-0 w-16 bg-gradient-to-r from-transparent to-background" />
         </div>
         <button
           type="button"
           onClick={handleClose}
           aria-label="إغلاق"
-          className="shrink-0 rounded-full p-1 text-muted-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
+          className="absolute end-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
         >
           <X className="h-3 w-3" />
         </button>
