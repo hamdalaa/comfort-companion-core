@@ -425,7 +425,9 @@ const Results = () => {
               )}
             </div>
 
-            {results.length === 0 ? (
+            {isFiltering ? (
+              <SearchResultsSkeleton count={6} />
+            ) : results.length === 0 ? (
               <NoResultsFallback shops={shops} area={area} category={category} clearAll={clearAll} />
             ) : (
               <>
