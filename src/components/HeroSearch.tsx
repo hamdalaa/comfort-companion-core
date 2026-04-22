@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useDeferredValue, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
