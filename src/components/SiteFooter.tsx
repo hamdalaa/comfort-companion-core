@@ -42,7 +42,11 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-20 border-t border-border bg-background text-foreground">
+    <footer className="relative mt-20 bg-background text-foreground">
+      {/* Premium gradient seam at top */}
+      <div aria-hidden className="divider-grad" />
+      {/* Soft section spotlight backdrop */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 opacity-60 bg-gradient-spotlight" />
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="رجوع للأعلى"
@@ -56,10 +60,10 @@ export function SiteFooter() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
           <div className="text-right">
             <Link to="/" className="inline-flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-foreground text-background">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-ocean text-primary-foreground shadow-glow">
                 <span className="font-display text-lg font-bold leading-none">ت</span>
               </div>
-              <div className="font-display text-xl font-semibold leading-none text-foreground">حاير</div>
+              <div className="font-display text-xl font-semibold leading-none text-grad-ocean">حاير</div>
             </Link>
 
             <p className="mt-5 max-w-sm text-[13px] leading-6 text-muted-foreground">
@@ -91,7 +95,8 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-border pt-6 text-center md:flex-row md:items-center md:justify-between md:text-right">
+        <div className="relative mt-12 flex flex-col gap-2 pt-6 text-center md:flex-row md:items-center md:justify-between md:text-right">
+          <div aria-hidden className="absolute inset-x-0 top-0 divider-grad opacity-70" />
           <p className="text-[11px] leading-5 text-muted-foreground">
             البيانات مبنية على آخر فهرسة متاحة وليست تحديثاً لحظياً.
           </p>

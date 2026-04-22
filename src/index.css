@@ -166,6 +166,36 @@
       radial-gradient(at 0% 0%, hsl(199 89% 48% / 0.07) 0px, transparent 45%),
       radial-gradient(at 100% 100%, hsl(258 90% 66% / 0.06) 0px, transparent 45%);
 
+    /* ---- Premium creative gradients (light) -------------------
+       Carefully curated palettes — each gradient feels intentional,
+       not random. Inspired by Linear / Stripe / Vercel / Apple. */
+    --gradient-sunrise: linear-gradient(135deg, hsl(32 95% 60%) 0%, hsl(346 84% 61%) 55%, hsl(258 90% 66%) 100%);
+    --gradient-ocean:   linear-gradient(135deg, hsl(187 92% 45%) 0%, hsl(199 89% 48%) 50%, hsl(217 91% 55%) 100%);
+    --gradient-aurora-soft: linear-gradient(135deg, hsl(160 70% 52%) 0%, hsl(187 92% 50%) 40%, hsl(199 89% 55%) 100%);
+    --gradient-violet-rose: linear-gradient(135deg, hsl(258 90% 66%) 0%, hsl(280 85% 65%) 50%, hsl(346 84% 61%) 100%);
+    --gradient-amber-rose:  linear-gradient(135deg, hsl(38 95% 58%) 0%, hsl(20 90% 60%) 50%, hsl(346 84% 61%) 100%);
+    --gradient-iridescent: linear-gradient(135deg,
+      hsl(199 89% 55%) 0%,
+      hsl(258 90% 68%) 30%,
+      hsl(320 85% 65%) 55%,
+      hsl(38 95% 60%) 80%,
+      hsl(160 70% 50%) 100%);
+    --gradient-spotlight:
+      radial-gradient(ellipse 80% 60% at 50% 0%, hsl(199 89% 55% / 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 30%, hsl(258 90% 70% / 0.14) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 20% 60%, hsl(187 92% 55% / 0.12) 0%, transparent 60%);
+    --gradient-conic-premium:
+      conic-gradient(from 220deg at 50% 50%,
+        hsl(199 89% 55%) 0deg,
+        hsl(258 90% 68%) 90deg,
+        hsl(346 84% 65%) 180deg,
+        hsl(38 95% 60%) 270deg,
+        hsl(199 89% 55%) 360deg);
+    --gradient-card-sheen: linear-gradient(135deg, hsl(0 0% 100% / 0.65) 0%, hsl(0 0% 100% / 0) 60%);
+    --gradient-section-fade:
+      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(210 30% 96%) 50%, hsl(var(--background)) 100%);
+    --gradient-divider: linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.35) 20%, hsl(var(--accent-violet) / 0.35) 50%, hsl(var(--accent-cyan) / 0.35) 80%, transparent 100%);
+
     --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
@@ -293,6 +323,36 @@
     --gradient-mesh:
       radial-gradient(at 0% 0%, hsl(199 89% 58% / 0.10) 0px, transparent 45%),
       radial-gradient(at 100% 100%, hsl(258 90% 66% / 0.10) 0px, transparent 45%);
+  }
+
+  /* Dark-mode counterparts for premium creative gradients */
+  .dark {
+    --gradient-sunrise: linear-gradient(135deg, hsl(32 95% 60%) 0%, hsl(346 84% 65%) 55%, hsl(258 90% 72%) 100%);
+    --gradient-ocean:   linear-gradient(135deg, hsl(187 92% 55%) 0%, hsl(199 89% 60%) 50%, hsl(217 91% 65%) 100%);
+    --gradient-aurora-soft: linear-gradient(135deg, hsl(160 70% 55%) 0%, hsl(187 92% 60%) 40%, hsl(199 89% 65%) 100%);
+    --gradient-violet-rose: linear-gradient(135deg, hsl(258 90% 72%) 0%, hsl(280 85% 70%) 50%, hsl(346 84% 67%) 100%);
+    --gradient-amber-rose:  linear-gradient(135deg, hsl(38 95% 62%) 0%, hsl(20 90% 64%) 50%, hsl(346 84% 67%) 100%);
+    --gradient-iridescent: linear-gradient(135deg,
+      hsl(199 89% 60%) 0%,
+      hsl(258 90% 72%) 30%,
+      hsl(320 85% 70%) 55%,
+      hsl(38 95% 62%) 80%,
+      hsl(160 70% 55%) 100%);
+    --gradient-spotlight:
+      radial-gradient(ellipse 80% 60% at 50% 0%, hsl(199 89% 60% / 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 30%, hsl(258 90% 72% / 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 20% 60%, hsl(187 92% 60% / 0.16) 0%, transparent 60%);
+    --gradient-conic-premium:
+      conic-gradient(from 220deg at 50% 50%,
+        hsl(199 89% 60%) 0deg,
+        hsl(258 90% 72%) 90deg,
+        hsl(346 84% 67%) 180deg,
+        hsl(38 95% 62%) 270deg,
+        hsl(199 89% 60%) 360deg);
+    --gradient-card-sheen: linear-gradient(135deg, hsl(210 40% 96% / 0.06) 0%, hsl(210 40% 96% / 0) 60%);
+    --gradient-section-fade:
+      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(222 42% 9%) 50%, hsl(var(--background)) 100%);
+    --gradient-divider: linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.5) 20%, hsl(var(--accent-violet) / 0.5) 50%, hsl(var(--accent-cyan) / 0.5) 80%, transparent 100%);
   }
 
   * {
@@ -1182,4 +1242,141 @@
   .glow-pulse {
     animation: pulse-glow 2.6s ease-in-out infinite;
   }
+}
+
+/* ============================================================
+   Premium creative gradient utilities
+   - Use sparingly: hero CTAs, headlines, key cards, section seams.
+   - Every utility is theme-aware via CSS vars.
+   ============================================================ */
+@layer utilities {
+  /* Background fills */
+  .bg-grad-sunrise      { background-image: var(--gradient-sunrise); }
+  .bg-grad-ocean        { background-image: var(--gradient-ocean); }
+  .bg-grad-aurora-soft  { background-image: var(--gradient-aurora-soft); }
+  .bg-grad-violet-rose  { background-image: var(--gradient-violet-rose); }
+  .bg-grad-amber-rose   { background-image: var(--gradient-amber-rose); }
+  .bg-grad-iridescent   { background-image: var(--gradient-iridescent); background-size: 200% 200%; }
+  .bg-grad-spotlight    { background-image: var(--gradient-spotlight); }
+  .bg-grad-conic        { background-image: var(--gradient-conic-premium); }
+  .bg-grad-section-fade { background-image: var(--gradient-section-fade); }
+
+  /* Animated iridescent — hue drifts slowly */
+  .bg-grad-iridescent-anim {
+    background-image: var(--gradient-iridescent);
+    background-size: 220% 220%;
+    animation: gradient-shift 14s ease-in-out infinite;
+  }
+
+  /* Text gradients — premium headlines */
+  .text-grad-ocean {
+    background-image: var(--gradient-ocean);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-grad-sunrise {
+    background-image: var(--gradient-sunrise);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-grad-violet-rose {
+    background-image: var(--gradient-violet-rose);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-grad-iridescent {
+    background-image: var(--gradient-iridescent);
+    background-size: 220% 220%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: gradient-shift 12s ease-in-out infinite;
+  }
+
+  /* Section spotlight wrapper — soft multi-radial wash for sections */
+  .section-spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .section-spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--gradient-spotlight);
+    pointer-events: none;
+  }
+
+  /* Divider line with rainbow blush — for section seams */
+  .divider-grad {
+    height: 1px;
+    width: 100%;
+    background: var(--gradient-divider);
+    border: 0;
+  }
+
+  /* Premium gradient card border — static, refined, theme-aware */
+  .border-grad-premium {
+    position: relative;
+    background:
+      linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+      var(--gradient-iridescent) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Card sheen — subtle diagonal highlight for "premium" feel */
+  .card-sheen {
+    position: relative;
+    isolation: isolate;
+  }
+  .card-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--gradient-card-sheen);
+    pointer-events: none;
+    opacity: 0.7;
+    mix-blend-mode: soft-light;
+  }
+
+  /* Premium CTA button — gradient fill + glow */
+  .btn-grad-primary {
+    background-image: var(--gradient-ocean);
+    color: hsl(var(--primary-foreground));
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.15) inset,
+      0 8px 24px -10px hsl(var(--primary) / 0.55);
+    transition: transform 0.2s var(--ease-ios-spring), box-shadow 0.25s var(--ease-premium), filter 0.2s var(--ease-premium);
+  }
+  .btn-grad-primary:hover {
+    filter: brightness(1.05) saturate(1.05);
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.2) inset,
+      0 12px 32px -10px hsl(var(--primary) / 0.65);
+  }
+  .btn-grad-primary:active { transform: scale(0.97); }
+
+  /* Glow halos — color-coded ambient lights for hero/section corners */
+  .halo-primary,
+  .halo-violet,
+  .halo-cyan,
+  .halo-rose,
+  .halo-emerald,
+  .halo-amber {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(110px);
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .halo-primary { background: hsl(var(--primary) / 0.45); }
+  .halo-violet  { background: hsl(var(--accent-violet) / 0.4); }
+  .halo-cyan    { background: hsl(var(--accent-cyan) / 0.4); }
+  .halo-rose    { background: hsl(var(--accent-rose) / 0.35); }
+  .halo-emerald { background: hsl(var(--accent-emerald) / 0.35); }
+  .halo-amber   { background: hsl(var(--accent-amber) / 0.4); }
+
+  /* Tone the halos down on light theme so it doesn't feel washed out */
+  :root .halo-primary { opacity: 0.28; }
+  :root .halo-violet  { opacity: 0.24; }
+  :root .halo-cyan    { opacity: 0.24; }
+  :root .halo-rose    { opacity: 0.22; }
+  :root .halo-emerald { opacity: 0.22; }
+  :root .halo-amber   { opacity: 0.26; }
 }

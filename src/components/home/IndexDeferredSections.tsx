@@ -28,10 +28,11 @@ interface SectionHeaderProps {
 
 function SectionHeader({ kicker, title, description, seeAll }: SectionHeaderProps) {
   return (
-    <div className="border-b border-border pb-5 sm:pb-6">
+    <div className="relative pb-5 sm:pb-6">
+      <div aria-hidden className="absolute inset-x-0 bottom-0 divider-grad opacity-70" />
       <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-end md:justify-between">
         <div className="max-w-3xl text-right">
-          <span className="atlas-kicker">{kicker}</span>
+          <span className="atlas-kicker text-grad-ocean">{kicker}</span>
           <h2 className="font-display mt-3 text-balance text-xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl md:text-4xl">
             {title}
           </h2>

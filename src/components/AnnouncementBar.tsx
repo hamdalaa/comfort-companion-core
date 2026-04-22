@@ -60,10 +60,19 @@ export function AnnouncementBar() {
       ref={barRef}
       className="relative z-40 overflow-hidden border-b border-border/50 bg-background/80 text-foreground backdrop-blur-xl"
     >
+      {/* Subtle gradient wash for premium feel */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.55]"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, hsl(var(--primary) / 0.06) 0%, hsl(var(--accent-violet) / 0.04) 50%, hsl(var(--accent-cyan) / 0.06) 100%)",
+        }}
+      />
       <div className="container relative flex items-center gap-3 py-1.5 pe-9">
-        <span className="hidden shrink-0 items-center gap-1.5 border-e border-border/60 pe-3 text-[11px] font-semibold text-primary/80 sm:inline-flex">
-          <Sparkles className="h-3 w-3" strokeWidth={2.4} />
-          أتلس
+        <span className="hidden shrink-0 items-center gap-1.5 border-e border-border/60 pe-3 text-[11px] font-semibold sm:inline-flex">
+          <Sparkles className="h-3 w-3 text-primary" strokeWidth={2.4} />
+          <span className="text-grad-ocean">أتلس</span>
         </span>
         <div className="group/marquee relative flex-1 overflow-hidden">
           <div

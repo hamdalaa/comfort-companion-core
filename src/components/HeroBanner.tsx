@@ -51,11 +51,14 @@ export function HeroBanner() {
     <section className="relative isolate overflow-hidden bg-background">
       {/* ============== Modern Tech backdrop — Linear/Vercel inspired ============== */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        {/* Top gradient wash — single, soft, off-center */}
-        <div className="absolute -top-32 left-1/2 h-[680px] w-[1200px] -translate-x-1/2 rounded-[100%] bg-gradient-to-b from-primary/[0.10] via-violet/[0.06] to-transparent blur-3xl" />
-        {/* Side glows — barely-there */}
-        <div className="absolute top-20 right-[-8%] h-[420px] w-[420px] rounded-full bg-cyan/[0.08] blur-[140px]" />
-        <div className="absolute top-40 left-[-8%] h-[420px] w-[420px] rounded-full bg-violet/[0.08] blur-[140px]" />
+        {/* Premium spotlight wash — multi-radial, theme-aware */}
+        <div className="absolute inset-0 bg-gradient-spotlight" />
+
+        {/* Color halos — ambient corner lights */}
+        <div className="halo-primary -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2" />
+        <div className="halo-cyan top-24 right-[-10%] h-[420px] w-[420px]" />
+        <div className="halo-violet top-32 left-[-10%] h-[420px] w-[420px]" />
+        <div className="halo-amber bottom-[-10%] right-[20%] h-[360px] w-[360px]" />
 
         {/* Ultra-fine grid — premium technical texture */}
         <div
@@ -216,7 +219,7 @@ export function HeroBanner() {
           >
             كل محلات الإلكترونيات
             <br />
-            <span className="relative inline-block bg-gradient-to-l from-violet via-primary to-cyan bg-clip-text text-transparent">
+            <span className="relative inline-block text-grad-iridescent">
               بمكان واحد.
               <svg aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-1 h-2 w-full text-primary/30" viewBox="0 0 100 8" preserveAspectRatio="none" fill="none">
                 <path d="M0 4 Q 25 0, 50 4 T 100 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
