@@ -63,7 +63,7 @@ export function SiteFooter() {
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-ocean text-primary-foreground shadow-glow">
                 <span className="font-display text-lg font-bold leading-none">ت</span>
               </div>
-              <div className="font-display text-xl font-semibold leading-none text-grad-ocean">حاير</div>
+              <div className="font-thmanyah text-2xl font-bold leading-none text-grad-ocean">حـايـر</div>
             </Link>
 
             <p className="mt-5 max-w-sm text-[13px] leading-6 text-muted-foreground">
