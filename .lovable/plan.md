@@ -1,93 +1,86 @@
 
 
-## تحسينات إضافية على الواجهة — صقل وإحكام
+## تحسينات الأداء، الـSkeletons، والـAccessibility
 
-سأكمل تنقيح الواجهة بتحسينات دقيقة تركز على التفاصيل التي تفصل بين تصميم "جيد" وتصميم "متقن" — خصوصاً في المسافات، والميكرو-تفاعلات، والاتساق البصري بين المكونات.
+تحسينات تركز على ما طلبته: تقليل layout jank، إضافة skeletons للبحث/الوجهات، التحقق من RTL، keyboard nav للفلاتر، وضبط المسافات على الشاشات الصغيرة.
 
 ### النتيجة المتوقعة
 
 ```text
-┌──────────────────────────────────────────────────────────┐
-│  Announcement (أهدأ، أقصر، fade من الجوانب أوضح)        │
-├──────────────────────────────────────────────────────────┤
-│  TopNav (sticky، blur أقوى عند scroll)                   │
-├──────────────────────────────────────────────────────────┤
-│                                                          │
-│         [● مباشر | دليل الإلكترونيات في العراق →]        │
-│                                                          │
-│            كل محلات الإلكترونيات                          │
-│             بمكان واحد.  ← gradient أهدأ + كبر مضبوط     │
-│                                                          │
-│      نص فرعي بسطرين بمسافات أنفس وtracking أحكم          │
-│                                                          │
-│    ┌────────────────────────────────────────────────┐    │
-│    │ 🔍 ابحث...    │ الفئة │ المنطقة │ [ابحث →]    │    │
-│    └────────────────────────────────────────────────┘    │
-│                                                          │
-│      🛡 موثوق   ·   💲 أفضل سعر   ·   ✨ يومي           │
-│                                                          │
-│   ┌──────────┬──────────┬──────────┐                    │
-│   │ 149K+    │  1,200+  │   10     │  ← stat row محسّن  │
-│   │ منتج     │ محل      │ محافظات   │     hover ألطف    │
-│   └──────────┴──────────┴──────────┘                    │
-│                                                          │
-│   ┌────────┐  ┌────────┐  ┌────────┐                   │
-│   │ Iraq   │  │ Sinaa  │  │ Rubaie │  ← destinations  │
-│   │ 16:10  │  │ صور    │  │ بطاقات │     مع badge      │
-│   └────────┘  └────────┘  └────────┘     "جديد" خفيف   │
-└──────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────┐
+│ Marquee (GPU-only، يتوقف خارج الشاشة، يحترم  │
+│         prefers-reduced-motion)               │
+├────────────────────────────────────────────────┤
+│ Hero (مسافات أصغر على الموبايل، tap targets   │
+│       متوازية ≥44px)                          │
+│                                                │
+│ [● مباشر · دليل الإلكترونيات →]               │
+│  H1 (مسافة أقل أعلى الموبايل)                  │
+│  Subheading                                    │
+│  ┌──────────────────────────────────────┐     │
+│  │ Search [Esc=close, Tab=cycle filters]│     │
+│  └──────────────────────────────────────┘     │
+│  Trust pills (separators تعمل في RTL)         │
+│  Stat row                                      │
+│                                                │
+│  Destinations (skeleton بنفس الـlayout قبل     │
+│                تحميل الصور)                    │
+└────────────────────────────────────────────────┘
 ```
 
-### التحسينات
+### التحسينات التفصيلية
 
-**1. Hero — صقل التفاصيل**
-- تخفيف حجم العنوان قليلاً على الموبايل (`clamp(2.1rem,5vw,4rem)`) لتجنّب الازدحام في الشاشات الصغيرة
-- إضافة highlight underline ناعم تحت كلمة "بمكان واحد" بدل/إضافة على gradient — خط متموج رفيع
-- زيادة `max-w-xl` للنص الفرعي إلى `max-w-[34rem]` ليكون أنفس
-- Trust pills: إضافة dot separator `·` بدل المسافات لتحسين الإيقاع البصري
-- تحسين الـ status chip: تكبير hit area قليلاً، وتوضيح الـ hover state
+**1. أداء الأنيميشن والـMarquee**
+- `AnnouncementBar`: إضافة `will-change: transform` و `transform: translate3d(0,0,0)` على عنصر الـmarquee لتفعيل GPU compositing.
+- إخفاء الـmarquee تلقائياً عبر `IntersectionObserver` عندما يخرج الـAnnouncementBar من viewport (إيقاف `animation-play-state: paused`) — يقلل CPU بشكل ملحوظ على الموبايل عند التمرير.
+- إضافة `@media (prefers-reduced-motion: reduce)` صريحة على الـmarquee لإيقافه كاملاً (الموجود حالياً يقلله إلى `0.01ms` فقط — سيء بصرياً للـmarquee).
+- `HeroBanner`: إضافة `will-change: opacity, transform` على عناصر `animate-fade-in-up` لتجنب paint repeats، وإزالتها بعد انتهاء الأنيميشن عبر `animation-fill-mode: backwards` الموجود + class تنظف نفسها.
+- إزالة الـ`backdrop-blur-xl` من بطاقات stats على الموبايل (`sm:backdrop-blur-md`) — الـbackdrop-filter مكلف جداً على low-end.
 
-**2. HeroSearch — تفاعلات أحكم**
-- إضافة keyboard shortcut hint (`⌘K`) كـ kbd صغير داخل input عند عدم التركيز
-- تحسين الـ focus state: حلقة بلون primary بـ `ring-2` بدل `ring-4` (أنظف)
-- زر CTA: تخفيف الـ translate-y عند hover من `-0.5` إلى `-px` (أكثر دقة)
-- توحيد ارتفاع كل العناصر داخل الفورم على `h-[52px]` بدل `54/12`
-- إضافة `transition-all` ناعم على الـ select triggers
+**2. Skeletons لنتائج البحث والوجهات**
+- إنشاء `src/components/HeroDestinationsSkeleton.tsx`: 3 بطاقات بنفس aspect-ratio (16:10) مع `Skeleton` component موجود (shimmer). يُعرض حتى تُحمّل صور البطاقات.
+- `HeroDestinations.tsx`: استخدام `useState` لتتبع `imageLoaded` لكل بطاقة + عرض skeleton overlay داخل كل بطاقة حتى `onLoad`.
+- `Results.tsx` (`/search`): إنشاء `SearchResultsSkeleton` يطابق grid البطاقات (6 بطاقات placeholder) ويُعرض أثناء computation الفلاتر/الترتيب الثقيل (نستخدم `useDeferredValue` + skeleton أثناء `isPending`).
+- `SearchAutocomplete`: إضافة skeleton rows (3 صفوف) عندما `query.trim()` موجود لكن `suggestions` لم يحسب بعد (`useDeferredValue` فجوة).
 
-**3. Stat Row — حياة أكثر**
-- إضافة hover state على كل stat: خلفية ناعمة `hover:bg-card/60` تنتقل بـ 300ms
-- الأيقونة تكبر قليلاً وتدور 3deg عند hover (موجود scale، نضيف rotate خفيف)
-- إضافة separator صغير بين الرقم والـ label (نقطة دقيقة)
-- Counter: tabular-nums للتأكد من ثبات العرض
+**3. التحقق من RTL والـbreakpoints**
+- مراجعة الـ`underline SVG` تحت "بمكان واحد" — حالياً `left: 0` ثابت، نغيره إلى `inset-x-0` ليعمل في RTL بشكل صحيح.
+- Trust pills separator (`·`): التأكد من استخدام logical spacing (`gap-x-3`) بدلاً من `space-x` لتجنب مشاكل RTL.
+- Destinations badges (`absolute right-3 top-3`) → `end-3 top-3` لتعمل تلقائياً مع `dir="rtl"`.
+- Stat row dividers: التأكد من `divide-x-reverse` يعمل (موجود) + اختبار على `sm:` و `md:` و `lg:`.
+- Marquee edge fades: `from-transparent to-background` مع `start-0`/`end-0` (موجود ✓).
 
-**4. HeroDestinations — تفاصيل premium**
-- إضافة badge "جديد" أو counter صغير على بطاقة العراق (10 محافظات بشكل مرئي)
-- تحسين الـ overlay gradient ليكون أهدأ (`from-foreground/75` بدل `/85`)
-- Footer البطاقة: إضافة icon صغير قبل الرقم التسلسلي
-- Hover: shadow أقل عمقاً وأكثر انتشاراً (`-12` بدل `-16`)
+**4. Keyboard navigation للفلاتر**
+- `HeroSearch.tsx`: إضافة `tabIndex` صريح على input → category trigger → area trigger → submit button (focus order طبيعي حالياً، لكن نضمنه).
+- إضافة `onKeyDown` handler على الفورم: `Escape` يغلق أي select مفتوح + يعيد التركيز للـinput.
+- ضمان أن Radix `Select` يستجيب لـ `Escape` (يفعل افتراضياً) — نضيف `onOpenChange` handler يتذكر آخر trigger ركّز عليه.
+- إضافة `aria-label` لكل من category و area selects (`اختر الفئة` / `اختر المنطقة`).
+- إضافة visible focus ring أوضح على الـtriggers (`focus-visible:ring-2 focus-visible:ring-primary/50`).
 
-**5. AnnouncementBar — تنقية**
-- إضافة icon ثابت في البداية (Sparkles صغير) كـ anchor بصري قبل الـ marquee
-- تخفيف animation duration إلى `60s` (أبطأ = أهدأ)
-- توسيع edge fade من `w-12` إلى `w-16`
-- زر الإغلاق: نقله لـ `end-2` كـ floating element بدل أن يأخذ مساحة
-
-**6. تحسينات شاملة (cross-cutting)**
-- توحيد `font-numeric` و`tabular-nums` على كل الأرقام في الهيرو
-- التأكد من تطابق border-radius (كل العناصر في الهيرو على `rounded-2xl` أو `rounded-xl`)
-- تحسين `animate-fade-in-up` delays لتكون متناغمة (kicker → headline → sub → search → trust → stats → destinations بفروقات 80ms ثابتة)
+**5. مسافات Hero/Search على الشاشات الصغيرة**
+- `HeroBanner`: تقليل `pt-14 pb-20` إلى `pt-10 pb-14` على الموبايل (`sm:pt-20 sm:pb-24` يبقى).
+- المسافة بين الـheadline والـsubheading: من `mt-7` إلى `mt-5` على الموبايل.
+- Stat row: من `mt-14` إلى `mt-10` على الموبايل.
+- HeroDestinations: من `mt-16` إلى `mt-10` على الموبايل.
+- HeroSearch: ضمان ارتفاع كل tap targets ≥ 44px (حالياً 52px ✓)، وإضافة `min-h-[44px]` على الـSelect triggers كأمان.
+- على الشاشات `<sm`: stack الفلاتر عمودياً (موجود ✓) لكن مع `gap-2` بدل `gap-1.5` لتفصل tap targets بصرياً.
 
 ### الملفات المتأثرة
 
-- `src/components/HeroBanner.tsx` — صقل التايبوغرافي، stat row hover، trust pills
-- `src/components/HeroSearch.tsx` — kbd hint، focus state، توحيد الارتفاعات
-- `src/components/HeroDestinations.tsx` — badges، gradient overlay، hover refinement
-- `src/components/AnnouncementBar.tsx` — anchor icon، edge fades، إغلاق floating
+- `src/components/AnnouncementBar.tsx` — IntersectionObserver، GPU optimization، reduced-motion
+- `src/components/HeroBanner.tsx` — مسافات mobile، RTL underline، backdrop-blur conditional
+- `src/components/HeroSearch.tsx` — keyboard nav، Escape handler، aria-labels، tap targets
+- `src/components/HeroDestinations.tsx` — image-load skeleton state، RTL positions (end-3)
+- `src/components/HeroDestinationsSkeleton.tsx` — **جديد**
+- `src/components/SearchAutocomplete.tsx` — pending state skeleton rows
+- `src/components/skeletons/PageSkeletons.tsx` — إضافة `SearchResultsSkeleton`
+- `src/pages/Results.tsx` — استخدام `useDeferredValue` + skeleton أثناء filter computation
+- `src/index.css` — `will-change` utility، marquee reduced-motion override
 
-### مبادئ التصميم المُطبَّقة
+### مبادئ التطبيق
 
-- **8pt grid**: كل المسافات مضاعفات من 4/8
-- **Visual rhythm**: animation delays ثابتة 80ms
-- **Reduced motion**: كل التحولات تحت 300ms
-- **No new dependencies**: فقط Tailwind + lucide-react الموجودة
+- **No layout shift**: كل skeleton يطابق الأبعاد النهائية بالضبط
+- **GPU-only animations**: `transform` و `opacity` فقط، لا `width`/`height`/`top`
+- **Accessibility**: focus visible، Escape يعمل، tap targets ≥ 44px، aria-labels عربية
+- **Mobile-first spacing**: تقليل padding على < sm، نفس الإيقاع على ≥ sm
 
