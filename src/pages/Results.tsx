@@ -290,9 +290,19 @@ const Results = () => {
         </div>
       </section>
 
-      <main className="flex-1">
+      <main className="flex-1" id="main" aria-labelledby="results-heading">
+        {/* Polite live region — screen readers announce result counts when
+            filtering settles (isFiltering flips back to false). We avoid
+            assertive so we don't interrupt typing. */}
+        <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+          {isFiltering
+            ? "جاري تحديث النتائج…"
+            : `تم تحديث النتائج: ${results.length.toLocaleString("ar")} عنصر${
+                groups.length > 0 ? `، و ${groups.length.toLocaleString("ar")} مجموعة مقارنة` : ""
+              }.`}
+        </div>
         <div className="container grid grid-cols-1 gap-6 py-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:h-fit">
+          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:h-fit" aria-label="فلاتر النتائج">
             <FiltersPanel
               area={area}
               category={category}
