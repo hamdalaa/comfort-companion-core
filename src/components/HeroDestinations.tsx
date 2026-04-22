@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, MapPin, Cpu, Smartphone } from "lucide-react";
+import { ArrowLeft, Sparkles, MapPin, Cpu, Smartphone, type LucideIcon } from "lucide-react";
 
 interface Destination {
   to: string;
@@ -7,7 +7,7 @@ interface Destination {
   title: string;
   meta: string;
   badge?: string;
-  Icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  Icon: LucideIcon;
   accent: "primary" | "cyan" | "violet";
 }
 
