@@ -1,5 +1,6 @@
 import helmet from "@fastify/helmet";
 import rateLimit from "@fastify/rate-limit";
+import cors from "@fastify/cors";
 import Fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import type { CatalogContext } from "../shared/bootstrap.js";
 import { createCatalogContext } from "../shared/bootstrap.js";
@@ -51,6 +52,30 @@ export async function createCatalogApiServer(
   await app.register(rateLimit, {
     global: false,
     keyGenerator: (request) => request.ip,
+  });
+  await app.register(cors, {
+    origin: (origin, cb) => {
+      // Allow no-origin (curl, server-to-server) and any localhost/lovable preview origin
+      if (!origin) return cb(null, true);
+      try {
+        const { hostname } = new URL(origin);
+        const allowed =
+          hostname === "localhost" ||
+          hostname === "127.0.0.1" ||
+          hostname.endsWith(".lovable.app") ||
+          hostname.endsWith(".lovable.dev") ||
+          hostname.endsWith(".lovableproject.com") ||
+          hostname.endsWith(".h-db.site") ||
+          hostname === "h-db.site";
+        return cb(null, allowed);
+      } catch {
+        return cb(null, false);
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allowedHeaders: ["content-type", "authorization", "x-requested-with"],
+    maxAge: 86400,
   });
   const docsRateLimit = app.rateLimit({
     max: catalogConfig.docs.rateLimitMax,
