@@ -320,11 +320,7 @@ export default function Brands() {
         )}
 
         <p className="mt-10 text-center text-xs text-muted-foreground">
-          * نعرض أشهر 40 براند لتخفيف الحمل. الشعارات مقدّمة عبر CDN من{" "}
-          <a href="https://thesvg.org" target="_blank" rel="noreferrer noopener" className="font-medium text-foreground hover:text-primary">
-            theSVG
-          </a>
-          .
+          * نعرض أشهر 40 براند لتخفيف الحمل.
         </p>
       </main>
 
