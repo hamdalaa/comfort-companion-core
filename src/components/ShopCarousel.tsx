@@ -121,7 +121,7 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
             <div
               key={shop.id}
               data-carousel-item
-              className="snap-center shrink-0 basis-[78%] sm:basis-[58%] md:basis-[44%]"
+              className="snap-center shrink-0 basis-[68%] xs:basis-[64%] sm:basis-[58%] md:basis-[44%]"
               aria-roledescription="slide"
               aria-label={`${idx + 1} من ${total}`}
             >
