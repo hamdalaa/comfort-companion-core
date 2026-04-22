@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, Truck, ShieldCheck, Store, RefreshCw, Sparkles } from "lucide-react";
 
 const STORAGE_KEY = "atlas-announcement-dismissed-v1";
@@ -12,6 +12,8 @@ const messages = [
 
 export function AnnouncementBar() {
   const [dismissed, setDismissed] = useState(true);
+  const [inView, setInView] = useState(true);
+  const barRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     try {
@@ -20,6 +22,21 @@ export function AnnouncementBar() {
       setDismissed(false);
     }
   }, []);
+
+  // Pause the marquee animation when the bar scrolls out of view —
+  // saves CPU/GPU on low-end mobile devices.
+  useEffect(() => {
+    const node = barRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) setInView(entry.isIntersecting);
+      },
+      { rootMargin: "32px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [dismissed]);
 
   const handleClose = () => {
     setDismissed(true);
@@ -36,7 +53,10 @@ export function AnnouncementBar() {
   const loop = [...messages, ...messages];
 
   return (
-    <div className="relative z-40 overflow-hidden border-b border-border/50 bg-background/80 text-foreground backdrop-blur-xl">
+    <div
+      ref={barRef}
+      className="relative z-40 overflow-hidden border-b border-border/50 bg-background/80 text-foreground backdrop-blur-xl"
+    >
       <div className="container relative flex items-center gap-3 py-1.5 pe-9">
         <span className="hidden shrink-0 items-center gap-1.5 border-e border-border/60 pe-3 text-[11px] font-semibold text-primary/80 sm:inline-flex">
           <Sparkles className="h-3 w-3" strokeWidth={2.4} />
@@ -44,7 +64,7 @@ export function AnnouncementBar() {
         </span>
         <div className="group/marquee relative flex-1 overflow-hidden">
           <div
-            className="flex w-max items-center gap-10 animate-marquee group-hover/marquee:[animation-play-state:paused]"
+            className={`marquee-gpu flex w-max items-center gap-10 animate-marquee group-hover/marquee:[animation-play-state:paused] ${inView ? "" : "marquee-paused"}`}
             style={{ animationDuration: "60s" }}
           >
             {loop.map((m, i) => {

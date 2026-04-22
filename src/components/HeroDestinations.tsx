@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import sinaaImg from "@/assets/street-sinaa.jpg";
 import rubaieImg from "@/assets/street-rubaie.jpg";
 import iraqImg from "@/assets/iraq-cities.jpg";
@@ -39,8 +41,9 @@ const DESTINATIONS: Destination[] = [
 ];
 
 export function HeroDestinations() {
+  const [loaded, setLoaded] = useState<Record<string, boolean>>({});
   return (
-    <div className="mx-auto mt-16 grid w-full max-w-5xl grid-cols-1 gap-4 sm:mt-20 sm:grid-cols-3 sm:gap-5">
+    <div className="mx-auto mt-10 grid w-full max-w-5xl grid-cols-1 gap-4 sm:mt-20 sm:grid-cols-3 sm:gap-5">
       {DESTINATIONS.map((d, index) => (
         <Link
           key={d.to}
@@ -50,15 +53,19 @@ export function HeroDestinations() {
           style={{ animationDelay: `${500 + index * 100}ms`, animationFillMode: "backwards" }}
         >
           <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+            {!loaded[d.to] && (
+              <Skeleton className="absolute inset-0 h-full w-full rounded-none" />
+            )}
             <img
               src={d.img}
               alt={d.title}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+              onLoad={() => setLoaded((prev) => ({ ...prev, [d.to]: true }))}
+              className={`h-full w-full object-cover transition-[transform,opacity] duration-[900ms] ease-out group-hover:scale-[1.06] ${loaded[d.to] ? "opacity-100" : "opacity-0"}`}
             />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-foreground/75 via-foreground/10 to-transparent" />
-            <div className="absolute right-3 top-3 flex items-center gap-1.5">
+            <div className="absolute end-3 top-3 flex items-center gap-1.5">
               <span className="inline-flex items-center rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-foreground shadow-xs backdrop-blur-md">
                 {d.kicker}
               </span>

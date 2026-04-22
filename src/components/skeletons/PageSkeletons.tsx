@@ -206,3 +206,35 @@ export function BrandPageSkeleton() {
     </div>
   );
 }
+
+/**
+ * Skeleton for /search results grid. Mirrors the real grid (3 cols on xl,
+ * 2 on sm, 1 on mobile) so deferred filter computation does not cause CLS.
+ */
+export function SearchResultsSkeleton({ count = 6 }: { count?: number }) {
+  return (
+    <div
+      className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          className="overflow-hidden rounded-2xl border border-border/70 bg-card"
+        >
+          <Skeleton className="aspect-[4/3] w-full rounded-none" />
+          <div className="space-y-2 p-4">
+            <Skeleton className="h-3 w-1/3 rounded-full" />
+            <Skeleton className="h-5 w-3/4 rounded-full" />
+            <Skeleton className="h-4 w-1/2 rounded-full" />
+            <div className="flex items-center justify-between pt-2">
+              <Skeleton className="h-9 w-24 rounded-full" />
+              <Skeleton className="h-9 w-9 rounded-full" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

@@ -75,7 +75,7 @@ export function HeroBanner() {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      <div className="container relative pt-14 pb-20 sm:pt-20 sm:pb-24 md:pt-24">
+      <div className="container relative pt-10 pb-14 sm:pt-20 sm:pb-24 md:pt-24">
         {/* ============== Hero content — centered, generous spacing ============== */}
         <div className="mx-auto max-w-3xl text-center">
           {/* Status chip — refined, technical */}
@@ -104,7 +104,7 @@ export function HeroBanner() {
             <br />
             <span className="relative inline-block bg-gradient-to-l from-violet via-primary to-cyan bg-clip-text text-transparent">
               بمكان واحد.
-              <svg aria-hidden className="absolute -bottom-1 left-0 h-2 w-full text-primary/30" viewBox="0 0 100 8" preserveAspectRatio="none" fill="none">
+              <svg aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-1 h-2 w-full text-primary/30" viewBox="0 0 100 8" preserveAspectRatio="none" fill="none">
                 <path d="M0 4 Q 25 0, 50 4 T 100 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </span>
@@ -112,7 +112,7 @@ export function HeroBanner() {
 
           {/* Subheading — calm, restrained */}
           <p
-            className="animate-fade-in-up mx-auto mt-6 max-w-[34rem] text-pretty text-[14.5px] leading-[1.75] text-muted-foreground sm:mt-7 sm:text-[16px] sm:leading-[1.8]"
+            className="animate-fade-in-up mx-auto mt-5 max-w-[34rem] text-pretty text-[14.5px] leading-[1.75] text-muted-foreground sm:mt-7 sm:text-[16px] sm:leading-[1.8]"
             style={{ animationDelay: "160ms", animationFillMode: "backwards" }}
           >
             قارن الأسعار، شوف العنوان والتقييم، وتواصل مع المحل مباشرةً —
@@ -121,7 +121,7 @@ export function HeroBanner() {
 
           {/* Search — primary CTA */}
           <div
-            className="animate-fade-in-up relative z-30 mx-auto mt-9 max-w-2xl sm:mt-11"
+            className="animate-fade-in-up relative z-30 mx-auto mt-8 max-w-2xl sm:mt-11"
             style={{ animationDelay: "240ms", animationFillMode: "backwards" }}
           >
             <HeroSearch />
@@ -151,8 +151,8 @@ export function HeroBanner() {
         </div>
 
         {/* ============== Stat row — clean inline metrics, dividers, no cards ============== */}
-        <div className="mx-auto mt-14 max-w-3xl sm:mt-16">
-          <div className="grid grid-cols-3 divide-x divide-x-reverse divide-border/70 overflow-hidden rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md">
+        <div className="mx-auto mt-10 max-w-3xl sm:mt-16">
+          <div className="grid grid-cols-3 divide-x divide-x-reverse divide-border/70 overflow-hidden rounded-2xl border border-border/60 bg-card/40 sm:backdrop-blur-md">
             {statCards.map((stat, index) => {
               const tones = toneClasses[stat.tone];
               const Icon = stat.icon;
