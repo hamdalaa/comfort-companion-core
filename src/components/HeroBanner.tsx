@@ -4,7 +4,7 @@ import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicStoreCount } from "@/lib/catalogCounts";
 import { CITIES } from "@/lib/cityData";
-import { ShieldCheck, Tag, Zap, Package, Store, Map, ShoppingBag, MapPin, Search } from "lucide-react";
+import { ShieldCheck, Tag, Zap, Store, Map, ShoppingBag, Search } from "lucide-react";
 
 export function HeroBanner() {
   const { brands, summary } = useDataStore();
@@ -214,24 +214,14 @@ function SideDecorPin({ className = "" }: { className?: string }) {
       <div className="relative h-44 w-44 xl:h-56 xl:w-56">
         {/* glow halo */}
         <div aria-hidden className="absolute -inset-6 rounded-full bg-gradient-to-br from-violet/35 via-primary/25 to-cyan/25 blur-3xl" />
-        {/* glass map pin shape */}
-        <div className="relative flex h-full w-full rotate-6 items-center justify-center">
-          <div
-            className="relative h-[88%] w-[78%] border border-white/60 bg-gradient-to-br from-white/70 via-violet/30 to-primary/30 shadow-[0_30px_60px_-20px_hsl(var(--accent-violet)/0.45)] backdrop-blur-xl"
-            style={{ borderRadius: "50% 50% 50% 50% / 45% 45% 55% 55%", clipPath: "polygon(50% 100%, 0 60%, 0 0, 100% 0, 100% 60%)" }}
-          >
-            {/* easier shape: just a rounded teardrop using a circle + triangle approximation */}
+        {/* Stacked circle + tail teardrop pin */}
+        <div className="relative flex h-full w-full rotate-6 flex-col items-center">
+          <div className="relative mt-2 h-32 w-32 rounded-full border border-white/60 bg-gradient-to-br from-white/70 via-violet/35 to-primary/35 shadow-[0_30px_60px_-20px_hsl(var(--accent-violet)/0.45)] backdrop-blur-xl xl:h-40 xl:w-40">
+            <div className="absolute inset-x-3 top-3 h-10 rounded-full bg-gradient-to-b from-white/70 to-white/0" />
+            <div className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/70 bg-background/40 backdrop-blur xl:h-12 xl:w-12" />
           </div>
-          {/* simpler approach: stacked circle + triangle */}
-          <div className="absolute inset-0 flex flex-col items-center">
-            <div className="relative mt-2 h-32 w-32 rounded-full border border-white/60 bg-gradient-to-br from-white/70 via-violet/35 to-primary/35 shadow-[0_30px_60px_-20px_hsl(var(--accent-violet)/0.45)] backdrop-blur-xl xl:h-40 xl:w-40">
-              <div className="absolute inset-x-3 top-3 h-10 rounded-full bg-gradient-to-b from-white/70 to-white/0" />
-              {/* hole */}
-              <div className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/70 bg-background/40 backdrop-blur xl:h-12 xl:w-12" />
-            </div>
-            {/* pin tail */}
-            <div className="-mt-3 h-0 w-0 border-x-[16px] border-t-[28px] border-x-transparent border-t-violet/60 xl:border-x-[20px] xl:border-t-[34px]" />
-          </div>
+          {/* pin tail */}
+          <div className="-mt-3 h-0 w-0 border-x-[16px] border-t-[28px] border-x-transparent border-t-violet/55 xl:border-x-[20px] xl:border-t-[34px]" />
           {/* shadow on ground */}
           <div aria-hidden className="absolute bottom-0 left-1/2 h-3 w-24 -translate-x-1/2 rounded-full bg-foreground/15 blur-md xl:w-32" />
         </div>
