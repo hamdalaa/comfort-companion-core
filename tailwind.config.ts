@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Thmanyah Sans"', '"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
-        display: ['"Thmanyah Display"', '"Thmanyah Sans"', '"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
+        sans: ['"SF Arabic"', '"SF Pro"', '"Thmanyah Sans"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
+        display: ['"Thmanyah Display"', '"SF Arabic"', '"SF Pro"', "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
         mono: ['"JetBrains Mono"', "monospace"],
       },
       colors: {
