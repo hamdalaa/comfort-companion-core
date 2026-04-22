@@ -158,7 +158,7 @@ export function TopNav() {
           <Link to="/" className="group flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-90">
             <div className="text-right leading-none">
               <div className="flex items-center gap-1.5">
-                <span className="font-display text-[19px] font-semibold tracking-tight text-foreground">حاير</span>
+                <span className="font-thmanyah text-[22px] font-bold leading-none text-foreground">حـايـر</span>
                 <span className="rounded-full border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary">
                   Beta
                 </span>
