@@ -590,6 +590,28 @@
     mask-image: linear-gradient(to right, transparent 0, black 7%, black 93%, transparent 100%);
   }
 
+  /* GPU-only marquee — promotes to its own compositor layer to avoid
+     repaints / layout work on low-end devices. Pair with `.animate-marquee`. */
+  .marquee-gpu {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  /* When the marquee scrolls off-screen, JS toggles this to pause the
+     animation entirely (saves CPU). */
+  .marquee-paused {
+    animation-play-state: paused !important;
+  }
+  /* Reduced-motion override — hide the marquee animation completely
+     (the global 0.01ms rule below leaves it visually janky). */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-gpu {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+
   .ken-burns {
     animation: float 28s ease-in-out infinite;
     transform-origin: center;
