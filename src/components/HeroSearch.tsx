@@ -200,6 +200,7 @@ export function HeroSearch({
             onHover={setAcIndex}
             onSelect={handleAcSelect}
             onSubmitQuery={() => { setAcOpen(false); submit(new Event("submit") as unknown as FormEvent); }}
+            pending={q !== deferredQuery}
           />
         )}
       </form>

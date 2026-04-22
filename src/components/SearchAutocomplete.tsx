@@ -5,6 +5,7 @@
  */
 import { Package, Store, Search, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { AutocompleteSuggestion } from "@/lib/unifiedSearch";
 import { decodeHtmlEntities, inferTextDirection } from "@/lib/textDisplay";
 
@@ -15,6 +16,9 @@ interface Props {
   onHover: (idx: number) => void;
   onSelect: (s: AutocompleteSuggestion) => void;
   onSubmitQuery: () => void; // "search for X" fallback row
+  /** True when query has changed but suggestions are still being computed
+   *  (deferred update). We show skeleton rows to keep the UI responsive. */
+  pending?: boolean;
 }
 
 const ICONS = {
@@ -31,13 +35,27 @@ export function SearchAutocomplete({
   onHover,
   onSelect,
   onSubmitQuery,
+  pending = false,
 }: Props) {
   if (!query.trim()) return null;
 
   return (
     <div className="absolute inset-x-0 top-full z-[60] mt-2 flex max-h-[60vh] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-soft-xl">
       {/* Suggestions list — first (scrolls within the dropdown) */}
-      {suggestions.length > 0 ? (
+      {pending && suggestions.length === 0 ? (
+        <ul className="min-h-0 flex-1 overflow-y-auto py-1" aria-busy="true">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <li key={i} className="flex items-center gap-3 px-4 py-2.5">
+              <Skeleton className="h-7 w-7 shrink-0 rounded-md" />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-3 w-2/3 rounded-full" />
+                <Skeleton className="h-2.5 w-1/3 rounded-full" />
+              </div>
+              <Skeleton className="h-4 w-10 shrink-0 rounded-full" />
+            </li>
+          ))}
+        </ul>
+      ) : suggestions.length > 0 ? (
         <ul className="min-h-0 flex-1 overflow-y-auto py-1">
           {suggestions.map((s, idx) => {
             const Icon = ICONS[s.type];
