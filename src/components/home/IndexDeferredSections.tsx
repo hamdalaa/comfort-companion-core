@@ -80,66 +80,61 @@ export default function IndexDeferredSections() {
   return (
     <>
       <main className="pb-12 sm:pb-20">
-        <section className="group relative mt-8 overflow-hidden border-y border-border/60 bg-background sm:mt-16 md:mt-24">
-          <div aria-hidden className="pointer-events-none absolute -top-16 -right-24 h-56 w-56 rounded-full bg-cyan/10 blur-3xl sm:h-80 sm:w-80 sm:bg-cyan/14" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-20 -left-24 h-56 w-56 rounded-full bg-emerald/10 blur-3xl sm:h-80 sm:w-80 sm:bg-emerald/12" />
-
-          <div className="container py-10 sm:py-16 md:py-20">
+        {/* ============== Categories — clean, no glow ============== */}
+        <section className="relative mt-12 sm:mt-20 md:mt-28">
+          <div className="container">
             <SectionHeader
               kicker="الفئات"
               title="ابدأ من القسم الأقرب لحاجتك"
               seeAll="/results"
               description="بدل البحث العشوائي، اختر الفئة أولاً ثم خلِّ التصفية تكمل المشوار."
             />
-            <div className="mt-5 sm:mt-8">
+            <div className="mt-7 sm:mt-10">
               <CategoryCircles />
             </div>
           </div>
         </section>
 
-        <section className="relative mt-10 overflow-hidden border-y border-cyan/25 bg-gradient-to-bl from-cyan/14 via-background to-emerald/12 sm:mt-20 md:mt-28">
-          <div aria-hidden className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-cyan/22 blur-3xl" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-emerald/20 blur-3xl" />
-          <div className="container py-10 sm:py-16 md:py-20">
-            <div className="relative isolate overflow-hidden rounded-3xl border border-border/60 bg-foreground/[0.04] px-6 py-12 shadow-soft backdrop-blur-sm sm:px-12 sm:py-20 md:px-20 md:py-24">
+        {/* ============== Baghdad Streets — surface-2 panel, restrained ============== */}
+        <section className="relative mt-14 sm:mt-24 md:mt-32">
+          <div className="container">
+            <div className="relative isolate overflow-hidden rounded-3xl border border-border/60 bg-surface px-6 py-12 sm:px-12 sm:py-16 md:px-16 md:py-20">
+              <div aria-hidden className="pointer-events-none absolute -top-32 -right-20 h-72 w-72 rounded-full bg-primary/[0.06] blur-3xl" />
+              <div aria-hidden className="pointer-events-none absolute -bottom-32 -left-20 h-72 w-72 rounded-full bg-violet/[0.06] blur-3xl" />
               <img
                 aria-hidden
                 src={baghdadPinsMap}
                 alt=""
                 loading="lazy"
                 decoding="async"
-                className="absolute inset-0 -z-10 h-full w-full object-cover opacity-20"
+                className="absolute inset-0 -z-10 h-full w-full object-cover opacity-[0.12]"
                 style={{
                   maskImage:
-                    "radial-gradient(ellipse 95% 80% at 30% 50%, black 25%, transparent 90%)",
+                    "radial-gradient(ellipse 80% 70% at 30% 50%, black 20%, transparent 85%)",
                   WebkitMaskImage:
-                    "radial-gradient(ellipse 95% 80% at 30% 50%, black 25%, transparent 90%)",
+                    "radial-gradient(ellipse 80% 70% at 30% 50%, black 20%, transparent 85%)",
                 }}
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 -z-10 bg-gradient-to-l from-card/70 via-card/20 to-transparent"
               />
 
               <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
                 <div className="lg:col-span-7">
-                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary backdrop-blur-sm">
+                  <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                     <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                     Baghdad · بغداد
                   </div>
-                  <h2 className="font-display mt-3 text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl tracking-tight">
+                  <h2 className="font-display text-3xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-4xl md:text-5xl">
                     مسارات{" "}
-                    <span className="bg-gradient-to-br from-primary via-primary to-foreground bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-l from-primary via-cyan to-violet bg-clip-text text-transparent">
                       بغداد
                     </span>
-                    <span className="mt-3 block text-base font-medium leading-7 tracking-normal text-muted-foreground sm:mt-4 sm:text-base sm:leading-8">
+                    <span className="mt-4 block text-base font-medium leading-7 tracking-normal text-muted-foreground sm:text-[17px] sm:leading-8">
                       دليلك المرجعي للأسواق التقنية.
                     </span>
                   </h2>
                 </div>
 
                 <div className="lg:col-span-5 lg:col-start-8 flex flex-col gap-6 pb-2 text-right">
-                  <p className="text-base leading-[1.9] text-foreground/85 sm:text-lg">
+                  <p className="text-[15px] leading-[1.9] text-foreground/80 sm:text-base">
                     في قلب العاصمة، يبرز شارعا
                     <span className="font-semibold text-primary"> الصناعة والربيعي </span>
                     كشرايين نابضة لسوق الإلكترونيات في بغداد.
@@ -148,7 +143,7 @@ export default function IndexDeferredSections() {
               </div>
             </div>
 
-            <div className="mt-7 grid gap-5 sm:mt-12 sm:gap-8">
+            <div className="mt-8 grid gap-6 sm:mt-12 sm:gap-10">
               <StreetShopsSection
                 area="شارع الصناعة"
                 title="شارع الصناعة"
