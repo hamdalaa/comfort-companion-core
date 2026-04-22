@@ -157,19 +157,18 @@ export function HeroBanner() {
               return (
                 <div
                   key={stat.label}
-                  className="animate-fade-in-up group flex flex-col items-center gap-2 px-2 py-5 text-center transition-colors duration-300 hover:bg-card/70 sm:gap-2.5 sm:py-6"
+                  className="animate-fade-in-up group flex min-w-0 flex-col items-center gap-1.5 px-1.5 py-4 text-center transition-colors duration-300 hover:bg-card/70 sm:gap-2.5 sm:px-2 sm:py-6"
                   style={{ animationDelay: `${480 + index * 80}ms`, animationFillMode: "backwards" }}
                 >
-                  <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${tones.bg} ${tones.text} ring-1 ${tones.ring} transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 sm:h-10 sm:w-10`}>
-                    <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={2.2} />
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-xl ${tones.bg} ${tones.text} ring-1 ${tones.ring} transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 sm:h-10 sm:w-10`}>
+                    <Icon className="h-[14px] w-[14px] sm:h-[18px] sm:w-[18px]" strokeWidth={2.2} />
                   </span>
                   <CountUp
                     value={stat.value}
                     suffix={stat.suffix}
-                    className="font-numeric tabular-nums text-xl font-bold leading-none tracking-tight text-foreground sm:text-2xl"
+                    className="font-numeric block max-w-full truncate tabular-nums text-base font-bold leading-none tracking-tight text-foreground sm:text-2xl"
                   />
-                  <span className="inline-flex items-center gap-1.5 text-[10.5px] font-medium tracking-wide text-muted-foreground sm:text-[11.5px]">
-                    <span aria-hidden className="h-0.5 w-0.5 rounded-full bg-muted-foreground/40" />
+                  <span className="inline-flex max-w-full items-center gap-1.5 truncate text-[10px] font-medium tracking-wide text-muted-foreground sm:text-[11.5px]">
                     {stat.label}
                   </span>
                 </div>
