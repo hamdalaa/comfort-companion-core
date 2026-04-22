@@ -438,14 +438,35 @@ const Results = () => {
                 </div>
               </div>
 
-              {activeFilterLabels.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {activeFilterLabels.map((label) => (
-                    <span key={label} className="atlas-chip text-foreground/82">
-                      <Tag className="h-3.5 w-3.5 text-primary" />
-                      {label}
-                    </span>
+              {activeFilterChips.length > 0 && (
+                <div
+                  className="mt-4 flex flex-wrap items-center gap-2"
+                  role="region"
+                  aria-label="الفلاتر المطبّقة"
+                >
+                  {activeFilterChips.map((chip) => (
+                    <button
+                      key={chip.id}
+                      type="button"
+                      onClick={chip.clear}
+                      className="atlas-chip group inline-flex items-center gap-1.5 text-foreground/85 transition-colors hover:border-destructive/40 hover:bg-destructive/5 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                      aria-label={`إزالة الفلتر: ${chip.label}`}
+                    >
+                      <Tag className="h-3.5 w-3.5 text-primary group-hover:text-destructive" />
+                      <span>{chip.label}</span>
+                      <X className="h-3 w-3 opacity-60 group-hover:opacity-100" aria-hidden />
+                    </button>
                   ))}
+                  {activeFilterChips.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={clearAll}
+                      className="ms-1 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                    >
+                      <X className="h-3 w-3" aria-hidden />
+                      مسح الكل
+                    </button>
+                  )}
                 </div>
               )}
             </div>
