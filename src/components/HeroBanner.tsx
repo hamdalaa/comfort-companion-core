@@ -77,85 +77,116 @@ export function HeroBanner() {
 
       {/* ============== Creative floating shapes ============== */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
-        {/* Rotating dashed ring — top left */}
+        {/* Storefront — top left */}
         <svg
-          className="absolute -top-10 left-[6%] h-28 w-28 animate-spin-slow text-primary/25 sm:h-36 sm:w-36"
-          viewBox="0 0 100 100"
+          className="absolute top-8 left-[5%] h-12 w-12 animate-float text-primary/35 sm:h-16 sm:w-16"
+          style={{ animationDelay: "0.2s" }}
+          viewBox="0 0 24 24"
           fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="1" strokeDasharray="3 6" />
-          <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 4" opacity="0.6" />
+          <path d="M3 9 L5 4 H19 L21 9" />
+          <path d="M4 9 V20 H20 V9" />
+          <path d="M9 20 V13 H15 V20" />
+          <path d="M3 9 H21" />
         </svg>
 
-        {/* Floating rounded square — top right */}
-        <div
-          className="absolute top-16 right-[8%] h-10 w-10 rotate-12 rounded-xl border border-cyan/30 bg-cyan-soft/40 shadow-[0_8px_24px_-8px_hsl(var(--accent-cyan)/0.35)] animate-float sm:h-14 sm:w-14"
-          style={{ animationDelay: "0.4s" }}
-        />
-
-        {/* Triangle — mid right */}
+        {/* Shopping bag — top right */}
         <svg
-          className="absolute top-[36%] right-[4%] h-8 w-8 animate-float text-violet/40 sm:h-12 sm:w-12"
+          className="absolute top-12 right-[7%] h-11 w-11 animate-float text-cyan/45 sm:h-14 sm:w-14"
+          style={{ animationDelay: "0.6s" }}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M5 8 H19 L18 21 H6 Z" />
+          <path d="M9 8 V6 a3 3 0 0 1 6 0 V8" />
+        </svg>
+
+        {/* Price tag — mid right */}
+        <svg
+          className="absolute top-[38%] right-[4%] h-9 w-9 rotate-[18deg] animate-float text-violet/45 sm:h-12 sm:w-12"
           style={{ animationDelay: "1.2s" }}
           viewBox="0 0 24 24"
-          fill="currentColor"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          <path d="M12 3 L22 20 L2 20 Z" stroke="currentColor" strokeWidth="0.6" strokeLinejoin="round" />
+          <path d="M3 3 H12 L21 12 L12 21 L3 12 Z" />
+          <circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" />
         </svg>
 
-        {/* Plus sign — mid left */}
+        {/* Coin (currency) — mid left */}
         <svg
-          className="absolute top-[30%] left-[5%] h-6 w-6 animate-bounce-subtle text-emerald/50 sm:h-8 sm:w-8"
+          className="absolute top-[32%] left-[4%] h-10 w-10 animate-bounce-subtle text-warning/60 sm:h-12 sm:w-12"
           style={{ animationDelay: "0.8s" }}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.4"
+          strokeWidth="1.6"
           strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          <path d="M12 5v14M5 12h14" />
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="6" opacity="0.5" />
+          <text x="12" y="15.5" textAnchor="middle" fontSize="7" fontWeight="700" fill="currentColor" stroke="none">$</text>
         </svg>
 
-        {/* Sparkle dot cluster — bottom left */}
-        <div className="absolute bottom-[22%] left-[10%] flex items-end gap-1.5">
-          <span className="block h-1.5 w-1.5 rounded-full bg-primary/60 animate-ping-soft" />
-          <span className="block h-1 w-1 rounded-full bg-violet/60" />
-          <span className="block h-2 w-2 rounded-full bg-cyan/50 animate-float" style={{ animationDelay: "0.6s" }} />
+        {/* Mini receipt — bottom left */}
+        <svg
+          className="absolute bottom-[20%] left-[8%] h-10 w-10 -rotate-6 animate-float text-emerald/50 sm:h-12 sm:w-12"
+          style={{ animationDelay: "1.4s" }}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6 3 H18 V21 L15 19 L12 21 L9 19 L6 21 Z" />
+          <path d="M9 8 H15" />
+          <path d="M9 12 H15" />
+          <path d="M9 16 H13" />
+        </svg>
+
+        {/* Coin stack — bottom right */}
+        <svg
+          className="absolute bottom-[16%] right-[7%] h-12 w-12 animate-float text-rose/45 sm:h-14 sm:w-14"
+          style={{ animationDelay: "1.6s" }}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <ellipse cx="12" cy="6" rx="7" ry="2.2" />
+          <path d="M5 6 V10 a7 2.2 0 0 0 14 0 V6" />
+          <path d="M5 11 V15 a7 2.2 0 0 0 14 0 V11" opacity="0.7" />
+          <path d="M5 16 V19 a7 2.2 0 0 0 14 0 V16" opacity="0.5" />
+        </svg>
+
+        {/* Small percent badge — top center */}
+        <div
+          className="absolute top-[8%] right-[40%] hidden h-9 w-9 items-center justify-center rounded-full border border-emerald/30 bg-emerald-soft/60 text-[11px] font-bold text-emerald shadow-[0_6px_18px_-6px_hsl(var(--accent-emerald)/0.4)] animate-bounce-subtle sm:flex"
+          style={{ animationDelay: "0.4s" }}
+        >
+          %
         </div>
 
-        {/* Concentric circle — bottom right */}
-        <svg
-          className="absolute bottom-[14%] right-[6%] h-20 w-20 animate-float text-rose/30 sm:h-28 sm:w-28"
-          style={{ animationDelay: "1.6s" }}
-          viewBox="0 0 100 100"
-          fill="none"
-          stroke="currentColor"
-        >
-          <circle cx="50" cy="50" r="46" strokeWidth="0.8" />
-          <circle cx="50" cy="50" r="32" strokeWidth="0.8" opacity="0.7" />
-          <circle cx="50" cy="50" r="18" strokeWidth="0.8" opacity="0.5" />
-          <circle cx="50" cy="50" r="3" fill="currentColor" />
-        </svg>
-
-        {/* Diagonal line — decorative accent */}
-        <svg
-          className="absolute top-[12%] left-[42%] hidden h-16 w-16 text-primary/20 sm:block"
-          viewBox="0 0 100 100"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-        >
-          <path d="M10 90 L90 10" strokeWidth="1.5" strokeDasharray="2 4" />
-        </svg>
-
-        {/* Tiny star — top center */}
-        <svg
-          className="absolute top-[6%] right-[38%] h-5 w-5 animate-spin-slow text-warning/70 sm:h-6 sm:w-6"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path d="M12 2l2.39 7.36H22l-6.18 4.49L18.21 22 12 17.27 5.79 22l2.39-8.15L2 9.36h7.61z" />
-        </svg>
+        {/* Sparkle coins cluster — bottom mid */}
+        <div className="absolute bottom-[26%] left-[44%] hidden items-end gap-1.5 sm:flex">
+          <span className="block h-2 w-2 rounded-full bg-warning/70 animate-ping-soft ring-2 ring-warning/20" />
+          <span className="block h-1.5 w-1.5 rounded-full bg-primary/60" />
+        </div>
       </div>
 
       <div className="container relative pt-10 pb-14 sm:pt-20 sm:pb-24 md:pt-24">
