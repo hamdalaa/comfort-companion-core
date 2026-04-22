@@ -86,7 +86,7 @@ export function HeroDestinations() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-right sm:px-5">
+          <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-start sm:px-5">
             <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-foreground transition-transform duration-300 group-hover:-translate-x-1">
               استكشف <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2.4} />
             </span>
