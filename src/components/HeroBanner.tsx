@@ -4,7 +4,7 @@ import { CountUp } from "@/components/CountUp";
 import { useDataStore } from "@/lib/dataStore";
 import { getPublicStoreCount } from "@/lib/catalogCounts";
 import { CITIES } from "@/lib/cityData";
-import { ShieldCheck, Tag, Zap, Package, Store, MapPin, Sparkles, TrendingUp } from "lucide-react";
+import { ShieldCheck, Tag, Zap, Package, Store, MapPin, TrendingUp, Smartphone, Laptop, Headphones } from "lucide-react";
 
 export function HeroBanner() {
   const { brands, summary } = useDataStore();
@@ -50,10 +50,10 @@ export function HeroBanner() {
     <section className="relative isolate bg-background">
       {/* Vibrant aurora backdrop — sky blues, violets, soft pink */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 right-[-10%] h-[720px] w-[720px] rounded-full bg-cyan/25 blur-[170px]" />
-        <div className="absolute -top-20 left-[-12%] h-[620px] w-[620px] rounded-full bg-violet/25 blur-[170px]" />
-        <div className="absolute top-[22rem] left-1/3 h-[480px] w-[480px] rounded-full bg-rose/20 blur-[160px]" />
-        <div className="absolute top-[10rem] right-1/4 h-[360px] w-[360px] rounded-full bg-primary/20 blur-[150px]" />
+        <div className="absolute -top-40 right-[-10%] h-[720px] w-[720px] rounded-full bg-cyan/40 blur-[170px]" />
+        <div className="absolute -top-20 left-[-12%] h-[680px] w-[680px] rounded-full bg-violet/45 blur-[170px]" />
+        <div className="absolute top-[18rem] left-1/3 h-[520px] w-[520px] rounded-full bg-rose/35 blur-[160px]" />
+        <div className="absolute top-[8rem] right-1/4 h-[400px] w-[400px] rounded-full bg-primary/35 blur-[150px]" />
 
         {/* Ultra-fine dot grid */}
         <div
@@ -75,7 +75,7 @@ export function HeroBanner() {
 
       <div className="container relative pt-10 pb-14 sm:pt-16 sm:pb-20 md:pt-24">
         {/* Two-column split on lg+, single column on mobile */}
-        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+        <div className="grid items-center gap-8 lg:grid-cols-[1fr_1fr] lg:gap-10">
           {/* RIGHT column in RTL = visual / LEFT in source */}
           <div className="order-1 lg:order-2">
             <HeroVisual />
@@ -95,7 +95,7 @@ export function HeroBanner() {
             </div>
 
             <h1
-              className="animate-fade-in-up font-display mt-5 text-balance text-[clamp(2.25rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight text-foreground sm:mt-6"
+              className="animate-fade-in-up font-display mt-5 text-balance text-[clamp(2rem,4.6vw,3.75rem)] font-bold leading-[1.08] tracking-tight text-foreground sm:mt-6"
               style={{ animationDelay: "80ms", animationFillMode: "backwards" }}
             >
               كل محلات الإلكترونيات
@@ -156,17 +156,17 @@ export function HeroBanner() {
             return (
               <div
                 key={stat.label}
-                className="animate-fade-in-up group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border/60 bg-card/80 p-4 shadow-xs backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-md"
+                className="animate-fade-in-up group relative flex flex-row-reverse items-center justify-between gap-3 overflow-hidden rounded-2xl border border-border/60 bg-card/80 p-4 shadow-xs backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-md"
                 style={{ animationDelay: `${380 + index * 80}ms`, animationFillMode: "backwards" }}
               >
-                <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tones.bg} ${tones.text} ring-1 ${tones.ring}`}>
+                <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${tones.bg} ${tones.text} ring-1 ${tones.ring}`}>
                   <Icon className="h-5 w-5" />
                 </span>
-                <div className="flex min-w-0 flex-col">
+                <div className="flex min-w-0 flex-col items-end text-right">
                   <CountUp
                     value={stat.value}
                     suffix={stat.suffix}
-                    className="font-numeric text-xl font-extrabold leading-none tracking-tight text-foreground sm:text-2xl"
+                    className="font-numeric text-2xl font-extrabold leading-none tracking-tight text-foreground sm:text-3xl"
                   />
                   <span className="mt-1 text-[11px] font-medium text-muted-foreground sm:text-xs">
                     {stat.label}
