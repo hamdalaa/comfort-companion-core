@@ -17,7 +17,8 @@ function readInitialTheme(): Theme {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === "light" || saved === "dark") return saved;
   } catch { /* ignore */ }
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  // Default to light mode regardless of OS preference
+  return "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
