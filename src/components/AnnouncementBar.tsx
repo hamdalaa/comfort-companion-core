@@ -23,8 +23,11 @@ export function AnnouncementBar() {
     }
   }, []);
 
-  // Pause the marquee animation when the bar scrolls out of view —
-  // saves CPU/GPU on low-end mobile devices.
+  // Fully stop the marquee animation when the bar scrolls out of view —
+  // we toggle a class that sets `animation: none` (not just paused) so
+  // the browser stops generating new keyframe ticks entirely. When the
+  // bar re-enters the viewport the class is removed and the animation
+  // restarts from frame 0 cleanly.
   useEffect(() => {
     const node = barRef.current;
     if (!node || typeof IntersectionObserver === "undefined") return;
@@ -32,7 +35,7 @@ export function AnnouncementBar() {
       (entries) => {
         for (const entry of entries) setInView(entry.isIntersecting);
       },
-      { rootMargin: "32px" },
+      { rootMargin: "32px", threshold: 0 },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -64,8 +67,9 @@ export function AnnouncementBar() {
         </span>
         <div className="group/marquee relative flex-1 overflow-hidden">
           <div
-            className={`marquee-gpu flex w-max items-center gap-10 animate-marquee group-hover/marquee:[animation-play-state:paused] ${inView ? "" : "marquee-paused"}`}
-            style={{ animationDuration: "60s" }}
+            className={`marquee-gpu flex w-max items-center gap-10 ${inView ? "animate-marquee group-hover/marquee:[animation-play-state:paused]" : "marquee-stopped"}`}
+            style={inView ? { animationDuration: "60s" } : undefined}
+            aria-hidden={!inView}
           >
             {loop.map((m, i) => {
               const Icon = m.icon;
