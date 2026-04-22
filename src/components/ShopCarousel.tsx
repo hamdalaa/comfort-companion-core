@@ -112,8 +112,8 @@ export function ShopCarousel({ shops, hideAbove = "lg" }: Props) {
       <div className="relative">
         <div
           ref={scrollerRef}
-          className="-mx-5 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5 pb-2 scroll-smooth"
-          style={{ scrollPaddingInline: "1.25rem", WebkitOverflowScrolling: "touch" }}
+          className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-smooth sm:-mx-5 sm:gap-3.5 sm:px-5"
+          style={{ scrollPaddingInline: "1rem", WebkitOverflowScrolling: "touch" }}
           role="region"
           aria-label="قائمة المحلات قابلة للتمرير"
         >
