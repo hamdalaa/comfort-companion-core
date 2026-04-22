@@ -79,7 +79,7 @@ export function HeroBanner() {
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] overflow-hidden">
         {/* Storefront — top left */}
         <svg
-          className="absolute top-8 left-[5%] h-12 w-12 animate-float text-primary/35 sm:h-16 sm:w-16"
+          className="absolute top-8 left-[5%] h-12 w-12 animate-drift-1 text-primary/35 sm:h-16 sm:w-16"
           style={{ animationDelay: "0.2s" }}
           viewBox="0 0 24 24"
           fill="none"
@@ -96,7 +96,7 @@ export function HeroBanner() {
 
         {/* Shopping bag — top right */}
         <svg
-          className="absolute top-12 right-[7%] h-11 w-11 animate-float text-cyan/45 sm:h-14 sm:w-14"
+          className="absolute top-12 right-[7%] h-11 w-11 animate-drift-2 text-cyan/45 sm:h-14 sm:w-14"
           style={{ animationDelay: "0.6s" }}
           viewBox="0 0 24 24"
           fill="none"
@@ -111,7 +111,7 @@ export function HeroBanner() {
 
         {/* Price tag — mid right */}
         <svg
-          className="absolute top-[38%] right-[4%] h-9 w-9 rotate-[18deg] animate-float text-violet/45 sm:h-12 sm:w-12"
+          className="absolute top-[38%] right-[4%] h-9 w-9 animate-drift-3 text-violet/45 sm:h-12 sm:w-12"
           style={{ animationDelay: "1.2s" }}
           viewBox="0 0 24 24"
           fill="none"
@@ -126,7 +126,7 @@ export function HeroBanner() {
 
         {/* Coin (currency) — mid left */}
         <svg
-          className="absolute top-[32%] left-[4%] h-10 w-10 animate-bounce-subtle text-warning/60 sm:h-12 sm:w-12"
+          className="absolute top-[32%] left-[4%] h-10 w-10 animate-drift-2 text-warning/60 sm:h-12 sm:w-12"
           style={{ animationDelay: "0.8s" }}
           viewBox="0 0 24 24"
           fill="none"
@@ -142,7 +142,7 @@ export function HeroBanner() {
 
         {/* Mini receipt — bottom left */}
         <svg
-          className="absolute bottom-[20%] left-[8%] h-10 w-10 -rotate-6 animate-float text-emerald/50 sm:h-12 sm:w-12"
+          className="absolute bottom-[20%] left-[8%] h-10 w-10 animate-drift-1 text-emerald/50 sm:h-12 sm:w-12"
           style={{ animationDelay: "1.4s" }}
           viewBox="0 0 24 24"
           fill="none"
@@ -159,7 +159,7 @@ export function HeroBanner() {
 
         {/* Coin stack — bottom right */}
         <svg
-          className="absolute bottom-[16%] right-[7%] h-12 w-12 animate-float text-rose/45 sm:h-14 sm:w-14"
+          className="absolute bottom-[16%] right-[7%] h-12 w-12 animate-drift-3 text-rose/45 sm:h-14 sm:w-14"
           style={{ animationDelay: "1.6s" }}
           viewBox="0 0 24 24"
           fill="none"
@@ -176,7 +176,7 @@ export function HeroBanner() {
 
         {/* Small percent badge — top center */}
         <div
-          className="absolute top-[8%] right-[40%] hidden h-9 w-9 items-center justify-center rounded-full border border-emerald/30 bg-emerald-soft/60 text-[11px] font-bold text-emerald shadow-[0_6px_18px_-6px_hsl(var(--accent-emerald)/0.4)] animate-bounce-subtle sm:flex"
+          className="absolute top-[8%] right-[40%] hidden h-9 w-9 items-center justify-center rounded-full border border-emerald/30 bg-emerald-soft/60 text-[11px] font-bold text-emerald shadow-[0_6px_18px_-6px_hsl(var(--accent-emerald)/0.4)] animate-drift-2 sm:flex"
           style={{ animationDelay: "0.4s" }}
         >
           %
