@@ -42,7 +42,11 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-20 border-t border-border bg-background text-foreground">
+    <footer className="relative mt-20 bg-background text-foreground">
+      {/* Premium gradient seam at top */}
+      <div aria-hidden className="divider-grad" />
+      {/* Soft section spotlight backdrop */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 opacity-60 bg-gradient-spotlight" />
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="رجوع للأعلى"
