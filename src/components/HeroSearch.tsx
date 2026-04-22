@@ -32,6 +32,12 @@ export function HeroSearch({
   const [acOpen, setAcOpen] = useState(false);
   const [acIndex, setAcIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const categoryTriggerRef = useRef<HTMLButtonElement>(null);
+  const areaTriggerRef = useRef<HTMLButtonElement>(null);
+  // Remember the last filter trigger the user touched so we can restore
+  // focus to it after Escape closes the autocomplete or after a submit
+  // returns the user to the page (instead of dumping focus on <body>).
+  const lastFocusedFilter = useRef<"category" | "area" | null>(null);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [areaOpen, setAreaOpen] = useState(false);
   const deferredQuery = useDeferredValue(q);
@@ -52,7 +58,13 @@ export function HeroSearch({
   }
 
   function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Escape") { setAcOpen(false); return; }
+    if (e.key === "Escape") {
+      setAcOpen(false);
+      // Restore focus to the last-touched filter, if any — keeps the
+      // keyboard user where they were before opening autocomplete.
+      restoreFilterFocus();
+      return;
+    }
     if (!acOpen || !suggestions.length) return;
     if (e.key === "ArrowDown") { e.preventDefault(); setAcIndex((i) => Math.min(i + 1, suggestions.length - 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setAcIndex((i) => Math.max(i - 1, -1)); }
@@ -60,6 +72,16 @@ export function HeroSearch({
       e.preventDefault();
       handleAcSelect(suggestions[acIndex]);
     }
+  }
+
+  function restoreFilterFocus() {
+    const target =
+      lastFocusedFilter.current === "category"
+        ? categoryTriggerRef.current
+        : lastFocusedFilter.current === "area"
+          ? areaTriggerRef.current
+          : null;
+    if (target) target.focus();
   }
 
   // Form-level Escape handler — close any open select/autocomplete and
@@ -71,7 +93,10 @@ export function HeroSearch({
         setCategoryOpen(false);
         setAreaOpen(false);
         setAcOpen(false);
-        inputRef.current?.focus();
+        // Prefer restoring focus to the filter the user last interacted
+        // with; fall back to the search input when none was touched.
+        if (lastFocusedFilter.current) restoreFilterFocus();
+        else inputRef.current?.focus();
       }
     }
   }
@@ -132,11 +157,16 @@ export function HeroSearch({
             value={category}
             onValueChange={(value) => setCategory(value as Category | "all")}
             open={categoryOpen}
-            onOpenChange={setCategoryOpen}
+            onOpenChange={(open) => {
+              setCategoryOpen(open);
+              if (open) lastFocusedFilter.current = "category";
+            }}
           >
             <SelectTrigger
+              ref={categoryTriggerRef}
               tabIndex={2}
               aria-label="اختر الفئة"
+              onFocus={() => { lastFocusedFilter.current = "category"; }}
               className="h-[52px] min-h-[44px] w-full min-w-0 rounded-xl border-0 bg-transparent px-3.5 text-[13px] text-foreground shadow-none transition-all duration-200 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-primary/40 sm:w-40 sm:rounded-[1rem] sm:text-[13.5px]"
             >
               <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -159,11 +189,16 @@ export function HeroSearch({
             value={area}
             onValueChange={(value) => setArea(value as Area | "all")}
             open={areaOpen}
-            onOpenChange={setAreaOpen}
+            onOpenChange={(open) => {
+              setAreaOpen(open);
+              if (open) lastFocusedFilter.current = "area";
+            }}
           >
             <SelectTrigger
+              ref={areaTriggerRef}
               tabIndex={3}
               aria-label="اختر المنطقة"
+              onFocus={() => { lastFocusedFilter.current = "area"; }}
               className="h-[52px] min-h-[44px] w-full min-w-0 rounded-xl border-0 bg-transparent px-3.5 text-[13px] text-foreground shadow-none transition-all duration-200 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-primary/40 sm:w-40 sm:rounded-[1rem] sm:text-[13.5px]"
             >
               <div className="flex min-w-0 flex-1 items-center gap-2">

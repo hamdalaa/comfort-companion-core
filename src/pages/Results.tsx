@@ -138,6 +138,31 @@ const Results = () => {
     return labels;
   }, [area, category, priceRange, minRating, verifiedOnly, withDeals, brandFilters]);
 
+  // Removable chip descriptors — each chip carries its own clear handler
+  // so the user can drop a single filter without nuking the whole set.
+  type FilterChip = { id: string; label: string; clear: () => void };
+  const activeFilterChips = useMemo<FilterChip[]>(() => {
+    const chips: FilterChip[] = [];
+    if (area !== "all") chips.push({ id: `area:${area}`, label: `المنطقة: ${area}`, clear: () => setFilter("area", "all") });
+    if (category !== "all") chips.push({ id: `cat:${category}`, label: `الفئة: ${category}`, clear: () => setFilter("category", "all") });
+    if (priceRange !== "all") {
+      chips.push({
+        id: `price:${priceRange}`,
+        label: PRICE_RANGES.find((entry) => entry.id === priceRange)?.label ?? priceRange,
+        clear: () => setPriceRange("all"),
+      });
+    }
+    if (minRating > 0) chips.push({ id: `rating:${minRating}`, label: `${minRating}+ نجوم`, clear: () => setMinRating(0) });
+    if (verifiedOnly) chips.push({ id: "verified", label: "موثّق فقط", clear: () => setVerifiedOnly(false) });
+    if (withDeals) chips.push({ id: "deals", label: "عليها تخفيض", clear: () => setWithDeals(false) });
+    brandFilters.forEach((brand) =>
+      chips.push({ id: `brand:${brand}`, label: brand, clear: () => toggleBrand(brand) }),
+    );
+    return chips;
+    // setFilter / toggleBrand are stable closures over `params` & state — re-deriving on dep change is fine.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [area, category, priceRange, minRating, verifiedOnly, withDeals, brandFilters]);
+
   function setSort(next: Sort) {
     const nextParams = new URLSearchParams(params);
     nextParams.set("sort", next);
@@ -209,7 +234,10 @@ const Results = () => {
                 مساحة البحث
               </span>
 
-              <h1 className="font-display mt-4 text-[2.6rem] font-bold leading-none text-foreground sm:text-5xl md:text-6xl">
+              <h1
+                id="results-heading"
+                className="font-display mt-4 text-[2.6rem] font-bold leading-none text-foreground sm:text-5xl md:text-6xl"
+              >
                 {q ? (
                   <>
                     نتائج "{q}"
@@ -265,9 +293,19 @@ const Results = () => {
         </div>
       </section>
 
-      <main className="flex-1">
+      <main className="flex-1" id="main" aria-labelledby="results-heading">
+        {/* Polite live region — screen readers announce result counts when
+            filtering settles (isFiltering flips back to false). We avoid
+            assertive so we don't interrupt typing. */}
+        <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+          {isFiltering
+            ? "جاري تحديث النتائج…"
+            : `تم تحديث النتائج: ${results.length.toLocaleString("ar")} عنصر${
+                groups.length > 0 ? `، و ${groups.length.toLocaleString("ar")} مجموعة مقارنة` : ""
+              }.`}
+        </div>
         <div className="container grid grid-cols-1 gap-6 py-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:h-fit">
+          <aside className="hidden lg:block lg:sticky lg:top-[118px] lg:h-fit" aria-label="فلاتر النتائج">
             <FiltersPanel
               area={area}
               category={category}
@@ -413,14 +451,35 @@ const Results = () => {
                 </div>
               </div>
 
-              {activeFilterLabels.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {activeFilterLabels.map((label) => (
-                    <span key={label} className="atlas-chip text-foreground/82">
-                      <Tag className="h-3.5 w-3.5 text-primary" />
-                      {label}
-                    </span>
+              {activeFilterChips.length > 0 && (
+                <div
+                  className="mt-4 flex flex-wrap items-center gap-2"
+                  role="region"
+                  aria-label="الفلاتر المطبّقة"
+                >
+                  {activeFilterChips.map((chip) => (
+                    <button
+                      key={chip.id}
+                      type="button"
+                      onClick={chip.clear}
+                      className="atlas-chip group inline-flex items-center gap-1.5 text-foreground/85 transition-colors hover:border-destructive/40 hover:bg-destructive/5 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                      aria-label={`إزالة الفلتر: ${chip.label}`}
+                    >
+                      <Tag className="h-3.5 w-3.5 text-primary group-hover:text-destructive" />
+                      <span>{chip.label}</span>
+                      <X className="h-3 w-3 opacity-60 group-hover:opacity-100" aria-hidden />
+                    </button>
                   ))}
+                  {activeFilterChips.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={clearAll}
+                      className="ms-1 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                    >
+                      <X className="h-3 w-3" aria-hidden />
+                      مسح الكل
+                    </button>
+                  )}
                 </div>
               )}
             </div>
