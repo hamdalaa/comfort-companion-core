@@ -1243,3 +1243,140 @@
     animation: pulse-glow 2.6s ease-in-out infinite;
   }
 }
+
+/* ============================================================
+   Premium creative gradient utilities
+   - Use sparingly: hero CTAs, headlines, key cards, section seams.
+   - Every utility is theme-aware via CSS vars.
+   ============================================================ */
+@layer utilities {
+  /* Background fills */
+  .bg-grad-sunrise      { background-image: var(--gradient-sunrise); }
+  .bg-grad-ocean        { background-image: var(--gradient-ocean); }
+  .bg-grad-aurora-soft  { background-image: var(--gradient-aurora-soft); }
+  .bg-grad-violet-rose  { background-image: var(--gradient-violet-rose); }
+  .bg-grad-amber-rose   { background-image: var(--gradient-amber-rose); }
+  .bg-grad-iridescent   { background-image: var(--gradient-iridescent); background-size: 200% 200%; }
+  .bg-grad-spotlight    { background-image: var(--gradient-spotlight); }
+  .bg-grad-conic        { background-image: var(--gradient-conic-premium); }
+  .bg-grad-section-fade { background-image: var(--gradient-section-fade); }
+
+  /* Animated iridescent — hue drifts slowly */
+  .bg-grad-iridescent-anim {
+    background-image: var(--gradient-iridescent);
+    background-size: 220% 220%;
+    animation: gradient-shift 14s ease-in-out infinite;
+  }
+
+  /* Text gradients — premium headlines */
+  .text-grad-ocean {
+    background-image: var(--gradient-ocean);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-grad-sunrise {
+    background-image: var(--gradient-sunrise);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-grad-violet-rose {
+    background-image: var(--gradient-violet-rose);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-grad-iridescent {
+    background-image: var(--gradient-iridescent);
+    background-size: 220% 220%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: gradient-shift 12s ease-in-out infinite;
+  }
+
+  /* Section spotlight wrapper — soft multi-radial wash for sections */
+  .section-spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .section-spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--gradient-spotlight);
+    pointer-events: none;
+  }
+
+  /* Divider line with rainbow blush — for section seams */
+  .divider-grad {
+    height: 1px;
+    width: 100%;
+    background: var(--gradient-divider);
+    border: 0;
+  }
+
+  /* Premium gradient card border — static, refined, theme-aware */
+  .border-grad-premium {
+    position: relative;
+    background:
+      linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+      var(--gradient-iridescent) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Card sheen — subtle diagonal highlight for "premium" feel */
+  .card-sheen {
+    position: relative;
+    isolation: isolate;
+  }
+  .card-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--gradient-card-sheen);
+    pointer-events: none;
+    opacity: 0.7;
+    mix-blend-mode: soft-light;
+  }
+
+  /* Premium CTA button — gradient fill + glow */
+  .btn-grad-primary {
+    background-image: var(--gradient-ocean);
+    color: hsl(var(--primary-foreground));
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.15) inset,
+      0 8px 24px -10px hsl(var(--primary) / 0.55);
+    transition: transform 0.2s var(--ease-ios-spring), box-shadow 0.25s var(--ease-premium), filter 0.2s var(--ease-premium);
+  }
+  .btn-grad-primary:hover {
+    filter: brightness(1.05) saturate(1.05);
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.2) inset,
+      0 12px 32px -10px hsl(var(--primary) / 0.65);
+  }
+  .btn-grad-primary:active { transform: scale(0.97); }
+
+  /* Glow halos — color-coded ambient lights for hero/section corners */
+  .halo-primary,
+  .halo-violet,
+  .halo-cyan,
+  .halo-rose,
+  .halo-emerald,
+  .halo-amber {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(110px);
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .halo-primary { background: hsl(var(--primary) / 0.45); }
+  .halo-violet  { background: hsl(var(--accent-violet) / 0.4); }
+  .halo-cyan    { background: hsl(var(--accent-cyan) / 0.4); }
+  .halo-rose    { background: hsl(var(--accent-rose) / 0.35); }
+  .halo-emerald { background: hsl(var(--accent-emerald) / 0.35); }
+  .halo-amber   { background: hsl(var(--accent-amber) / 0.4); }
+
+  /* Tone the halos down on light theme so it doesn't feel washed out */
+  :root .halo-primary { opacity: 0.28; }
+  :root .halo-violet  { opacity: 0.24; }
+  :root .halo-cyan    { opacity: 0.24; }
+  :root .halo-rose    { opacity: 0.22; }
+  :root .halo-emerald { opacity: 0.22; }
+  :root .halo-amber   { opacity: 0.26; }
+}
