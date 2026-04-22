@@ -77,28 +77,78 @@ export function HeroSearch({
 
       <form
         onSubmit={submit}
-        className="group/search relative w-full rounded-2xl border border-border bg-card/95 p-1.5 shadow-soft backdrop-blur-xl transition-all focus-within:border-primary/40 focus-within:shadow-soft-lg sm:rounded-3xl sm:p-2"
+        className="group/search relative w-full overflow-visible rounded-2xl border border-border/70 bg-card/95 p-2 shadow-soft backdrop-blur-xl transition-all focus-within:border-primary/40 focus-within:shadow-soft-lg sm:rounded-[1.4rem]"
       >
-        {/* Search input row */}
-        <div className="flex w-full items-center gap-2 rounded-xl px-3 sm:rounded-2xl sm:px-4">
-          <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-          <input
-            ref={inputRef}
-            value={q}
-            onChange={(event) => { setQ(event.target.value); setAcOpen(true); setAcIndex(-1); }}
-            onFocus={() => {
-              setAcOpen(true);
-              void prefetchProductIndex();
-            }}
-            onBlur={() => setTimeout(() => setAcOpen(false), 150)}
-            onKeyDown={onInputKeyDown}
-            placeholder="iPhone 15، PlayStation 5، اسم محل…"
-            className="h-12 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/60 sm:text-base"
-            autoComplete="off"
-          />
+        {/* Single unified row on desktop, stacks on mobile */}
+        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-1.5">
+          {/* Search input — takes remaining space */}
+          <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl px-3 sm:rounded-[1rem] sm:px-4">
+            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <input
+              ref={inputRef}
+              value={q}
+              onChange={(event) => { setQ(event.target.value); setAcOpen(true); setAcIndex(-1); }}
+              onFocus={() => {
+                setAcOpen(true);
+                void prefetchProductIndex();
+              }}
+              onBlur={() => setTimeout(() => setAcOpen(false), 150)}
+              onKeyDown={onInputKeyDown}
+              placeholder="iPhone 15، PlayStation 5، اسم محل…"
+              className="h-11 min-w-0 flex-1 bg-transparent text-[14px] text-foreground outline-none placeholder:text-muted-foreground/60 sm:h-12 sm:text-[15px]"
+              autoComplete="off"
+            />
+          </div>
+
+          {/* Vertical divider on desktop */}
+          <div aria-hidden className="hidden h-8 w-px self-center bg-border/70 sm:block" />
+
+          {/* Category */}
+          <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
+            <SelectTrigger className="h-11 w-full min-w-0 rounded-xl border-0 bg-transparent px-3 text-[13px] text-foreground shadow-none transition-colors hover:bg-muted/40 focus:ring-2 focus:ring-primary/30 sm:h-12 sm:w-40 sm:rounded-[1rem] sm:text-sm">
+              <div className="flex min-w-0 flex-1 items-center gap-1.5">
+                <Tag className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span className="truncate"><SelectValue placeholder="كل الفئات" /></span>
+              </div>
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all">كل الفئات</SelectItem>
+              {ALL_CATEGORIES.map((entry) => (
+                <SelectItem key={entry} value={entry}>{entry}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <div aria-hidden className="hidden h-8 w-px self-center bg-border/70 sm:block" />
+
+          {/* Area */}
+          <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
+            <SelectTrigger className="h-11 w-full min-w-0 rounded-xl border-0 bg-transparent px-3 text-[13px] text-foreground shadow-none transition-colors hover:bg-muted/40 focus:ring-2 focus:ring-primary/30 sm:h-12 sm:w-40 sm:rounded-[1rem] sm:text-sm">
+              <div className="flex min-w-0 flex-1 items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span className="truncate"><SelectValue placeholder="كل المناطق" /></span>
+              </div>
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="all">كل المناطق</SelectItem>
+              {ALL_AREAS.map((entry) => (
+                <SelectItem key={entry} value={entry}>{entry}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* CTA — gradient pill */}
+          <Button
+            type="submit"
+            size="lg"
+            className="h-11 w-full shrink-0 gap-1.5 rounded-xl bg-gradient-to-l from-violet via-primary to-cyan px-5 text-[13px] font-semibold text-white shadow-md transition-all hover:opacity-95 hover:shadow-lg sm:h-12 sm:w-auto sm:rounded-[1rem] sm:px-6 sm:text-sm"
+          >
+            <Search className="h-4 w-4" />
+            ابحث
+          </Button>
         </div>
 
-        {/* Live autocomplete dropdown — products + shops as user types */}
+        {/* Live autocomplete dropdown */}
         {acOpen && (
           <SearchAutocomplete
             query={q}
@@ -109,50 +159,6 @@ export function HeroSearch({
             onSubmitQuery={() => { setAcOpen(false); submit(new Event("submit") as unknown as FormEvent); }}
           />
         )}
-
-        {/* Filters + CTA row — area & category apply in both modes */}
-        <div className="mt-1.5 flex w-full flex-col gap-1.5 sm:mt-2 sm:flex-row sm:items-stretch sm:gap-2">
-          <div className="flex w-full min-w-0 flex-1 gap-1.5 sm:gap-2">
-            <Select value={area} onValueChange={(value) => setArea(value as Area | "all")}>
-              <SelectTrigger className="h-11 w-0 min-w-0 flex-1 rounded-xl border-0 bg-muted/40 px-3 text-[13px] text-foreground shadow-none transition-colors hover:bg-muted/70 focus:ring-2 focus:ring-primary/30 sm:h-12 sm:rounded-2xl sm:text-sm">
-                <div className="flex min-w-0 flex-1 items-center gap-1.5">
-                  <MapPin className="hidden h-3.5 w-3.5 shrink-0 text-muted-foreground sm:block" />
-                  <span className="truncate"><SelectValue placeholder="المنطقة" /></span>
-                </div>
-              </SelectTrigger>
-              <SelectContent className="rounded-xl">
-                <SelectItem value="all">كل المناطق</SelectItem>
-                {ALL_AREAS.map((entry) => (
-                  <SelectItem key={entry} value={entry}>{entry}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
-              <SelectTrigger className="h-11 w-0 min-w-0 flex-1 rounded-xl border-0 bg-muted/40 px-3 text-[13px] text-foreground shadow-none transition-colors hover:bg-muted/70 focus:ring-2 focus:ring-primary/30 sm:h-12 sm:rounded-2xl sm:text-sm">
-                <div className="flex min-w-0 flex-1 items-center gap-1.5">
-                  <Tag className="hidden h-3.5 w-3.5 shrink-0 text-muted-foreground sm:block" />
-                  <span className="truncate"><SelectValue placeholder="الفئة" /></span>
-                </div>
-              </SelectTrigger>
-              <SelectContent className="rounded-xl">
-                <SelectItem value="all">كل الفئات</SelectItem>
-                {ALL_CATEGORIES.map((entry) => (
-                  <SelectItem key={entry} value={entry}>{entry}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Button
-            type="submit"
-            size="lg"
-            className="h-11 w-auto shrink-0 gap-1.5 rounded-2xl bg-gradient-to-l from-violet via-primary to-cyan px-5 text-[13px] font-semibold text-white shadow-md transition-all hover:opacity-95 hover:shadow-lg sm:h-12 sm:px-7 sm:text-sm"
-          >
-            <Search className="h-4 w-4" />
-            ابحث
-          </Button>
-        </div>
       </form>
     </div>
   );
