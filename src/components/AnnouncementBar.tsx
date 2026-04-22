@@ -36,35 +36,35 @@ export function AnnouncementBar() {
   const loop = [...messages, ...messages];
 
   return (
-    <div className="relative z-40 overflow-hidden border-b border-border/60 bg-card/70 text-foreground backdrop-blur-md">
-      <div className="container relative flex items-center gap-3 py-1.5 sm:py-2">
+    <div className="relative z-40 overflow-hidden border-b border-border/50 bg-background/80 text-foreground backdrop-blur-xl">
+      <div className="container relative flex items-center gap-3 py-1.5">
         <div className="group/marquee relative flex-1 overflow-hidden">
           <div
             className="flex w-max items-center gap-10 animate-marquee group-hover/marquee:[animation-play-state:paused]"
-            style={{ animationDuration: "44s" }}
+            style={{ animationDuration: "50s" }}
           >
             {loop.map((m, i) => {
               const Icon = m.icon;
               return (
-                <span key={i} className="flex shrink-0 items-center gap-2 text-[11.5px] font-medium text-muted-foreground sm:text-[12.5px]">
-                  <Icon className="h-3.5 w-3.5 shrink-0 text-primary/80" />
+                <span key={i} className="flex shrink-0 items-center gap-2 text-[11.5px] font-medium text-muted-foreground/90">
+                  <Icon className="h-3 w-3 shrink-0 text-primary/70" strokeWidth={2.4} />
                   <span>{m.text}</span>
-                  <span aria-hidden className="ms-6 h-1 w-1 rounded-full bg-border" />
+                  <span aria-hidden className="ms-6 h-1 w-1 rounded-full bg-border/70" />
                 </span>
               );
             })}
           </div>
           {/* Edge fades */}
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 start-0 w-10 bg-gradient-to-l from-transparent to-card" />
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 end-0 w-10 bg-gradient-to-r from-transparent to-card" />
+          <div aria-hidden className="pointer-events-none absolute inset-y-0 start-0 w-12 bg-gradient-to-l from-transparent to-background" />
+          <div aria-hidden className="pointer-events-none absolute inset-y-0 end-0 w-12 bg-gradient-to-r from-transparent to-background" />
         </div>
         <button
           type="button"
           onClick={handleClose}
           aria-label="إغلاق"
-          className="shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="shrink-0 rounded-full p-1 text-muted-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
         >
-          <X className="h-3.5 w-3.5" />
+          <X className="h-3 w-3" />
         </button>
       </div>
     </div>
