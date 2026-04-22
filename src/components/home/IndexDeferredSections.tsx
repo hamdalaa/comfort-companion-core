@@ -62,13 +62,18 @@ export default function IndexDeferredSections() {
     .sort(compareCatalogShopsByPriority)
     .slice(0, 6);
 
-  const topRated = [...shops]
-    .filter((shop) => !shop.archivedAt)
-    .filter((shop) => typeof shop.rating === "number" && (shop.rating ?? 0) > 0)
+  const activeShops = shops.filter((shop) => !shop.archivedAt);
+  const ratedShops = activeShops.filter(
+    (shop) => typeof shop.rating === "number" && (shop.rating ?? 0) > 0,
+  );
+  const topRatedSource = ratedShops.length > 0 ? ratedShops : activeShops;
+  const topRated = [...topRatedSource]
     .sort((a, b) => {
       const ratingDiff = (b.rating ?? 0) - (a.rating ?? 0);
       if (ratingDiff !== 0) return ratingDiff;
-      return (b.reviewCount ?? 0) - (a.reviewCount ?? 0);
+      const reviewDiff = (b.reviewCount ?? 0) - (a.reviewCount ?? 0);
+      if (reviewDiff !== 0) return reviewDiff;
+      return compareCatalogShopsByPriority(a, b);
     })
     .slice(0, 6);
 
