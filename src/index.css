@@ -598,10 +598,16 @@
     backface-visibility: hidden;
     perspective: 1000px;
   }
-  /* When the marquee scrolls off-screen, JS toggles this to pause the
-     animation entirely (saves CPU). */
-  .marquee-paused {
-    animation-play-state: paused !important;
+  /* When the marquee scrolls off-screen, JS swaps `.animate-marquee` for
+     `.marquee-stopped` — `animation: none` halts keyframe ticks entirely
+     (more aggressive than `animation-play-state: paused`, which still
+     keeps the animation engine engaged). The element is also hidden from
+     ATs since the duplicated content carries no information. Removing
+     this class restarts the animation cleanly from frame 0. */
+  .marquee-stopped {
+    animation: none !important;
+    will-change: auto;
+    transform: none;
   }
   /* Reduced-motion override — hide the marquee animation completely
      (the global 0.01ms rule below leaves it visually janky). */
