@@ -48,7 +48,7 @@ export function HeroDestinations() {
         <Link
           key={d.to}
           to={d.to}
-          className="group animate-fade-in-up relative block overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-500 ease-ios will-change-transform [@media(hover:hover)]:hover:-translate-y-1 [@media(hover:hover)]:hover:border-foreground/20 [@media(hover:hover)]:hover:shadow-[0_12px_36px_-14px_hsl(var(--foreground)/0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="group animate-fade-in-up relative block overflow-hidden rounded-2xl border border-border/60 bg-card shadow-[0_1px_2px_-1px_hsl(var(--foreground)/0.06)] transition-[transform,box-shadow,border-color] duration-500 ease-ios will-change-transform [@media(hover:hover)]:hover:-translate-y-1.5 [@media(hover:hover)]:hover:border-foreground/25 [@media(hover:hover)]:hover:shadow-[0_18px_44px_-18px_hsl(var(--foreground)/0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label={d.title}
           style={{ animationDelay: `${500 + index * 100}ms`, animationFillMode: "backwards" }}
         >
