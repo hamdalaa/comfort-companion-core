@@ -36,7 +36,7 @@
   unicode-range: U+0000-00FF, U+0100-024F, U+2000-206F, U+20A0-20CF;
 }
 
-/* SF Arabic (subset) — Arabic script */
+/* SF Arabic (subset) — Arabic script (fallback) */
 @font-face {
   font-family: "SF Arabic";
   src: url("/fonts/SF-Arabic.subset.woff2") format("woff2");
@@ -44,6 +44,84 @@
   font-style: normal;
   font-display: swap;
   unicode-range: U+0030-0039, U+0600-06FF, U+0660-0669, U+0750-077F, U+08A0-08FF, U+2000-206F, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+/* ============================================================
+   Thmanyah Sans — primary UI / body font (Arabic + Latin)
+   ============================================================ */
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyah/thmanyahsans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyah/thmanyahsans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyah/thmanyahsans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyah/thmanyahsans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyah/thmanyahsans-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Thmanyah Serif Display — editorial display font for headlines
+   ============================================================ */
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("/fonts/thmanyah/thmanyahserifdisplay-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("/fonts/thmanyah/thmanyahserifdisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("/fonts/thmanyah/thmanyahserifdisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("/fonts/thmanyah/thmanyahserifdisplay-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @layer base {
@@ -360,7 +438,7 @@
   }
 
   html {
-    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Thmanyah Sans", "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-size: 123%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -428,7 +506,7 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Thmanyah Display", "Thmanyah Sans", "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.025em;
     text-wrap: balance;
@@ -478,7 +556,7 @@
   }
 
   .font-display {
-    font-family: "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Thmanyah Display", "Thmanyah Sans", "SF Arabic", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.035em;
   }
