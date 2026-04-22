@@ -205,10 +205,9 @@ export default function IndexDeferredSections() {
         {/* Brand strip — partner logos */}
         <BrandStrip />
 
-        <section className="relative mt-10 overflow-hidden border-y border-cyan/25 bg-gradient-to-tr from-cyan/14 via-background to-emerald/12 sm:mt-20 md:mt-28">
-          <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 h-72 w-72 rounded-full bg-cyan/20 blur-3xl" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-12 h-72 w-72 rounded-full bg-emerald/20 blur-3xl" />
-          <div className="container py-10 sm:py-16 md:py-20">
+        {/* ============== Featured shops — clean, no gradient ============== */}
+        <section className="relative mt-14 sm:mt-24 md:mt-32">
+          <div className="container">
             <SectionHeader
               kicker="محلات مختارة"
               title="محلات تستحق أن تبدأ منها"
@@ -216,7 +215,7 @@ export default function IndexDeferredSections() {
               description="قراءة أسرع للمحلات الأوثق والأكثر حضوراً داخل السوق."
             />
 
-            <div className="mt-5 sm:mt-10">
+            <div className="mt-7 sm:mt-10">
               {loading ? (
                 <ShopCardSkeletonGrid count={6} />
               ) : (
@@ -240,10 +239,9 @@ export default function IndexDeferredSections() {
           </div>
         </section>
 
-        <section className="relative mt-10 overflow-hidden border-y border-cyan/25 bg-gradient-to-bl from-emerald/14 via-background to-cyan/12 sm:mt-20 md:mt-28">
-          <div aria-hidden className="pointer-events-none absolute -top-20 -left-16 h-72 w-72 rounded-full bg-emerald/20 blur-3xl" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-12 h-72 w-72 rounded-full bg-cyan/20 blur-3xl" />
-          <div className="container relative py-10 sm:py-16 md:py-20">
+        {/* ============== Brands & Top rated — surface panel ============== */}
+        <section className="relative mt-14 sm:mt-24 md:mt-32">
+          <div className="container relative">
             <SectionHeader
               kicker="الوكلاء الرسميون"
               title="اشترِ من المصدر الموثوق"
@@ -251,7 +249,7 @@ export default function IndexDeferredSections() {
               seeAll="/brands"
             />
 
-            <div className="mt-10 sm:mt-14">
+            <div className="mt-12 sm:mt-16">
               <SectionHeader
                 kicker="الأعلى تقييماً"
                 title="المتاجر الأعلى تقييماً"
@@ -259,7 +257,7 @@ export default function IndexDeferredSections() {
                 seeAll="/results?sort=rating"
               />
 
-              <div className="mt-5 sm:mt-8">
+              <div className="mt-7 sm:mt-10">
                 {loading ? (
                   <ShopCardSkeletonGrid count={6} />
                 ) : topRated.length === 0 ? null : (
